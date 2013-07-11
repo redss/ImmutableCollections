@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseImmutableList.cs" />
+    <Compile Include="CopyImmutableList.cs" />
     <Compile Include="IImmutableCollection.cs" />
     <Compile Include="IImmutableDictionary.cs" />
     <Compile Include="IImmutableList.cs" />
