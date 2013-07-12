@@ -1,14 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ImmutableCollections
 {
+    /// <summary>
+    /// Simplest possible immutable list implementation, for tests and comparison purposes only.
+    /// </summary>
+    /// <typeparam name="T">The type of the elements in the collection.</typeparam>
     public class CopyImmutableList<T> : BaseImmutableList<T>
     {
         private readonly List<T> _list;
 
-        public CopyImmutableList(List<T> list = null)
+        public CopyImmutableList()
         {
-            _list = list ?? new List<T>();
+            _list = new List<T>();
+        }
+
+        public CopyImmutableList(List<T> list)
+        {
+            if (list == null)
+                throw new ArgumentNullException("list");
+
+            _list = list;
         }
 
         // IEnumerable

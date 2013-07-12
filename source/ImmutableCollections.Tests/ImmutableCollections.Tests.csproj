@@ -44,10 +44,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImmutableCollectionTestses.cs" />
+    <Compile Include="ImmutableListTestses.cs" />
+    <Compile Include="TestInfrastructure\BaseTests.cs" />
+    <Compile Include="TestInfrastructure\ImmutableCollectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImmutableCollections\ImmutableCollections.csproj">
+      <Project>{76F201C8-7280-4748-9BE1-65C9C359F986}</Project>
+      <Name>ImmutableCollections</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
