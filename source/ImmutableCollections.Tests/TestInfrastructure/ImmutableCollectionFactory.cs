@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ImmutableCollections.Tests.TestInfrastructure
 {
@@ -16,11 +17,7 @@ namespace ImmutableCollections.Tests.TestInfrastructure
         public TCollection CreateCollection<TCollection, TValue>(IEnumerable<TValue> values) where TCollection : IImmutableCollection<TValue>
         {
             IImmutableCollection<TValue> colleciton = Activator.CreateInstance<TCollection>();
-
-            foreach (var value in values)
-                colleciton = colleciton.Add(value);
-
-            return (TCollection) colleciton;
+            return (TCollection) values.Aggregate(colleciton, (current, value) => current.Add(value));
         }
     }
 }

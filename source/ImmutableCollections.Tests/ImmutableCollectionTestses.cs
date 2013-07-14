@@ -28,6 +28,18 @@ namespace ImmutableCollections.Tests
         }
 
         [Test]
+        public void Remove_RemovesOnlyOneElement()
+        {
+            int count = 10, element = 20;
+            var collection = NewCollection(Enumerable.Repeat(element, count));
+
+            var modified = collection.Remove(element).ToArray();
+           
+            Assert.AreEqual(count - 1, modified.Count());
+            Assert.True(modified.All(x => x == element));
+        }
+
+        [Test]
         public void Contains_Test()
         {
             var collection = NewCollection(10, 20, 30);
