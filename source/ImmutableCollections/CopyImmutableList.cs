@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace ImmutableCollections
 {
@@ -26,6 +27,7 @@ namespace ImmutableCollections
 
         // IEnumerable
 
+        [Pure]
         public override IEnumerator<T> GetEnumerator()
         {
             return _list.GetEnumerator();
@@ -33,11 +35,13 @@ namespace ImmutableCollections
 
         // IImmutableCollection
 
+        [Pure]
         public override int IndexOf(T item)
         {
             return _list.IndexOf(item);
         }
 
+        [Pure]
         public override int Count
         {
             get { return _list.Count; }
@@ -45,6 +49,7 @@ namespace ImmutableCollections
 
         // IImmutableList
 
+        [Pure]
         public override IImmutableList<T> Add(T item)
         {
             var newList = new List<T>(_list) {item};
@@ -52,6 +57,7 @@ namespace ImmutableCollections
             return new CopyImmutableList<T>(newList);
         }
 
+        [Pure]
         public override IImmutableList<T> Insert(int index, T item)
         {
             var newList = new List<T>(_list);
@@ -60,6 +66,7 @@ namespace ImmutableCollections
             return new CopyImmutableList<T>(newList);
         }
 
+        [Pure]
         public override IImmutableList<T> Remove(T item)
         {
             var newList = new List<T>(_list);
@@ -68,6 +75,7 @@ namespace ImmutableCollections
             return new CopyImmutableList<T>(newList);
         }
 
+        [Pure]
         public override IImmutableList<T> RemoveAt(int index)
         {
             var newList = new List<T>(_list);
@@ -76,11 +84,13 @@ namespace ImmutableCollections
             return new CopyImmutableList<T>(newList);
         }
 
+        [Pure]
         public override T this[int index]
         {
             get { return _list[index]; }
         }
 
+        [Pure]
         public override bool Contains(T item)
         {
             return _list.Contains(item);
