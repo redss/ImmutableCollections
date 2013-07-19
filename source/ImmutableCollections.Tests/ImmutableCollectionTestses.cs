@@ -30,9 +30,9 @@ namespace ImmutableCollections.Tests
         [Test]
         public void Remove_RemovesOnlyOneElement()
         {
-            int count = 10, element = 20;
-            var collection = NewCollection(Enumerable.Repeat(element, count));
+            const int count = 10, element = 20;
 
+            var collection = NewCollection(Enumerable.Repeat(element, count));
             var modified = collection.Remove(element).ToArray();
            
             Assert.AreEqual(count - 1, modified.Count());

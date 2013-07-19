@@ -7,42 +7,45 @@ namespace ImmutableCollections.Tests
     [TestFixture(typeof(CopyImmutableList<int>))]
     public class ImmutableListTestses<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>
     {
+        private const int Count = 10;
+
+        private const int FirstElement = 20;
+
+        private const int SecondElement = 30;
+
         [Test]
         public void Add_InsertsElementAtTheTail()
         {
-            int count = 10, element = 20, added = 30;
-            var elements = Enumerable.Repeat(element, count);
+            var elements = Enumerable.Repeat(FirstElement, Count);
             var list = NewCollection(elements);
 
-            var newList = list.Add(added).ToArray();
+            var newList = list.Add(SecondElement).ToArray();
 
-            Assert.AreEqual(added, newList.Last());
-            Assert.AreEqual(count + 1, newList.Count());
-            Assert.AreEqual(count, newList.Count(x => x == element));
+            Assert.AreEqual(SecondElement, newList.Last());
+            Assert.AreEqual(Count + 1, newList.Count());
+            Assert.AreEqual(Count, newList.Count(x => x == FirstElement));
         }
 
         [Test]
         public void Insert_Test()
         {
-            int count = 10, element = 20, inserted = 30;
-            var elements = Enumerable.Repeat(element, count);
+            var elements = Enumerable.Repeat(FirstElement, Count);
             var list = NewCollection(elements);
 
-            foreach (var i in Enumerable.Range(0, count))
+            foreach (var i in Enumerable.Range(0, Count))
             {
-                var newList = list.Insert(i, inserted).ToArray();
+                var newList = list.Insert(i, SecondElement).ToArray();
 
-                Assert.AreEqual(inserted, newList.ElementAt(i));
-                Assert.AreEqual(count + 1, newList.Count());
-                Assert.AreEqual(count, newList.Count(x => x == element));
+                Assert.AreEqual(SecondElement, newList.ElementAt(i));
+                Assert.AreEqual(Count + 1, newList.Count());
+                Assert.AreEqual(Count, newList.Count(x => x == FirstElement));
             }
         }
 
         [Test]
         public void RemoveAt_Test()
         {
-            var count = 10;
-            var elements = Enumerable.Range(0, count).ToArray();
+            var elements = Enumerable.Range(0, Count).ToArray();
             var list = NewCollection(elements);
 
             foreach (var i in elements)
@@ -50,15 +53,14 @@ namespace ImmutableCollections.Tests
                 var newList = list.RemoveAt(i).ToArray();
 
                 Assert.False(newList.Contains(i));
-                Assert.AreEqual(count - 1, newList.Count());
+                Assert.AreEqual(Count - 1, newList.Count());
             }
         }
 
         [Test]
         public void Index_Test()
         {
-            var count = 10;
-            var elements = Enumerable.Range(0, count).ToArray();
+            var elements = Enumerable.Range(0, Count).ToArray();
             var list = NewCollection(elements);
 
             foreach (var i in elements)
@@ -70,8 +72,7 @@ namespace ImmutableCollections.Tests
         [Test]
         public void IndexOf_Test()
         {
-            var count = 10;
-            var elements = Enumerable.Range(0, count).ToArray();
+            var elements = Enumerable.Range(0, Count).ToArray();
             var list = NewCollection(elements);
 
             foreach (var i in elements)
