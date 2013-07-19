@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(CopyImmutableList<int>))]
-    public class IImmutableListTestses<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>
+    public class ImmutableListTestses<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>
     {
         [Test]
         public void Add_InsertsElementAtTheTail()
