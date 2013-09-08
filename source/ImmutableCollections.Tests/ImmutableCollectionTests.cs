@@ -53,7 +53,7 @@ namespace ImmutableCollections.Tests
         {
             var collection = NewCollection(Enumerable.Range(1, 20));
 
-            Assert.AreEqual(20, collection.Count);
+            Assert.AreEqual(20, collection.Length);
         }
     }
 }

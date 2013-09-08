@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
@@ -8,9 +9,11 @@ namespace ImmutableCollections
     /// Simplest possible immutable list implementation, for tests and comparison purposes only.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-    public class CopyImmutableList<T> : BaseImmutableList<T>
+    public class CopyImmutableList<T> : IImmutableList<T>
     {
         private readonly List<T> _list;
+
+        // Constructors
 
         public CopyImmutableList()
         {
@@ -28,29 +31,21 @@ namespace ImmutableCollections
         // IEnumerable
 
         [Pure]
-        public override IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return _list.GetEnumerator();
         }
 
-        // IImmutableCollection
-
         [Pure]
-        public override int IndexOf(T item)
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            return _list.IndexOf(item);
-        }
-
-        [Pure]
-        public override int Count
-        {
-            get { return _list.Count; }
+            return GetEnumerator();
         }
 
         // IImmutableList
 
         [Pure]
-        public override IImmutableList<T> Add(T item)
+        public CopyImmutableList<T> Add(T item)
         {
             var newList = new List<T>(_list) {item};
 
@@ -58,7 +53,19 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public override IImmutableList<T> Insert(int index, T item)
+        IImmutableList<T> IImmutableList<T>.Add(T item)
+        {
+            return Add(item);
+        }
+
+        [Pure]
+        IImmutableCollection<T> IImmutableCollection<T>.Add(T item)
+        {
+            return Add(item);
+        }
+
+        [Pure]
+        public CopyImmutableList<T> Insert(int index, T item)
         {
             var newList = new List<T>(_list);
             newList.Insert(index, item);
@@ -67,7 +74,13 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public override IImmutableList<T> Remove(T item)
+        IImmutableList<T> IImmutableList<T>.Insert(int index, T item)
+        {
+            return Insert(index, item);
+        }
+
+        [Pure]
+        public CopyImmutableList<T> Remove(T item)
         {
             var newList = new List<T>(_list);
             newList.Remove(item);
@@ -76,7 +89,19 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public override IImmutableList<T> RemoveAt(int index)
+        IImmutableList<T> IImmutableList<T>.Remove(T item)
+        {
+            return Remove(item);
+        }
+        
+        [Pure]
+        IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
+        {
+            return Remove(item);
+        }
+
+        [Pure]
+        public CopyImmutableList<T> RemoveAt(int index)
         {
             var newList = new List<T>(_list);
             newList.RemoveAt(index);
@@ -85,15 +110,33 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public override T this[int index]
+        IImmutableList<T> IImmutableList<T>.RemoveAt(int index)
+        {
+            return RemoveAt(index);
+        }
+
+        [Pure]
+        public int Length
+        {
+            get { return _list.Count; }
+        }
+
+        [Pure]
+        public T this[int index]
         {
             get { return _list[index]; }
         }
 
         [Pure]
-        public override bool Contains(T item)
+        public bool Contains(T item)
         {
             return _list.Contains(item);
+        }
+
+        [Pure]
+        public int IndexOf(T item)
+        {
+            return _list.IndexOf(item);
         }
     }
 }

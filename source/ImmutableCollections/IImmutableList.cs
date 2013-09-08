@@ -19,7 +19,7 @@
         /// <param name="index">The zero-based index at which item should be inserted.</param>
         /// <param name="item">The object to insert into the list.</param>
         /// <returns>New list.</returns>
-        IImmutableList<T> Insert(int index, T item); 
+        IImmutableList<T> Insert(int index, T item);
 
         /// <summary>
         /// Removes first occurence of specified element from a new list.

@@ -30,7 +30,7 @@ namespace ImmutableCollections
         /// <summary>
         /// Gets the number of elements in the collection.
         /// </summary>
-        int Count { get; }
+        int Length { get; }
 
         /// <summary>
         /// Determines whether the collection contains a specific value.
