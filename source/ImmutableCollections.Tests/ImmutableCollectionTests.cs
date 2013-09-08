@@ -5,7 +5,7 @@ using ImmutableCollections.Tests.TestInfrastructure;
 namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(CopyImmutableList<int>))]
-    public class ImmutableCollectionTestses<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableCollection<int>
+    public class ImmutableCollectionTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableCollection<int>
     {
         [Test]
         public void Add_Test()

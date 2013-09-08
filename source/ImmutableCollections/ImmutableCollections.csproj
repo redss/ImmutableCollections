@@ -41,15 +41,20 @@
   <ItemGroup>
     <Compile Include="BaseImmutableList.cs" />
     <Compile Include="CopyImmutableList.cs" />
+    <Compile Include="DataStructures\Helpers\ArrayExtensions.cs" />
+    <Compile Include="DataStructures\Helpers\ArrayHelper.cs" />
+    <Compile Include="DataStructures\ImmutableVector.cs" />
+    <Compile Include="DataStructures\ImmutableVectorStructure\ImmutableVectorHelper.cs" />
+    <Compile Include="DataStructures\ImmutableVectorStructure\IVectorNode.cs" />
+    <Compile Include="DataStructures\ImmutableVectorStructure\VectorLeaf.cs" />
+    <Compile Include="DataStructures\ImmutableVectorStructure\VectorLevel.cs" />
     <Compile Include="IImmutableCollection.cs" />
     <Compile Include="IImmutableDictionary.cs" />
     <Compile Include="IImmutableList.cs" />
     <Compile Include="IImmutableSet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataStructures\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

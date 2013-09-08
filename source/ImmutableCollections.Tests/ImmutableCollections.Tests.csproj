@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ImmutableCollectionTestses.cs" />
-    <Compile Include="ImmutableListTestses.cs" />
+    <Compile Include="DataStructures\BitmappedVectorTrieTests.cs" />
+    <Compile Include="ImmutableCollectionTests.cs" />
+    <Compile Include="ImmutableListTests.cs" />
     <Compile Include="TestInfrastructure\BaseTests.cs" />
     <Compile Include="TestInfrastructure\ImmutableCollectionFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
