@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using ImmutableCollections.DataStructures.ImmutableVectorStructure;
 
-namespace ImmutableCollections.DataStructures
+namespace ImmutableCollections
 {
     /// <summary>
     /// Collection based on Bitmapped Vector Trie.
@@ -23,8 +23,8 @@ namespace ImmutableCollections.DataStructures
             _count = 0;
             _root = new EmptyVector<T>();
         }
-        
-        private ImmutableVector(int count, IVectorNode<T> root)
+
+        private ImmutableVector(IVectorNode<T> root, int count)
         {
             _count = count;
             _root = root;
@@ -35,7 +35,7 @@ namespace ImmutableCollections.DataStructures
         [Pure]
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _root.GetValues().GetEnumerator();
         }
 
         [Pure]
@@ -49,14 +49,8 @@ namespace ImmutableCollections.DataStructures
         [Pure]
         public ImmutableVector<T> Add(T item)
         {
-            if (_count == 0)
-            {
-                // Create tree with one element.
-                var root = new VectorLeaf<T>(item);
-                return new ImmutableVector<T>(_count + 1, root);
-            }
-
-            throw new NotImplementedException();
+            var newRoot = _root.Append(item, _count);
+            return new ImmutableVector<T>(newRoot, _count + 1);
         }
 
         [Pure]
@@ -129,6 +123,7 @@ namespace ImmutableCollections.DataStructures
         public T this[int index]
         {
             get { return _root.Nth(index); }
+            set { throw new NotImplementedException(); }
         }
 
         [Pure]

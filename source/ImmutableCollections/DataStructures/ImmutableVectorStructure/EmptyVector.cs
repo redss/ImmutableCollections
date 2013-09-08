@@ -10,6 +10,11 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
     {
         public int Level { get { return 0; } }
 
+        public IEnumerable<T> GetValues()
+        {
+            yield break;
+        }
+
         public IVectorNode<T> Append(T elem, int count)
         {
             return new VectorLeaf<T>(elem);

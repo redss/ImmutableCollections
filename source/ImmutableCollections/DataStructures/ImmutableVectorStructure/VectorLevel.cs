@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using ImmutableCollections.DataStructures.Helpers;
 
 namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
@@ -22,6 +24,11 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         }
 
         public int Level { get { return _level; } }
+
+        public IEnumerable<T> GetValues()
+        {
+            return _children.SelectMany(child => child.GetValues());
+        }
 
         public IVectorNode<T> Append(T elem, int count)
         {

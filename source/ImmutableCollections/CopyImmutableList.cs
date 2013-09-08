@@ -125,6 +125,7 @@ namespace ImmutableCollections
         public T this[int index]
         {
             get { return _list[index]; }
+            set { throw new NotImplementedException(); }
         }
 
         [Pure]

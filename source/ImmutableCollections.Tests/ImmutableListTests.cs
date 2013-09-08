@@ -5,6 +5,7 @@ using NUnit.Framework;
 namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(CopyImmutableList<int>))]
+    [TestFixture(typeof(ImmutableVector<int>))]
     public class ImmutableListTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>
     {
         private const int Count = 10;

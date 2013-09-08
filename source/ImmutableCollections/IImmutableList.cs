@@ -40,7 +40,7 @@
         /// </summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at specified index.</returns>
-        T this[int index] { get; }
+        T this[int index] { get; set; }
 
         /// <summary>
         /// Determines the index of the specified item in the list.
