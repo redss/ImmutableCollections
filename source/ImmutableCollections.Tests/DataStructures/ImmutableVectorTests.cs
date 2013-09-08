@@ -30,19 +30,20 @@ namespace ImmutableCollections.Tests.DataStructures
         [Test]
         public void AppendingToVectorNodes_DoesntThrowException()
         {
-            IVectorNode<int> root = new VectorLeaf<int>(0);
+            IVectorNode<int> root = new EmptyVector<int>();
 
-            foreach (var i in Enumerable.Range(1, 400))
+            foreach (var i in Enumerable.Range(0, 1 << ImmutableVectorHelper.Shift * 3 + 1))
             {
                 root = root.Append(i, i);
 
-                if (i < ImmutableVectorHelper.Fragmentation)
-                    Assert.IsInstanceOf<VectorLeaf<int>>(root);
-                else
-                    Assert.IsInstanceOf<VectorLevel<int>>(root);
-            }
+                // Is level correct?
+                var level = (i == 0) ? 0 : (int) Math.Log(i, ImmutableVectorHelper.Fragmentation);
+                Assert.AreEqual(level, root.Level);
 
-            System.Diagnostics.Debugger.Break();
+                // Is type correct?
+                var type = (level == 0) ? typeof(VectorLeaf<int>) : typeof(VectorLevel<int>);
+                Assert.IsInstanceOf(type, root);
+            }
         }
     }
 }

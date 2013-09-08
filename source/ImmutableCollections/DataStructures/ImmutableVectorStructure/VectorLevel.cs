@@ -27,17 +27,17 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         {
             var length = _children.Length;
 
-            // Maximum capacity reached, this can only occur on top-level (root) node.
-            if (length == ImmutableVectorHelper.Fragmentation)
-            {
-                // Create new top-level node and propagate it.
-                var children = new[] { this, CreateChildNode(elem) };
-                return new VectorLevel<T>(children, _level + 1);
-            }
-
             // We need to create node with new child on given index.
             var index = ImmutableVectorHelper.CountIndex(count, _level);
 
+            // Maximum capacity reached, this can only occur on top-level (root) node.
+            if (count == 1 << ImmutableVectorHelper.Shift * (_level + 1))
+            {
+                // Create new top-level node and propagate it.
+                var children = new IVectorNode<T>[] { this, new VectorLevel<T>(elem, _level) };
+                return new VectorLevel<T>(children, _level + 1);
+            }
+            
             // Extend current children array.
             if (index == length)
                 return AppendedNode(elem);

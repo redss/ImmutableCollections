@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\BitmappedVectorTrieTests.cs" />
+    <Compile Include="DataStructures\ImmutableVectorTests.cs" />
     <Compile Include="ImmutableCollectionTests.cs" />
     <Compile Include="ImmutableListTests.cs" />
     <Compile Include="TestInfrastructure\BaseTests.cs" />
