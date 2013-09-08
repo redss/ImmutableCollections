@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using ImmutableCollections.DataStructures.ImmutableVectorStructure;
 
 namespace ImmutableCollections
@@ -74,6 +75,9 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> UpdateAt(int index, T item)
         {
+            if (index >= _count || index < 0)
+                throw new ArgumentOutOfRangeException("index");
+
             var newRoot = _root.UpdateAt(item, index);
             return new ImmutableVector<T>(newRoot, _count);
         }
@@ -129,7 +133,7 @@ namespace ImmutableCollections
         [Pure]
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return Enumerable.Contains(this, item);
         }
 
         [Pure]
@@ -137,6 +141,9 @@ namespace ImmutableCollections
         {
             get
             {
+                if (index >= _count || index < 0)
+                    throw new ArgumentOutOfRangeException("index");
+
                 return _root.Nth(index);
             }
         }
@@ -144,7 +151,16 @@ namespace ImmutableCollections
         [Pure]
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            var index = 0;
+            foreach (var element in this)
+            {
+                if (element.Equals(item))
+                    return index;
+
+                index++;
+            }
+
+            return -1;
         }
     }
 }
