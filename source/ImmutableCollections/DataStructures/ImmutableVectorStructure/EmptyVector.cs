@@ -19,5 +19,10 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         {
             throw new ArgumentOutOfRangeException("index", "Vector is empty.");
         }
+
+        public override string ToString()
+        {
+            return "Empty vector.";
+        }
     }
 }

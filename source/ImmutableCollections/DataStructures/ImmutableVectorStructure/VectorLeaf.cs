@@ -33,7 +33,8 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 
         public T Nth(int index)
         {
-            throw new NotImplementedException();
+            var nodeIndex = ImmutableVectorHelper.CountIndex(index, 0);
+            return _elements[nodeIndex];
         }
 
         public override string ToString()

@@ -49,7 +49,8 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 
         public T Nth(int index)
         {
-            throw new NotImplementedException();
+            var nodeIndex = ImmutableVectorHelper.CountIndex(index, _level);
+            return _children[nodeIndex].Nth(index);
         }
 
         private VectorLevel<T> ChangedNode(IVectorNode<T> item, int index)

@@ -45,5 +45,20 @@ namespace ImmutableCollections.Tests.DataStructures
                 Assert.IsInstanceOf(type, root);
             }
         }
+
+        [Test]
+        public void VectorNodeNth_ReturnsCorrectResult()
+        {
+            var range = Enumerable.Range(0, 1 << 16).ToArray();
+
+            IVectorNode<int> root = new EmptyVector<int>();
+            root = range.Aggregate(root, (current, i) => current.Append(i, i));
+
+            foreach (var i in range)
+            {
+                var elem = root.Nth(i);
+                Assert.AreEqual(i, elem);
+            }
+        }
     }
 }
