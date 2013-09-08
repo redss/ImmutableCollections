@@ -22,6 +22,14 @@
         IImmutableList<T> Insert(int index, T item);
 
         /// <summary>
+        /// Updates item at given index of a new list.
+        /// </summary>
+        /// <param name="index">The zero-based index at which item should be inserted.</param>
+        /// <param name="item">The object a list will be updated with.</param>
+        /// <returns>New list.</returns>
+        IImmutableList<T> UpdateAt(int index, T item); 
+
+        /// <summary>
         /// Removes first occurence of specified element from a new list.
         /// </summary>
         /// <param name="item">The object to remove.</param>
@@ -40,7 +48,7 @@
         /// </summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at specified index.</returns>
-        T this[int index] { get; set; }
+        T this[int index] { get; }
 
         /// <summary>
         /// Determines the index of the specified item in the list.

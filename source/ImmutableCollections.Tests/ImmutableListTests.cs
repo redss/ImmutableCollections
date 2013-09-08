@@ -44,6 +44,27 @@ namespace ImmutableCollections.Tests
         }
 
         [Test]
+        public void UpdateAt_Test()
+        {
+            var elements = Enumerable.Repeat(FirstElement, Count);
+            var list = NewCollection(elements);
+
+            foreach (var i in Enumerable.Range(0, Count))
+            {
+                var newList = list.UpdateAt(i, SecondElement);
+
+                Assert.AreEqual(newList[i], newList.ElementAt(i));
+                Assert.AreEqual(newList[i], SecondElement);
+
+                var firstElementCount = newList.Count(x => x == FirstElement);
+                var secondElementCount = newList.Count(x => x == SecondElement);
+
+                Assert.AreEqual(Count - 1, firstElementCount);
+                Assert.AreEqual(1, secondElementCount);
+            }
+        }
+
+        [Test]
         public void RemoveAt_Test()
         {
             var elements = Enumerable.Range(0, Count).ToArray();

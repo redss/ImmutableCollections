@@ -74,6 +74,15 @@ namespace ImmutableCollections
         }
 
         [Pure]
+        public IImmutableList<T> UpdateAt(int index, T item)
+        {
+            var newList = new List<T>(_list);
+            newList[index] = item;
+
+            return new CopyImmutableList<T>(newList);
+        }
+
+        [Pure]
         IImmutableList<T> IImmutableList<T>.Insert(int index, T item)
         {
             return Insert(index, item);

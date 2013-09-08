@@ -11,6 +11,8 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 
         private readonly int _level;
 
+        // Constructors
+
         public VectorLevel(T elem, int level)
         {
             _level = level;
@@ -22,6 +24,8 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             _level = level;
             _children = children;
         }
+
+        // IVectorNode
 
         public int Level { get { return _level; } }
 
@@ -35,7 +39,7 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             var length = _children.Length;
 
             // We need to create node with new child on given index.
-            var index = ImmutableVectorHelper.CountIndex(count, _level);
+            var index = CountIndex(count);
 
             // Maximum capacity reached, this can only occur on top-level (root) node.
             if (count == 1 << ImmutableVectorHelper.Shift * (_level + 1))
@@ -54,11 +58,28 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             return ChangedNode(result, index);
         }
 
+        public IVectorNode<T> UpdateAt(T elem, int index)
+        {
+            var nodeIndex = CountIndex(index);
+            var newNodes = _children[nodeIndex].UpdateAt(elem, index);
+
+            return ChangedNode(newNodes, index);
+        }
+
         public T Nth(int index)
         {
-            var nodeIndex = ImmutableVectorHelper.CountIndex(index, _level);
+            var nodeIndex = CountIndex(index);
             return _children[nodeIndex].Nth(index);
         }
+
+        // Object
+
+        public override string ToString()
+        {
+            return string.Format("Level {0}[{1}]", _level, _children.Length);
+        }
+
+        // Private methods
 
         private VectorLevel<T> ChangedNode(IVectorNode<T> item, int index)
         {
@@ -85,9 +106,9 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             return new VectorLevel<T>(elem, _level - 1);
         }
 
-        public override string ToString()
+        private int CountIndex(int index)
         {
-            return string.Format("Level {0}[{1}]", _level, _children.Length);
+            return ImmutableVectorHelper.CountIndex(index, _level);
         }
     }
 }

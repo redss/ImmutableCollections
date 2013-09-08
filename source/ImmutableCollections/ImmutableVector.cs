@@ -72,6 +72,19 @@ namespace ImmutableCollections
         }
 
         [Pure]
+        public ImmutableVector<T> UpdateAt(int index, T item)
+        {
+            var newRoot = _root.UpdateAt(item, index);
+            return new ImmutableVector<T>(newRoot, _count);
+        }
+
+        [Pure]
+        IImmutableList<T> IImmutableList<T>.UpdateAt(int index, T item)
+        {
+            return UpdateAt(index, item);
+        }
+
+        [Pure]
         IImmutableList<T> IImmutableList<T>.Insert(int index, T item)
         {
             return Insert(index, item);
@@ -122,8 +135,10 @@ namespace ImmutableCollections
         [Pure]
         public T this[int index]
         {
-            get { return _root.Nth(index); }
-            set { throw new NotImplementedException(); }
+            get
+            {
+                return _root.Nth(index);
+            }
         }
 
         [Pure]

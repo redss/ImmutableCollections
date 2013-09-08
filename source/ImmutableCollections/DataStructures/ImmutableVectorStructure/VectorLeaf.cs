@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ImmutableCollections.DataStructures.Helpers;
 
@@ -8,6 +7,8 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
     public class VectorLeaf<T> : IVectorNode<T>
     {
         private readonly T[] _elements;
+
+        // Constructors
 
         public VectorLeaf(T element)
         {
@@ -18,6 +19,8 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         {
             _elements = elements;
         }
+
+        // IVectorNode
 
         public int Level { get { return 0; } }
 
@@ -38,15 +41,32 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             return new VectorLeaf<T>(elements);
         }
 
+        public IVectorNode<T> UpdateAt(T elem, int index)
+        {
+            var nodeIndex = CountIndex(index);
+            var newElements = _elements.Change(elem, nodeIndex);
+
+            return new VectorLeaf<T>(newElements);
+        }
+
         public T Nth(int index)
         {
-            var nodeIndex = ImmutableVectorHelper.CountIndex(index, 0);
+            var nodeIndex = CountIndex(index);
             return _elements[nodeIndex];
         }
+
+        // Object
 
         public override string ToString()
         {
             return string.Format("Leaf[{0}]", _elements.Length);
+        }
+
+        // Private methods
+
+        private int CountIndex(int index)
+        {
+            return ImmutableVectorHelper.CountIndex(index, 0);
         }
     }
 }

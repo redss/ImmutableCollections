@@ -8,6 +8,8 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
     public class EmptyVector<T> : IVectorNode<T>
     {
+        // IVectorNode
+
         public int Level { get { return 0; } }
 
         public IEnumerable<T> GetValues()
@@ -20,10 +22,17 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             return new VectorLeaf<T>(elem);
         }
 
+        public IVectorNode<T> UpdateAt(T elem, int index)
+        {
+            throw new ArgumentOutOfRangeException("index", "Vector is empty.");
+        }
+
         public T Nth(int index)
         {
             throw new ArgumentOutOfRangeException("index", "Vector is empty.");
         }
+
+        // Object
 
         public override string ToString()
         {
