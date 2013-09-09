@@ -37,5 +37,13 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         /// <param name="index">Index of searched element.</param>
         /// <returns>Bottom-level trie value.</returns>
         T Nth(int index);
+
+        /// <summary>
+        /// Update value at given index and remove everything with higher index.
+        /// </summary>
+        /// <param name="item">Updated item.</param>
+        /// <param name="index">Index at which item will be updated.</param>
+        /// <returns></returns>
+        IVectorNode<T> UpdateAndRemove(T item, int index);
     }
 }

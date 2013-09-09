@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace ImmutableCollections.DataStructures.Helpers
@@ -19,6 +20,16 @@ namespace ImmutableCollections.DataStructures.Helpers
         public static T[] Change<T>(this T[] array, T item, int index)
         {
             var newArray = array.ToArray();
+            newArray[index] = item;
+
+            return newArray;
+        }
+
+        [Pure]
+        public static T[] TakeAndChange<T>(this T[] array, T item, int index, int take)
+        {
+            var newArray = new T[take];
+            Array.Copy(array, 0, newArray, 0, take);
             newArray[index] = item;
 
             return newArray;

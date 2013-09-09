@@ -69,7 +69,28 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            if (index > _count)
+                throw new ArgumentOutOfRangeException("index");
+
+            if (index == _count)
+                return Add(item);
+
+            var updatedRoot = _root.UpdateAndRemove(item, index);
+
+            var count = index + 1;
+            foreach (var i in EnumerateFrom(index))
+            {
+                updatedRoot = updatedRoot.Append(i, count);
+                count++;
+            }
+
+            return new ImmutableVector<T>(updatedRoot, count);
+        }
+
+        [Pure]
+        IImmutableList<T> IImmutableList<T>.Insert(int index, T item)
+        {
+            return Insert(index, item);
         }
 
         [Pure]
@@ -86,12 +107,6 @@ namespace ImmutableCollections
         IImmutableList<T> IImmutableList<T>.UpdateAt(int index, T item)
         {
             return UpdateAt(index, item);
-        }
-
-        [Pure]
-        IImmutableList<T> IImmutableList<T>.Insert(int index, T item)
-        {
-            return Insert(index, item);
         }
 
         [Pure]
@@ -161,6 +176,32 @@ namespace ImmutableCollections
             }
 
             return -1;
+        }
+
+        // Public methods
+
+        [Pure]
+        public ImmutableVector<T> AddRange(IEnumerable<T> items)
+        {
+            // TODO: Optimize.
+            
+            var newRoot = _root;
+            var count = _count;
+
+            foreach (var item in items)
+            {
+                newRoot = newRoot.Append(item, count);
+                count++;
+            }
+
+            return new ImmutableVector<T>(newRoot, count);
+        }
+
+        [Pure]
+        public IEnumerable<T> EnumerateFrom(int index)
+        {
+            // TODO: Optimize.
+            return this.Skip(index);
         }
     }
 }

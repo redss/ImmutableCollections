@@ -6,7 +6,7 @@ using ImmutableCollections.DataStructures.ImmutableVectorStructure;
 namespace ImmutableCollections.Tests.DataStructures
 {
     [TestFixture]
-    public class ImmutableVectorTests
+    public class ImmutableVectorStructureTests
     {
         [Test]
         public void Fragmentation_IsTwoPowerShift()

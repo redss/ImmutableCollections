@@ -8,7 +8,7 @@ namespace ImmutableCollections.Tests
     [TestFixture(typeof(ImmutableVector<int>))]
     public class ImmutableListTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>
     {
-        private const int Count = 10;
+        private const int Count = 100;
 
         private const int FirstElement = 20;
 
