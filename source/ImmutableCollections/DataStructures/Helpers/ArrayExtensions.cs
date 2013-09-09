@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Contracts;
+using System.Linq;
 
 namespace ImmutableCollections.DataStructures.Helpers
 {
@@ -7,13 +8,20 @@ namespace ImmutableCollections.DataStructures.Helpers
         [Pure]
         public static T[] Append<T>(this T[] array, T item)
         {
-            return ArrayHelper.AppendedArray(array, item);
+            var newArray = new T[array.Length + 1];
+            array.CopyTo(newArray, 0);
+            newArray[array.Length] = item;
+
+            return newArray;
         }
 
         [Pure]
         public static T[] Change<T>(this T[] array, T item, int index)
         {
-            return ArrayHelper.ChangedArray(array, item, index);
+            var newArray = array.ToArray();
+            newArray[index] = item;
+
+            return newArray;
         }
     }
 }

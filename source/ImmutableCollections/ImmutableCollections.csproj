@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="CopyImmutableList.cs" />
     <Compile Include="DataStructures\Helpers\ArrayExtensions.cs" />
-    <Compile Include="DataStructures\Helpers\ArrayHelper.cs" />
     <Compile Include="ImmutableVector.cs" />
     <Compile Include="DataStructures\ImmutableVectorStructure\EmptyVector.cs" />
     <Compile Include="DataStructures\ImmutableVectorStructure\ImmutableVectorHelper.cs" />
