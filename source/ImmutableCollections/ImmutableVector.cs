@@ -110,7 +110,14 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> Remove(T item)
         {
-            throw new NotImplementedException();
+            // TODO: Not unit tested!
+
+            var index = IndexOf(item);
+
+            if (index >= 0)
+                return RemoveAt(index);
+
+            return this;
         }
 
         [Pure]
@@ -223,13 +230,13 @@ namespace ImmutableCollections
             if (index >= _count)
             {
                 var message = string.Format("Index ({0}) exceeded size of the vector ({1}).", index, _count);
-                throw new ArgumentOutOfRangeException("index", message);
+                throw new ArgumentOutOfRangeException(argumentName, message);
             }
 
             if (index < 0)
             {
                 var message = string.Format("Index ({0}) must be greater or equal than zero.", index);
-                throw new ArgumentOutOfRangeException("index", message);
+                throw new ArgumentOutOfRangeException(argumentName, message);
             }
         }
     }
