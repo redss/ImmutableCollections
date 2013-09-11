@@ -63,6 +63,14 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             return new VectorLeaf<T>(newElements);
         }
 
+        public IVectorNode<T> Remove(int index)
+        {
+            var nodeIndex = CountIndex(index);
+            var newElements = _elements.Take(nodeIndex + 1);
+
+            return new VectorLeaf<T>(newElements);
+        }
+
         // Object
 
         public override string ToString()

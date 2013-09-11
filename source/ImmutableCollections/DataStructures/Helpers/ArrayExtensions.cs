@@ -34,5 +34,14 @@ namespace ImmutableCollections.DataStructures.Helpers
 
             return newArray;
         }
+
+        [Pure]
+        public static T[] Take<T>(this T[] array, int take)
+        {
+            var newArray = new T[take];
+            Array.Copy(array, 0, newArray, 0, take);
+
+            return newArray;
+        }
     }
 }

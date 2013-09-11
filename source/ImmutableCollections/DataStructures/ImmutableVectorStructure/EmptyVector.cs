@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
@@ -24,7 +21,7 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 
         public IVectorNode<T> UpdateAt(T elem, int index)
         {
-            throw new ArgumentOutOfRangeException("index", "Vector is empty.");
+            throw GetException();
         }
 
         public T Nth(int index)
@@ -34,7 +31,12 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 
         public IVectorNode<T> UpdateAndRemove(T item, int index)
         {
-            throw new ArgumentOutOfRangeException("index", "Vector is empty.");
+            throw GetException();
+        }
+
+        public IVectorNode<T> Remove(int index)
+        {
+            throw GetException();
         }
 
         // Object
@@ -42,6 +44,13 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         public override string ToString()
         {
             return "Empty vector.";
+        }
+
+        // Private methods
+
+        private static InvalidOperationException GetException()
+        {
+            return new InvalidOperationException("Vector is empty.");
         }
     }
 }

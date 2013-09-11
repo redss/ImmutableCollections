@@ -45,5 +45,12 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         /// <param name="index">Index at which item will be updated.</param>
         /// <returns></returns>
         IVectorNode<T> UpdateAndRemove(T item, int index);
+
+        /// <summary>
+        /// Remove values greater than index.
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        IVectorNode<T> Remove(int index);
     }
 }

@@ -61,9 +61,9 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         public IVectorNode<T> UpdateAt(T elem, int index)
         {
             var nodeIndex = CountIndex(index);
-            var newNodes = _children[nodeIndex].UpdateAt(elem, index);
+            var newChild = _children[nodeIndex].UpdateAt(elem, index);
 
-            return ChangedNode(newNodes, index);
+            return ChangedNode(newChild, nodeIndex);
         }
 
         public T Nth(int index)
@@ -81,6 +81,18 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
             if (nodeIndex == 0)
                 return node;
 
+            var newChildren = _children.TakeAndChange(node, nodeIndex, nodeIndex + 1);
+            return new VectorLevel<T>(newChildren, _level);
+        }
+
+        public IVectorNode<T> Remove(int index)
+        {
+            var nodeIndex = CountIndex(index);
+            var node = _children[nodeIndex].Remove(index);
+
+            if (nodeIndex == 0)
+                return node;
+            
             var newChildren = _children.TakeAndChange(node, nodeIndex, nodeIndex + 1);
             return new VectorLevel<T>(newChildren, _level);
         }

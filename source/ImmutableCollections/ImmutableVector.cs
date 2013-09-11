@@ -69,12 +69,11 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> Insert(int index, T item)
         {
-            if (index > _count)
-                throw new ArgumentOutOfRangeException("index");
-
             if (index == _count)
                 return Add(item);
 
+            AssertIndexRange(index);
+            
             var updatedRoot = _root.UpdateAndRemove(item, index);
 
             var count = index + 1;
@@ -96,8 +95,7 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> UpdateAt(int index, T item)
         {
-            if (index >= _count || index < 0)
-                throw new ArgumentOutOfRangeException("index");
+            AssertIndexRange(index);
 
             var newRoot = _root.UpdateAt(item, index);
             return new ImmutableVector<T>(newRoot, _count);
@@ -124,7 +122,21 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            AssertIndexRange(index);
+
+            var newRoot = index > 0 ? _root.Remove(index - 1) : new EmptyVector<T>();
+
+            if (index == _count - 1)
+                return new ImmutableVector<T>(newRoot, _count - 1);
+
+            var count = index;
+            foreach (var i in EnumerateFrom(index + 1))
+            {
+                newRoot = newRoot.Append(i, count);
+                count++;
+            }
+
+            return new ImmutableVector<T>(newRoot, count);
         }
 
         [Pure]
@@ -202,6 +214,23 @@ namespace ImmutableCollections
         {
             // TODO: Optimize.
             return this.Skip(index);
+        }
+
+        // Private methods
+
+        private void AssertIndexRange(int index, string argumentName = "index")
+        {
+            if (index >= _count)
+            {
+                var message = string.Format("Index ({0}) exceeded size of the vector ({1}).", index, _count);
+                throw new ArgumentOutOfRangeException("index", message);
+            }
+
+            if (index < 0)
+            {
+                var message = string.Format("Index ({0}) must be greater or equal than zero.", index);
+                throw new ArgumentOutOfRangeException("index", message);
+            }
         }
     }
 }
