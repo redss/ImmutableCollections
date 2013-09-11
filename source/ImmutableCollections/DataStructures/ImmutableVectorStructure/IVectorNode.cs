@@ -2,7 +2,7 @@
 
 namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
-    public interface IVectorNode<T>
+    interface IVectorNode<T>
     {
         /// <summary>
         /// Level of the current node.

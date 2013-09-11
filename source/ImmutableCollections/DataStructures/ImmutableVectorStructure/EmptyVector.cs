@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
-    public class EmptyVector<T> : IVectorNode<T>
+    class EmptyVector<T> : IVectorNode<T>
     {
         // IVectorNode
 

@@ -4,7 +4,7 @@ using ImmutableCollections.DataStructures.Helpers;
 
 namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
-    public class VectorLeaf<T> : IVectorNode<T>
+    class VectorLeaf<T> : IVectorNode<T>
     {
         private readonly T[] _elements;
 

@@ -5,7 +5,7 @@ using ImmutableCollections.DataStructures.Helpers;
 
 namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
-    public class VectorLevel<T> : IVectorNode<T>
+    class VectorLevel<T> : IVectorNode<T>
     {
         private readonly IVectorNode<T>[] _children;
 

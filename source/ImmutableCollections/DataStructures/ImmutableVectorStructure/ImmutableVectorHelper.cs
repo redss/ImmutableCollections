@@ -1,6 +1,6 @@
 ﻿namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
-    public static class ImmutableVectorHelper
+    static class ImmutableVectorHelper
     {
         public const int Shift = 5;
 

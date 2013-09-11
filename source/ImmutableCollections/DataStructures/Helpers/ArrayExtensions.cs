@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ImmutableCollections.DataStructures.Helpers
 {
-    public static class ArrayExtensions
+    static class ArrayExtensions
     {
         [Pure]
         public static T[] Append<T>(this T[] array, T item)
