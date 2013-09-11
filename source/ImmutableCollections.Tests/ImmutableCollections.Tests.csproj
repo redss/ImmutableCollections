@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStructures\ImmutableVectorStructureTests.cs" />
+    <Compile Include="Helpers\ArrayExtensionsTests.cs" />
     <Compile Include="ImmutableCollectionTests.cs" />
     <Compile Include="ImmutableListTests.cs" />
     <Compile Include="ImmutableVectorTests.cs" />

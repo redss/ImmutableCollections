@@ -2,10 +2,16 @@
 using System.Diagnostics.Contracts;
 using System.Linq;
 
-namespace ImmutableCollections.DataStructures.Helpers
+namespace ImmutableCollections.Helpers
 {
+    /// <summary>
+    /// Extension methods for array type.
+    /// </summary>
     static class ArrayExtensions
     {
+        /// <summary>
+        /// Creates copy of the array with given value appended at the end. Original array is intact.
+        /// </summary>
         [Pure]
         public static T[] Append<T>(this T[] array, T item)
         {
@@ -16,6 +22,9 @@ namespace ImmutableCollections.DataStructures.Helpers
             return newArray;
         }
 
+        /// <summary>
+        /// Creates copy of the array with given value changed at specified index. Original array is intact.
+        /// </summary>
         [Pure]
         public static T[] Change<T>(this T[] array, T item, int index)
         {
@@ -25,6 +34,9 @@ namespace ImmutableCollections.DataStructures.Helpers
             return newArray;
         }
 
+        /// <summary>
+        /// Creates copy of the array reduced to given size (take) and changes value at specified index. Original array is intact.
+        /// </summary>
         [Pure]
         public static T[] TakeAndChange<T>(this T[] array, T item, int index, int take)
         {
@@ -35,6 +47,9 @@ namespace ImmutableCollections.DataStructures.Helpers
             return newArray;
         }
 
+        /// <summary>
+        /// Creates copy of the array reduced to given size. Original array is intact.
+        /// </summary>
         [Pure]
         public static T[] Take<T>(this T[] array, int take)
         {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ImmutableCollections.DataStructures.Helpers;
+using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 {
