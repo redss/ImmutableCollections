@@ -23,7 +23,7 @@ namespace ImmutableCollections.Tests.Helpers
             var appended = arr.Append(Foo);
 
             CollectionAssert.AreEqual(values, arr);
-            CollectionAssert.AreEqual(values, appended.Take(Count));
+            CollectionAssert.AreEqual(values, appended.ArrayTake(Count));
             Assert.AreEqual(Count + 1, appended.Length);
             Assert.AreEqual(Foo, appended[Count]);
         }
@@ -47,13 +47,27 @@ namespace ImmutableCollections.Tests.Helpers
         [Test]
         public void TakeAndChange_Test()
         {
-            throw new NotImplementedException();
+            var values = Enumerable.Range(0, Count).ToArray();
+            var arr = values.ToArray();
+
+            var changed = arr.TakeAndChange(Foo, Index - 1, Index);
+
+            CollectionAssert.AreEqual(values, arr);
+            CollectionAssert.AreEqual(arr.Take(Index - 1), arr.Take(Index - 1));
+            Assert.AreEqual(Index, changed.Length);
+            Assert.AreEqual(Foo, changed[Index - 1]);
         }
 
         [Test]
         public void Take_Test()
         {
-            throw new NotImplementedException();
+            var values = Enumerable.Range(0, Count).ToArray();
+            var arr = values.ToArray();
+
+            var changed = arr.ArrayTake(Index);
+
+            CollectionAssert.AreEqual(values, arr);
+            CollectionAssert.AreEqual(arr.Take(Index), changed);
         }
     }
 }

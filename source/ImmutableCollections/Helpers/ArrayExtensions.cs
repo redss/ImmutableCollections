@@ -51,7 +51,7 @@ namespace ImmutableCollections.Helpers
         /// Creates copy of the array reduced to given size. Original array is intact.
         /// </summary>
         [Pure]
-        public static T[] Take<T>(this T[] array, int take)
+        public static T[] ArrayTake<T>(this T[] array, int take)
         {
             var newArray = new T[take];
             Array.Copy(array, 0, newArray, 0, take);
