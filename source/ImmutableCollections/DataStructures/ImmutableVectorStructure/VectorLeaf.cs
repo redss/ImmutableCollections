@@ -66,7 +66,7 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
         public IVectorNode<T> Remove(int index)
         {
             var nodeIndex = CountIndex(index);
-            var newElements = _elements.Take(nodeIndex + 1);
+            var newElements = _elements.ArrayTake(nodeIndex + 1);
 
             return new VectorLeaf<T>(newElements);
         }

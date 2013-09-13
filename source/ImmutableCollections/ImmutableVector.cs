@@ -45,7 +45,7 @@ namespace ImmutableCollections
             return GetEnumerator();
         }
 
-        // IImmutableCollection
+        // IImmutableList
 
         [Pure]
         public ImmutableVector<T> Add(T item)
@@ -127,6 +127,12 @@ namespace ImmutableCollections
         }
 
         [Pure]
+        IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
+        {
+            return Remove(item);
+        }
+
+        [Pure]
         public ImmutableVector<T> RemoveAt(int index)
         {
             AssertIndexRange(index);
@@ -150,12 +156,6 @@ namespace ImmutableCollections
         IImmutableList<T> IImmutableList<T>.RemoveAt(int index)
         {
             return RemoveAt(index);
-        }
-
-        [Pure]
-        IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
-        {
-            return Remove(item);
         }
 
         [Pure]

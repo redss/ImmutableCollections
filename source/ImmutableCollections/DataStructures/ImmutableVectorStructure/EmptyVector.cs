@@ -26,7 +26,7 @@ namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
 
         public T Nth(int index)
         {
-            throw new ArgumentOutOfRangeException("index", "Vector is empty.");
+            throw GetException();
         }
 
         public IVectorNode<T> UpdateAndRemove(T item, int index)
