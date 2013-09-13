@@ -1,16 +1,35 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using ImmutableCollections.DataStructures.ImmutableLinkedListStructure;
 
 namespace ImmutableCollections
 {
     public class ImmutableLinkedList<T> : IImmutableList<T>
     {
+        private readonly IListNode<T> _first;
+
+        private readonly int _count;
+
+        // Constructors
+
+        public ImmutableLinkedList()
+        {
+            _first = new EmptyList<T>();
+            _count = 0;
+        }
+
+        private ImmutableLinkedList(IListNode<T> first, int count)
+        {
+            _first = first;
+            _count = count;
+        }
+
         // IEnumerable
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _first.GetValues().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -22,7 +41,8 @@ namespace ImmutableCollections
 
         public ImmutableLinkedList<T> Add(T item)
         {
-            throw new NotImplementedException();
+            var newFirst = _first.Append(item);
+            return new ImmutableLinkedList<T>(newFirst, _count + 1);
         }
 
         IImmutableList<T> IImmutableList<T>.Add(T item)
@@ -37,7 +57,8 @@ namespace ImmutableCollections
 
         public ImmutableLinkedList<T> Insert(int index, T item)
         {
-            throw new NotImplementedException();
+            var newFirst = _first.Insert(index, item);
+            return new ImmutableLinkedList<T>(newFirst, _count + 1);
         }
 
         IImmutableList<T> IImmutableList<T>.Insert(int index, T item)
@@ -47,7 +68,8 @@ namespace ImmutableCollections
 
         public ImmutableLinkedList<T> UpdateAt(int index, T item)
         {
-            throw new NotImplementedException();
+            var newFirst = _first.UpdateAt(index, item);
+            return new ImmutableLinkedList<T>(newFirst, _count);
         }
 
         IImmutableList<T> IImmutableList<T>.UpdateAt(int index, T item)
@@ -57,7 +79,8 @@ namespace ImmutableCollections
         
         public ImmutableLinkedList<T> Remove(T item)
         {
-            throw new NotImplementedException();
+            var newFirst = _first.Remove(item);
+            return new ImmutableLinkedList<T>(newFirst, _count - 1);
         }
 
         IImmutableList<T> IImmutableList<T>.Remove(T item)
@@ -72,7 +95,8 @@ namespace ImmutableCollections
 
         public ImmutableLinkedList<T> RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            var newFirst = _first.RemoveAt(index);
+            return new ImmutableLinkedList<T>(newFirst, _count - 1);
         }
 
         IImmutableList<T> IImmutableList<T>.RemoveAt(int index)
@@ -80,21 +104,21 @@ namespace ImmutableCollections
             return RemoveAt(index);
         }
 
-        public int Length { get { throw new NotImplementedException(); } }
+        public int Length { get { return _count; } }
 
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return _first.Contains(item);
         }
 
         public T this[int index]
         {
-            get { throw new NotImplementedException(); }
+            get { return _first.ElementAt(index); }
         }
 
         public int IndexOf(T item)
         {
-            throw new NotImplementedException();
+            return _first.IndexOf(item);
         }
     }
 }

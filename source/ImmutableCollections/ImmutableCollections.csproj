@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CopyImmutableList.cs" />
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\EmptyList.cs" />
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\IListNode.cs" />
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\ListNode.cs" />
     <Compile Include="Helpers\ArrayExtensions.cs" />
     <Compile Include="ImmutableLinkedList.cs" />
     <Compile Include="ImmutableVector.cs" />

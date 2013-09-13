@@ -6,6 +6,7 @@ namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(CopyImmutableList<int>))]
     [TestFixture(typeof(ImmutableVector<int>))]
+    [TestFixture(typeof(ImmutableLinkedList<int>))]
     public class ImmutableCollectionTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableCollection<int>
     {
         [Test]
