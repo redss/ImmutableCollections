@@ -45,9 +45,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStructures\ImmutableVectorStructureTests.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaHelperTests.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaTrieTests.cs" />
     <Compile Include="Helpers\ArrayExtensionsTests.cs" />
     <Compile Include="ImmutableCollectionTests.cs" />
     <Compile Include="ImmutableListTests.cs" />
+    <Compile Include="ImmutableSetTests.cs" />
     <Compile Include="ImmutableVectorTests.cs" />
     <Compile Include="TestInfrastructure\BaseTests.cs" />
     <Compile Include="TestInfrastructure\ImmutableCollectionFactory.cs" />
