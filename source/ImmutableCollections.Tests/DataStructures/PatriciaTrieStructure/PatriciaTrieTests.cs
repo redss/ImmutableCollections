@@ -65,15 +65,21 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
         [Test]
         public void Inserting_Test()
         {
-            var items = "foo bar lorem ipsum hello world".Split(' ');
+            var items = "foo bar lorem ipsum hello world foo".Split(' ');
+
+            var fakeHash = items.First().GetHashCode();
+            var fakeItem = "far";
 
             IPatriciaNode<string> node = new EmptyPatriciaTrie<string>();
-            node = items.Aggregate(node, (current, i) => current.Insert(i.GetHashCode(), i));
+            node = items.Aggregate(node, (current, i) => current.Insert(i.GetHashCode(), i) ?? current);
 
             foreach (var i in items)
                 Assert.True(node.Contains(i.GetHashCode(), i));
 
-            CollectionAssert.AreEquivalent(items, node.GetItems());
+            CollectionAssert.AreEquivalent(items.Distinct(), node.GetItems());
+
+            node = node.Insert(fakeHash, fakeItem);
+            Assert.True(node.Contains(fakeHash, fakeItem));
         }
     }
 }

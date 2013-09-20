@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImmutableCollections.Helpers;
+﻿using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
@@ -40,7 +35,7 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
                 return PatriciaHelper.Join(Key, this, key, new PatriciaLeaf<T>(key, item));
 
             if (Values.Contains(item))
-                return null;
+                return this;
 
             var newValues = Values.Insert(0, item);
             return new PatriciaLeaf<T>(key, newValues);

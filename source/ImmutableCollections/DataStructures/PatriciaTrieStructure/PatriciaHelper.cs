@@ -43,11 +43,24 @@
             return (prefixA & bb) == 0 ? new PatriciaBranch<T>(newPrefix, bb, nodeA, nodeB) : new PatriciaBranch<T>(newPrefix, bb, nodeB, nodeA);
         }
 
+        /// <summary>
+        /// Does the given key and prefix match?
+        /// </summary>
+        /// <param name="key">Key (or other node's prefix).</param>
+        /// <param name="prefix">Node's prefix.</param>
+        /// <param name="mask">Node's mask.</param>
+        /// <returns>True, if key and prefix match.</returns>
         public static bool MatchPrefix(int key, int prefix, int mask)
         {
             return Mask(key, mask) == prefix;
         }
 
+        /// <summary>
+        /// Masks the key with given mask.
+        /// </summary>
+        /// <param name="key">Key (or any other integer).</param>
+        /// <param name="mask">Node's mask (should be power of two).</param>
+        /// <returns>Masked key.</returns>
         public static int Mask(int key, int mask)
         {
             return key & mask - 1;
