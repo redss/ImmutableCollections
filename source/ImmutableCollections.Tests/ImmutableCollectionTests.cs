@@ -4,7 +4,7 @@ using ImmutableCollections.Tests.TestInfrastructure;
 
 namespace ImmutableCollections.Tests
 {
-    [TestFixture(typeof(CopyImmutableList<int>))]
+    [TestFixture(typeof(ImmutableCopyList<int>))]
     [TestFixture(typeof(ImmutableVector<int>))]
     [TestFixture(typeof(ImmutableLinkedList<int>))]
     [TestFixture(typeof(ImmutableHashSet<int>))]

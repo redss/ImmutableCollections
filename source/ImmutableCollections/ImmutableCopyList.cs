@@ -9,18 +9,18 @@ namespace ImmutableCollections
     /// Simplest possible immutable list implementation, for tests and comparison purposes only.
     /// </summary>
     /// <typeparam name="T">The type of the elements in the collection.</typeparam>
-    public class CopyImmutableList<T> : IImmutableList<T>
+    public class ImmutableCopyList<T> : IImmutableList<T>
     {
         private readonly List<T> _list;
 
         // Constructors
 
-        public CopyImmutableList()
+        public ImmutableCopyList()
         {
             _list = new List<T>();
         }
 
-        public CopyImmutableList(List<T> list)
+        public ImmutableCopyList(List<T> list)
         {
             if (list == null)
                 throw new ArgumentNullException("list");
@@ -45,11 +45,11 @@ namespace ImmutableCollections
         // IImmutableList
 
         [Pure]
-        public CopyImmutableList<T> Add(T item)
+        public ImmutableCopyList<T> Add(T item)
         {
             var newList = new List<T>(_list) {item};
 
-            return new CopyImmutableList<T>(newList);
+            return new ImmutableCopyList<T>(newList);
         }
 
         [Pure]
@@ -65,12 +65,12 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public CopyImmutableList<T> Insert(int index, T item)
+        public ImmutableCopyList<T> Insert(int index, T item)
         {
             var newList = new List<T>(_list);
             newList.Insert(index, item);
 
-            return new CopyImmutableList<T>(newList);
+            return new ImmutableCopyList<T>(newList);
         }
 
         [Pure]
@@ -79,7 +79,7 @@ namespace ImmutableCollections
             var newList = new List<T>(_list);
             newList[index] = item;
 
-            return new CopyImmutableList<T>(newList);
+            return new ImmutableCopyList<T>(newList);
         }
 
         [Pure]
@@ -89,12 +89,12 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public CopyImmutableList<T> Remove(T item)
+        public ImmutableCopyList<T> Remove(T item)
         {
             var newList = new List<T>(_list);
             newList.Remove(item);
 
-            return new CopyImmutableList<T>(newList);
+            return new ImmutableCopyList<T>(newList);
         }
 
         [Pure]
@@ -110,12 +110,12 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public CopyImmutableList<T> RemoveAt(int index)
+        public ImmutableCopyList<T> RemoveAt(int index)
         {
             var newList = new List<T>(_list);
             newList.RemoveAt(index);
 
-            return new CopyImmutableList<T>(newList);
+            return new ImmutableCopyList<T>(newList);
         }
 
         [Pure]
