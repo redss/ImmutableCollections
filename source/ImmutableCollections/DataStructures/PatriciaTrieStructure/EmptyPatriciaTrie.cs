@@ -23,5 +23,15 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         {
             yield break;
         }
+
+        public IPatriciaNode<T> Remove(int key, T item)
+        {
+            return null;
+        }
+
+        public IPatriciaNode<T> Promote(int prefix, int mask)
+        {
+            throw new InvalidOperationException("Trie is empty.");
+        }
     }
 }

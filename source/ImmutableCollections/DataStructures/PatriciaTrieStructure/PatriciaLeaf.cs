@@ -45,5 +45,22 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         {
             return Values;
         }
+
+        public IPatriciaNode<T> Remove(int key, T item)
+        {
+            if (key != Key || !Values.Contains(item))
+                return this;
+
+            if (Values.Length == 1)
+                return null;
+
+            var newValues = Values.Remove(item);
+            return new PatriciaLeaf<T>(key, newValues);
+        }
+
+        public IPatriciaNode<T> Promote(int prefix, int mask)
+        {
+            return this;
+        }
     }
 }

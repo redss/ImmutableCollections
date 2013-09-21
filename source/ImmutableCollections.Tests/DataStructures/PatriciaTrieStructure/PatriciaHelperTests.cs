@@ -13,10 +13,12 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             new[] {32, 3123}, 
             new[] {12, 31},
             new[] {3213123, 31232132},
-            new[] {1 << 30, 1 << 30 + 1}
+            new[] {1 << 30, 1 << 30 + 1},
+            new[] {-23, 123123},
+            new[] {-100, 100}
         };
 
-        private readonly int[] _lowestBitSource = new[] { 1, 2, 3, 123, 31412, 41241412, 1 << 30 };
+        private readonly int[] _lowestBitSource = new[] { 1, 2, 3, 123, 31412, 41241412, 1 << 30, -10, -20 };
 
         [TestCaseSource("_branchingBitSource")]
         public void BranchingBit_Test(int prefixA, int prefixB)
@@ -48,7 +50,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 
         private int NaiveLowestBit(int number)
         {
-            return number % 2 == 1 ? 1 : 2 * NaiveLowestBit(number / 2);
+            return number % 2 != 0 ? 1 : 2 * NaiveLowestBit(number / 2);
         }
     }
 }

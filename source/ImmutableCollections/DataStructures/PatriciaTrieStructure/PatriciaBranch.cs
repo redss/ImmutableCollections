@@ -54,5 +54,31 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         {
             return Left.GetItems().Concat(Right.GetItems());
         }
+
+        public IPatriciaNode<T> Remove(int key, T item)
+        {
+            var propagateLeft = (key & Mask) == 0;
+
+            var child = propagateLeft ? Left : Right;
+            var other = propagateLeft ? Right : Left;
+
+            var propagate = child.Remove(key, item);
+            
+            if (propagate == child)
+                return this;
+
+            if (propagate == null)
+                return other.Promote(Prefix, Mask);
+
+            var newLeft = propagateLeft ? propagate : other;
+            var newRight = propagateLeft ? other : propagate;
+
+            return new PatriciaBranch<T>(Prefix, Mask, newLeft, newRight);
+        }
+
+        public IPatriciaNode<T> Promote(int prefix, int mask)
+        {
+            return new PatriciaBranch<T>(prefix, mask, Left, Right);
+        }
     }
 }

@@ -5,13 +5,6 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
     interface IPatriciaNode<T>
     {
         /// <summary>
-        /// Finds element with a given key, or returns null if it cannot be found.
-        /// </summary>
-        /// <param name="key">Usually hash key of searched item.</param>
-        /// <returns>Found element or null, if it was not found.</returns>
-        //T Find(int key);
-
-        /// <summary>
         /// True, if this Patricia trie contains given item.
         /// </summary>
         /// <param name="key">Usually hash key of searched item.</param>
@@ -31,5 +24,20 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         /// Iterates over values in the trie.
         /// </summary>
         IEnumerable<T> GetItems();
+
+        /// <summary>
+        /// Removes item with given key and value.
+        /// </summary>
+        /// <returns>Propagated node. If null, it means tree was left empty
+        /// and thus shall be replaced with EmptyParticiaTrie.</returns>
+        IPatriciaNode<T> Remove(int key, T item);
+
+        /// <summary>
+        /// Promote node to replace its parent. Updates node's prefix and mask if it's possible.
+        /// </summary>
+        /// <param name="prefix">New prefix.</param>
+        /// <param name="mask">New mask.</param>
+        /// <returns>Propagated Patricia node if it was branch, or unchanged leaf.</returns>
+        IPatriciaNode<T> Promote(int prefix, int mask);
     }
 }
