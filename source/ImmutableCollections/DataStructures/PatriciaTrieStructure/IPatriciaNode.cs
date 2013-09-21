@@ -2,6 +2,10 @@
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
+    /// <summary>
+    /// Patricia Trie node.
+    /// </summary>
+    /// <typeparam name="T">Type stored in trie's leafs.</typeparam>
     interface IPatriciaNode<T>
     {
         /// <summary>

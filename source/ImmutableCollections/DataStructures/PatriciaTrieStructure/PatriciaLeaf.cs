@@ -2,6 +2,11 @@
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
+    /// <summary>
+    /// Patricia Trie's leafs; they contain trie values. 
+    /// Leaf can have many values if they have tha same key.
+    /// </summary>
+    /// <typeparam name="T">Type stored in trie's leafs.</typeparam>
     class PatriciaLeaf<T> : IPatriciaNode<T>
     {
         public readonly int Key;

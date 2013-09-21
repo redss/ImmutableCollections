@@ -3,6 +3,10 @@ using System.Linq;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
+    /// <summary>
+    /// Patricia Trie's branch, i. e. node containing common prefix for all keys stored in it.
+    /// </summary>
+    /// <typeparam name="T">Type of the values stored in the leaf.</typeparam>
     class PatriciaBranch<T> : IPatriciaNode<T>
     {
         public readonly int Prefix;
@@ -27,23 +31,15 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         public bool Contains(int key, T item)
         {
-            return (((key & Mask) == 0) ? Left : Right).Contains(key, item);
+            return GetPropagationNode(key).Contains(key, item);
         }
 
         public IPatriciaNode<T> Insert(int key, T item)
         {
             if (PatriciaHelper.MatchPrefix(key, Prefix, Mask))
             {
-                if ((key & Mask) == 0)
-                {
-                    var propagate = Left.Insert(key, item);
-                    return new PatriciaBranch<T>(Prefix, Mask, propagate, Right);
-                }
-                else
-                {
-                    var propagate = Right.Insert(key, item);
-                    return new PatriciaBranch<T>(Prefix, Mask, Left, propagate);
-                }
+                var propagate = GetPropagationNode(key).Insert(key, item);
+                return CopyBranch(key, propagate);
             }
 
             var leaf = new PatriciaLeaf<T>(key, item);
@@ -57,28 +53,47 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         public IPatriciaNode<T> Remove(int key, T item)
         {
-            var propagateLeft = (key & Mask) == 0;
+            var propagateLeft = PropagateLeft(key);
 
             var child = propagateLeft ? Left : Right;
             var other = propagateLeft ? Right : Left;
 
             var propagate = child.Remove(key, item);
-            
+
             if (propagate == child)
                 return this;
 
             if (propagate == null)
                 return other.Promote(Prefix, Mask);
 
-            var newLeft = propagateLeft ? propagate : other;
-            var newRight = propagateLeft ? other : propagate;
-
-            return new PatriciaBranch<T>(Prefix, Mask, newLeft, newRight);
+            return CopyBranch(key, propagate);
         }
 
         public IPatriciaNode<T> Promote(int prefix, int mask)
         {
             return new PatriciaBranch<T>(prefix, mask, Left, Right);
+        }
+
+        // Private methods
+
+        private IPatriciaNode<T> CopyBranch(int key, IPatriciaNode<T> changedNode)
+        {
+            var propagateLeft = PropagateLeft(key);
+
+            var newLeft = propagateLeft ? changedNode : Left;
+            var newRight = propagateLeft ? Right : changedNode;
+
+            return new PatriciaBranch<T>(Prefix, Mask, newLeft, newRight);
+        }
+
+        private IPatriciaNode<T> GetPropagationNode(int key)
+        {
+            return PropagateLeft(key) ? Left : Right;
+        }
+
+        private bool PropagateLeft(int key)
+        {
+            return (key & Mask) == 0;
         }
     }
 }

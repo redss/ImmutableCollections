@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
+    /// <summary>
+    /// An empty Patricia Trie.
+    /// </summary>
+    /// <typeparam name="T">Type stored in trie's leafs.</typeparam>
     class EmptyPatriciaTrie<T> : IPatriciaNode<T>
     {
         public bool Contains(int key, T item)
@@ -31,7 +31,7 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         public IPatriciaNode<T> Promote(int prefix, int mask)
         {
-            throw new InvalidOperationException("Trie is empty.");
+            throw new InvalidOperationException("Patricia Trie is empty.");
         }
     }
 }
