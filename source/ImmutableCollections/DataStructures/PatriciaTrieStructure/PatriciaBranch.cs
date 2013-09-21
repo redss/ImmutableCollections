@@ -74,6 +74,11 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
             return new PatriciaBranch<T>(prefix, mask, Left, Right);
         }
 
+        public int Count()
+        {
+            return Left.Count() + Right.Count();
+        }
+
         // Private methods
 
         private IPatriciaNode<T> CopyBranch(int key, IPatriciaNode<T> changedNode)

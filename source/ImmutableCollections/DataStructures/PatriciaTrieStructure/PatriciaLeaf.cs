@@ -67,5 +67,10 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         {
             return this;
         }
+
+        public int Count()
+        {
+            return Values.Length;
+        }
     }
 }

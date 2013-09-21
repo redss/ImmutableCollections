@@ -50,17 +50,5 @@ namespace ImmutableCollections
         /// <param name="other">The collection to compare to current set.</param>
         /// <returns>This, or new set.</returns>
         IImmutableSet<T> UnionWith(IEnumerable<T> other);
-
-        bool IsSubsetOf(IEnumerable<T> other);
-        
-        bool IsProperSubsetOf(IEnumerable<T> other);
-
-        bool IsSupersetOf(IEnumerable<T> other);
-
-        bool IsProperSupersetOf(IEnumerable<T> other);
-
-        bool Overlaps(IEnumerable<T> other);
-
-        bool SetEquals(IEnumerable<T> other);
     }
 }

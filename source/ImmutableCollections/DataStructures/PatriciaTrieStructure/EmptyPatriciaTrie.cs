@@ -33,5 +33,10 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         {
             throw new InvalidOperationException("Patricia Trie is empty.");
         }
+
+        public int Count()
+        {
+            return 0;
+        }
     }
 }

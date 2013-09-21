@@ -43,5 +43,11 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         /// <param name="mask">New mask.</param>
         /// <returns>Propagated Patricia node if it was branch, or unchanged leaf.</returns>
         IPatriciaNode<T> Promote(int prefix, int mask);
+
+        /// <summary>
+        /// Count items in the leafs.
+        /// </summary>
+        /// <returns>Number of items.</returns>
+        int Count();
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="DataStructures\PatriciaTrieStructure\IPatriciaNode.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaLeaf.cs" />
     <Compile Include="Helpers\ArrayExtensions.cs" />
+    <Compile Include="ImmutableHashSet.cs" />
     <Compile Include="ImmutableLinkedList.cs" />
     <Compile Include="ImmutableVector.cs" />
     <Compile Include="DataStructures\ImmutableVectorStructure\EmptyVector.cs" />

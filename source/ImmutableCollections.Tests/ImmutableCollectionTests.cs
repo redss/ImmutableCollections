@@ -7,6 +7,7 @@ namespace ImmutableCollections.Tests
     [TestFixture(typeof(CopyImmutableList<int>))]
     [TestFixture(typeof(ImmutableVector<int>))]
     [TestFixture(typeof(ImmutableLinkedList<int>))]
+    [TestFixture(typeof(ImmutableHashSet<int>))]
     public class ImmutableCollectionTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableCollection<int>
     {
         [Test]
@@ -32,13 +33,14 @@ namespace ImmutableCollections.Tests
         [Test]
         public void Remove_RemovesOnlyOneElement()
         {
-            const int count = 10, element = 20;
+            const int count = 10;
+            var items = Enumerable.Range(0, count).ToArray();
 
-            var collection = NewCollection(Enumerable.Repeat(element, count));
-            var modified = collection.Remove(element).ToArray();
+            var collection = NewCollection(items);
+            var modified = collection.Remove(items.Last()).ToArray();
            
             Assert.AreEqual(count - 1, modified.Count());
-            Assert.True(modified.All(x => x == element));
+            CollectionAssert.IsSubsetOf(modified, items);
         }
 
         [Test]
