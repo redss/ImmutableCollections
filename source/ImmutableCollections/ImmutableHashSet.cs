@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure;
 
 namespace ImmutableCollections
@@ -22,7 +23,7 @@ namespace ImmutableCollections
 
         private ImmutableHashSet(IPatriciaNode<T> root)
         {
-            _root = root;
+            _root = root ?? new EmptyPatriciaTrie<T>();
         }
 
         // IEnumerable
@@ -58,7 +59,7 @@ namespace ImmutableCollections
         public ImmutableHashSet<T> Remove(T item)
         {
             var newRoot = _root.Remove(item.GetHashCode(), item);
-            return newRoot == null ? new ImmutableHashSet<T>() : new ImmutableHashSet<T>(newRoot);
+            return new ImmutableHashSet<T>(newRoot);
         }
 
         IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
@@ -73,8 +74,8 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> ExceptWith(IEnumerable<T> other)
         {
-
-            throw new NotImplementedException();
+            var newRoot = other.Aggregate(_root, (current, i) => current.Remove(i.GetHashCode(), i));
+            return new ImmutableHashSet<T>(newRoot);
         }
         
         IImmutableSet<T> IImmutableSet<T>.ExceptWith(IEnumerable<T> other)
@@ -84,7 +85,12 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> IntersectWith(IEnumerable<T> other)
         {
-            throw new NotImplementedException();
+            IPatriciaNode<T> empty = new EmptyPatriciaTrie<T>();
+            var newRoot = other
+                .Where(i => _root.Contains(i.GetHashCode(), i))
+                .Aggregate(empty, (c, i) => c.Insert(i.GetHashCode(), i));
+
+            return new ImmutableHashSet<T>(newRoot);
         }
         
         IImmutableSet<T> IImmutableSet<T>.IntersectWith(IEnumerable<T> other)
@@ -94,7 +100,8 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> SymmetricExceptWith(IEnumerable<T> other)
         {
-            throw new NotImplementedException();
+            var items = other.ToArray();
+            return ExceptWith(items).UnionWith(items.Except(this));
         }
         
         IImmutableSet<T> IImmutableSet<T>.SymmetricExceptWith(IEnumerable<T> other)
@@ -104,7 +111,8 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> UnionWith(IEnumerable<T> other)
         {
-            throw new NotImplementedException();
+            var newRoot = other.Aggregate(_root, (c, i) => c.Insert(i.GetHashCode(), i));
+            return new ImmutableHashSet<T>(newRoot);
         }
         
         IImmutableSet<T> IImmutableSet<T>.UnionWith(IEnumerable<T> other)
