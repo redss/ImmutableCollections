@@ -9,6 +9,8 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
     /// <typeparam name="T">Type stored in trie's leafs.</typeparam>
     class EmptyPatriciaTrie<T> : IPatriciaNode<T>
     {
+        // IPatriciaNode
+
         public bool Contains(int key, T item)
         {
             return false;
@@ -37,6 +39,13 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         public int Count()
         {
             return 0;
+        }
+
+        // Public methods
+
+        public override string ToString()
+        {
+            return "Empty Patricia Trie";
         }
     }
 }

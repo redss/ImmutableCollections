@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
@@ -71,6 +72,14 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         public int Count()
         {
             return Values.Length;
+        }
+
+        // Public methods
+
+        public override string ToString()
+        {
+            var values = Values.Length == 1 ? Values.First().ToString() : string.Join(" ", Values);
+            return string.Format("Lf({0} -> {1})", Key, values);
         }
     }
 }

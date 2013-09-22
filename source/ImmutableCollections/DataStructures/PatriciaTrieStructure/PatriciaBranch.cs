@@ -79,6 +79,13 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
             return Left.Count() + Right.Count();
         }
 
+        // Public methods
+
+        public override string ToString()
+        {
+            return string.Format("Br({0}, {1})", Prefix, Mask);
+        }
+
         // Private methods
 
         private IPatriciaNode<T> CopyBranch(int key, IPatriciaNode<T> changedNode)
