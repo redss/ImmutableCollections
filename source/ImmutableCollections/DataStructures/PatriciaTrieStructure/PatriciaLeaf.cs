@@ -64,11 +64,6 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
             return new PatriciaLeaf<T>(key, newValues);
         }
 
-        public IPatriciaNode<T> Promote(int prefix, int mask)
-        {
-            return this;
-        }
-
         public int Count()
         {
             return Values.Length;

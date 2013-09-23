@@ -64,14 +64,10 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
                 return this;
 
             if (propagate == null)
-                return other.Promote(Prefix, Mask);
+                return other;
+                //return other.Promote(Prefix, Mask);
 
             return CopyBranch(key, propagate);
-        }
-
-        public IPatriciaNode<T> Promote(int prefix, int mask)
-        {
-            return new PatriciaBranch<T>(prefix, mask, Left, Right);
         }
 
         public int Count()

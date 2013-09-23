@@ -37,14 +37,6 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         IPatriciaNode<T> Remove(int key, T item);
 
         /// <summary>
-        /// Promote node to replace its parent. Updates node's prefix and mask if it's possible.
-        /// </summary>
-        /// <param name="prefix">New prefix.</param>
-        /// <param name="mask">New mask.</param>
-        /// <returns>Propagated Patricia node if it was branch, or unchanged leaf.</returns>
-        IPatriciaNode<T> Promote(int prefix, int mask);
-
-        /// <summary>
         /// Count items in the leafs.
         /// </summary>
         /// <returns>Number of items.</returns>

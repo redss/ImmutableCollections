@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
@@ -29,11 +28,6 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         public IPatriciaNode<T> Remove(int key, T item)
         {
             return null;
-        }
-
-        public IPatriciaNode<T> Promote(int prefix, int mask)
-        {
-            throw new InvalidOperationException("Patricia Trie is empty.");
         }
 
         public int Count()
