@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using ImmutableCollections.DataStructures.AssociativeBackendStructure;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
@@ -7,74 +7,75 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
     /// Patricia Trie's leafs; they contain trie values. 
     /// Leaf can have many values if they have tha same key.
     /// </summary>
-    /// <typeparam name="T">Type stored in trie's leafs.</typeparam>
-    class PatriciaLeaf<T> : IPatriciaNode<T>
+    /// <typeparam name="TValue">Type stored in trie's leafs.</typeparam>
+    /// <typeparam name="TBackend">Type of the backend to store the values in.</typeparam>
+    class PatriciaLeaf<TValue, TBackend> : IPatriciaNode<TValue, TBackend>
+        where TBackend : IAssociativeBackend<TValue>, new()
     {
         public readonly int Key;
 
-        public readonly ImmutableLinkedList<T> Values;
+        public readonly IAssociativeBackend<TValue> Values;
 
         // Constructor
 
-        public PatriciaLeaf(int key, ImmutableLinkedList<T> values)
+        public PatriciaLeaf(int key, TValue item)
         {
             Key = key;
-            Values = values;
+            Values = new TBackend().Insert(item);
         }
 
-        public PatriciaLeaf(int key, T item)
+        private PatriciaLeaf(int key, TBackend backend)
         {
             Key = key;
-            Values = new ImmutableLinkedList<T>().Add(item);
+            Values = backend;
         }
 
         // IPatriciaNode
 
-        public bool Contains(int key, T item)
+        public bool Contains(int key, TValue item)
         {
             return (key == Key) && Values.Contains(item);
         }
 
-        public IPatriciaNode<T> Insert(int key, T item)
+        public IPatriciaNode<TValue, TBackend> Insert(int key, TValue item)
         {
             if (key != Key)
-                return PatriciaHelper.Join(Key, this, key, new PatriciaLeaf<T>(key, item));
+                return PatriciaHelper.Join(Key, this, key, new PatriciaLeaf<TValue, TBackend>(key, item));
 
             if (Values.Contains(item))
                 return this;
 
-            var newValues = Values.Insert(0, item);
-            return new PatriciaLeaf<T>(key, newValues);
+            var newValues = (TBackend) Values.Insert(item);
+            return new PatriciaLeaf<TValue, TBackend>(key, newValues);
         }
 
-        public IEnumerable<T> GetItems()
+        public IEnumerable<TValue> GetItems()
         {
-            return Values;
+            return Values.GetValues();
         }
 
-        public IPatriciaNode<T> Remove(int key, T item)
+        public IPatriciaNode<TValue, TBackend> Remove(int key, TValue item)
         {
             if (key != Key || !Values.Contains(item))
                 return this;
 
-            if (Values.Length == 1)
+            if (Values.IsSingle())
                 return null;
 
-            var newValues = Values.Remove(item);
-            return new PatriciaLeaf<T>(key, newValues);
+            var newValues = (TBackend) Values.Remove(item);
+            return new PatriciaLeaf<TValue, TBackend>(key, newValues);
         }
 
         public int Count()
         {
-            return Values.Length;
+            return Values.Count();
         }
 
         // Public methods
 
         public override string ToString()
         {
-            var values = Values.Length == 1 ? Values.First().ToString() : string.Join(" ", Values);
-            return string.Format("Lf({0} -> {1})", Key, values);
+            return string.Format("Lf({0} -> {1})", Key, Values);
         }
     }
 }

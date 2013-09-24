@@ -1,4 +1,6 @@
-﻿namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
+﻿using ImmutableCollections.DataStructures.AssociativeBackendStructure;
+
+namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     /// <summary>
     /// Helper methods related to Patritia Trie.
@@ -29,18 +31,20 @@
         /// <summary>
         /// Joins two Patricia Tries with common branch.
         /// </summary>
-        /// <typeparam name="T">Type of the data stored in Patricia Trie.</typeparam>
+        /// <typeparam name="TValue">Type of the data stored in Patricia Trie.</typeparam>
+        /// <typeparam name="TBackend">Type of the backend to store the values in.</typeparam>
         /// <param name="prefixA">Prfix of the first Trie.</param>
         /// <param name="nodeA">First Patricia Trie.</param>
         /// <param name="prefixB">Prefix of the second Trie.</param>
         /// <param name="nodeB">Second Trie.</param>
         /// <returns>New Patritia Trie node having given nodes as her children.</returns>
-        public static IPatriciaNode<T> Join<T>(int prefixA, IPatriciaNode<T> nodeA, int prefixB, IPatriciaNode<T> nodeB)
+        public static IPatriciaNode<TValue, TBackend> Join<TValue, TBackend>(int prefixA, IPatriciaNode<TValue, TBackend> nodeA, int prefixB, IPatriciaNode<TValue, TBackend> nodeB)
+            where TBackend : IAssociativeBackend<TValue>, new()
         {
             var bb = BranchingBit(prefixA, prefixB);
             var newPrefix = prefixA & (bb - 1);
 
-            return (prefixA & bb) == 0 ? new PatriciaBranch<T>(newPrefix, bb, nodeA, nodeB) : new PatriciaBranch<T>(newPrefix, bb, nodeB, nodeA);
+            return (prefixA & bb) == 0 ? new PatriciaBranch<TValue, TBackend>(newPrefix, bb, nodeA, nodeB) : new PatriciaBranch<TValue, TBackend>(newPrefix, bb, nodeB, nodeA);
         }
 
         /// <summary>

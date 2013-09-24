@@ -1,31 +1,34 @@
 ﻿using System.Collections.Generic;
+using ImmutableCollections.DataStructures.AssociativeBackendStructure;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     /// <summary>
     /// An empty Patricia Trie.
     /// </summary>
-    /// <typeparam name="T">Type stored in trie's leafs.</typeparam>
-    class EmptyPatriciaTrie<T> : IPatriciaNode<T>
+    /// <typeparam name="TValue">Type stored in trie's leafs.</typeparam>
+    /// <typeparam name="TBackend">Type of the backend to store the values in.</typeparam>
+    class EmptyPatriciaTrie<TValue, TBackend> : IPatriciaNode<TValue, TBackend>
+        where TBackend : IAssociativeBackend<TValue>, new()
     {
         // IPatriciaNode
 
-        public bool Contains(int key, T item)
+        public bool Contains(int key, TValue item)
         {
             return false;
         }
 
-        public IPatriciaNode<T> Insert(int key, T item)
+        public IPatriciaNode<TValue, TBackend> Insert(int key, TValue item)
         {
-            return new PatriciaLeaf<T>(key, item);
+            return new PatriciaLeaf<TValue, TBackend>(key, item);
         }
 
-        public IEnumerable<T> GetItems()
+        public IEnumerable<TValue> GetItems()
         {
             yield break;
         }
 
-        public IPatriciaNode<T> Remove(int key, T item)
+        public IPatriciaNode<TValue, TBackend> Remove(int key, TValue item)
         {
             return null;
         }

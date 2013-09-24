@@ -1,25 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ImmutableCollections.DataStructures.AssociativeBackendStructure;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     /// <summary>
     /// Patricia Trie's branch, i. e. node containing common prefix for all keys stored in it.
     /// </summary>
-    /// <typeparam name="T">Type of the values stored in the leaf.</typeparam>
-    class PatriciaBranch<T> : IPatriciaNode<T>
+    /// <typeparam name="TValue">Type of the values stored in the leaf.</typeparam>
+    /// <typeparam name="TBackend">Type of the backend to store the values in.</typeparam>
+    class PatriciaBranch<TValue, TBackend> : IPatriciaNode<TValue, TBackend>
+        where TBackend : IAssociativeBackend<TValue>, new()
     {
         public readonly int Prefix;
 
         public readonly int Mask;
 
-        public readonly IPatriciaNode<T> Left;
+        public readonly IPatriciaNode<TValue, TBackend> Left;
 
-        public readonly IPatriciaNode<T> Right;
+        public readonly IPatriciaNode<TValue, TBackend> Right;
 
         // Constructor
 
-        public PatriciaBranch(int prefix, int mask, IPatriciaNode<T> left, IPatriciaNode<T> right)
+        public PatriciaBranch(int prefix, int mask, IPatriciaNode<TValue, TBackend> left, IPatriciaNode<TValue, TBackend> right)
         {
             Prefix = prefix;
             Mask = mask;
@@ -29,12 +32,12 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         // IPatriciaNode
 
-        public bool Contains(int key, T item)
+        public bool Contains(int key, TValue item)
         {
             return GetPropagationNode(key).Contains(key, item);
         }
 
-        public IPatriciaNode<T> Insert(int key, T item)
+        public IPatriciaNode<TValue, TBackend> Insert(int key, TValue item)
         {
             if (PatriciaHelper.MatchPrefix(key, Prefix, Mask))
             {
@@ -42,16 +45,16 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
                 return CopyBranch(key, propagate);
             }
 
-            var leaf = new PatriciaLeaf<T>(key, item);
+            var leaf = new PatriciaLeaf<TValue, TBackend>(key, item);
             return PatriciaHelper.Join(key, leaf, Prefix, this);
         }
 
-        public IEnumerable<T> GetItems()
+        public IEnumerable<TValue> GetItems()
         {
             return Left.GetItems().Concat(Right.GetItems());
         }
 
-        public IPatriciaNode<T> Remove(int key, T item)
+        public IPatriciaNode<TValue, TBackend> Remove(int key, TValue item)
         {
             var propagateLeft = PropagateLeft(key);
 
@@ -84,17 +87,17 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         // Private methods
 
-        private IPatriciaNode<T> CopyBranch(int key, IPatriciaNode<T> changedNode)
+        private IPatriciaNode<TValue, TBackend> CopyBranch(int key, IPatriciaNode<TValue, TBackend> changedNode)
         {
             var propagateLeft = PropagateLeft(key);
 
             var newLeft = propagateLeft ? changedNode : Left;
             var newRight = propagateLeft ? Right : changedNode;
 
-            return new PatriciaBranch<T>(Prefix, Mask, newLeft, newRight);
+            return new PatriciaBranch<TValue, TBackend>(Prefix, Mask, newLeft, newRight);
         }
 
-        private IPatriciaNode<T> GetPropagationNode(int key)
+        private IPatriciaNode<TValue, TBackend> GetPropagationNode(int key)
         {
             return PropagateLeft(key) ? Left : Right;
         }

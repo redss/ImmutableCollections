@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure;
 using NUnit.Framework;
+using Backend = ImmutableCollections.DataStructures.AssociativeBackendStructure.SetBackend<string>;
 
 namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 {
@@ -15,11 +16,11 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var key = 10;
             var value = "hello";
 
-            var empty = new EmptyPatriciaTrie<string>();
-            var result = empty.Insert(key, "hello") as PatriciaLeaf<string>;
+            var empty = new EmptyPatriciaTrie<string, Backend>();
+            var result = empty.Insert(key, "hello") as PatriciaLeaf<string, Backend>;
 
             Assert.NotNull(result);
-            Assert.AreEqual(value, result.Values.First());
+            Assert.AreEqual(value, result.GetItems().First());
         }
 
         [Test]
@@ -28,13 +29,13 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var key = 10;
             var values = new[] {"one", "two", "three"};
 
-            IPatriciaNode<string> node = new EmptyPatriciaTrie<string>();
+            IPatriciaNode<string, Backend> node = new EmptyPatriciaTrie<string, Backend>();
             node = values.Aggregate(node, (current, v) => current.Insert(key, v));
 
-            var leaf = node as PatriciaLeaf<string>;
+            var leaf = node as PatriciaLeaf<string, Backend>;
 
             Assert.NotNull(leaf);
-            CollectionAssert.AreEquivalent(values, leaf.Values);
+            CollectionAssert.AreEquivalent(values, leaf.GetItems());
         }
 
         [Test]
@@ -43,7 +44,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var key = 10;
             var value = "foo";
 
-            var leaf = new EmptyPatriciaTrie<string>().Insert(key, value);
+            var leaf = new EmptyPatriciaTrie<string, Backend>().Insert(key, value);
             var node = leaf.Insert(key, value);
 
             Assert.AreSame(leaf, node);
@@ -55,8 +56,11 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var first = Tuple.Create("foo", 0x1FFF);
             var second = Tuple.Create("bar", 0x2FFF);
 
-            var leaf = new EmptyPatriciaTrie<string>().Insert(first.Item2, first.Item1) as PatriciaLeaf<string>;
-            var branch = leaf.Insert(second.Item2, second.Item1) as PatriciaBranch<string>;
+            var leaf = new EmptyPatriciaTrie<string, Backend>().Insert(first.Item2, first.Item1) as PatriciaLeaf<string, Backend>;
+
+            Assert.NotNull(leaf);
+
+            var branch = leaf.Insert(second.Item2, second.Item1) as PatriciaBranch<string, Backend>;
 
             Assert.NotNull(branch);
             Assert.AreNotEqual(branch.Left, branch.Right);
@@ -72,7 +76,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var fakeHash = items.First().GetHashCode();
             var fakeItem = "far";
 
-            IPatriciaNode<string> node = new EmptyPatriciaTrie<string>();
+            IPatriciaNode<string, Backend> node = new EmptyPatriciaTrie<string, Backend>();
             node = items.Aggregate(node, (current, i) => current.Insert(i.GetHashCode(), i) ?? current);
 
             foreach (var i in items)
@@ -90,7 +94,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var item = "foo";
             var hash = item.GetHashCode();
 
-            var leaf = new EmptyPatriciaTrie<string>().Insert(hash, item).Remove(hash, item);
+            var leaf = new EmptyPatriciaTrie<string, Backend>().Insert(hash, item).Remove(hash, item);
 
             Assert.IsNull(leaf);
         }
@@ -101,7 +105,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var items = "foo bar zar boo baz".Split(' ');
             var key = 10;
 
-            IPatriciaNode<string> node = new EmptyPatriciaTrie<string>();
+            IPatriciaNode<string, Backend> node = new EmptyPatriciaTrie<string, Backend>();
             node = items.Aggregate(node, (current, value) => current.Insert(key, value));
 
             var set = new HashSet<string>(items);
@@ -109,7 +113,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             foreach (var i in items)
             {
                 CollectionAssert.AreEquivalent(set, node.GetItems());
-                Assert.IsInstanceOf<PatriciaLeaf<string>>(node);
+                Assert.IsInstanceOf<PatriciaLeaf<string, Backend>>(node);
 
                 node = node.Remove(key, i);
                 set.Remove(i);
@@ -136,9 +140,9 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             Assert.IsNull(node);
         }
 
-        private IPatriciaNode<T> BuildPatriciaTrie<T>(IEnumerable<KeyValuePair<int, T>> values)
+        private IPatriciaNode<string, Backend> BuildPatriciaTrie(IEnumerable<KeyValuePair<int, string>> values)
         {
-            IPatriciaNode<T> node = new EmptyPatriciaTrie<T>();
+            IPatriciaNode<string, Backend> node = new EmptyPatriciaTrie<string, Backend>();
             return values.Aggregate(node, (current, value) => current.Insert(value.Key, value.Value));
         }
 

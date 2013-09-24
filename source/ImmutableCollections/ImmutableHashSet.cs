@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using ImmutableCollections.DataStructures.AssociativeBackendStructure;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure;
 
 namespace ImmutableCollections
@@ -11,18 +12,18 @@ namespace ImmutableCollections
     /// <typeparam name="T">The type of the elements in the collection.</typeparam>
     public class ImmutableHashSet<T> : IImmutableSet<T>
     {
-        private readonly IPatriciaNode<T> _root;
+        private readonly IPatriciaNode<T, SetBackend<T>> _root;
 
         // Constructors
 
         public ImmutableHashSet()
         {
-            _root = new EmptyPatriciaTrie<T>();
+            _root = new EmptyPatriciaTrie<T, SetBackend<T>>();
         }
 
-        private ImmutableHashSet(IPatriciaNode<T> root)
+        private ImmutableHashSet(IPatriciaNode<T, SetBackend<T>> root)
         {
-            _root = root ?? new EmptyPatriciaTrie<T>();
+            _root = root ?? new EmptyPatriciaTrie<T, SetBackend<T>>();
         }
 
         // IEnumerable
@@ -84,7 +85,7 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> IntersectWith(IEnumerable<T> other)
         {
-            IPatriciaNode<T> empty = new EmptyPatriciaTrie<T>();
+            IPatriciaNode<T, SetBackend<T>> empty = new EmptyPatriciaTrie<T, SetBackend<T>>();
             var newRoot = other
                 .Where(i => _root.Contains(i.GetHashCode(), i))
                 .Aggregate(empty, (c, i) => c.Insert(i.GetHashCode(), i));
