@@ -1,68 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using ImmutableCollections.DataStructures.ImmutableLinkedListStructure;
+using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.DataStructures.AssociativeBackendStructure
 {
-    /// <summary>
-    /// Backend for creating sets.
-    /// </summary>
-    /// <typeparam name="T">Type stored in backend, usually same type as one stored in container.</typeparam>
-    class SetBackend<T> : IAssociativeBackend<T>
+    class SetBackend<T>
     {
-        private readonly IListNode<T> _list;
+        private readonly T[] _items;
 
-        // Constructors
+        // Constructor
 
-        public SetBackend()
+        public SetBackend(T item)
         {
-            _list = new EmptyList<T>();
+            _items = new[] { item };
         }
 
-        private SetBackend(IListNode<T> list)
+        public SetBackend(T[] items)
         {
-            _list = list;
-        }
-
-        // IAccociativeBackend
-
-        public IEnumerable<T> GetValues()
-        {
-            return _list.GetValues();
-        }
-
-        public int Count()
-        {
-            return _list.Count;
-        }
-
-        public IAssociativeBackend<T> Insert(T item)
-        {
-            var newList = _list.Prepend(item);
-            return new SetBackend<T>(newList);
-        }
-
-        public IAssociativeBackend<T> Remove(T item)
-        {
-            var newList = _list.Remove(item);
-            return new SetBackend<T>(newList);
-        }
-
-        public bool Contains(T item)
-        {
-            return _list.Contains(item);
-        }
-
-        public bool IsSingle()
-        {
-            return _list.Count == 1;
+            _items = items;
         }
 
         // Public methods
 
-        public override string ToString()
+        public IEnumerable<T> GetValues()
         {
-            return IsSingle() ? GetValues().First().ToString() : string.Join(" ", GetValues());
+            return _items.AsEnumerable();
+        }
+
+        public bool Contains(T item)
+        {
+            return _items.Contains(item);
+        }
+
+        public SetBackend<T> Insert(T item)
+        {
+            return _items.Contains(item) ? this : new SetBackend<T>(_items.Append(item));
+        }
+
+        public SetBackend<T> Remove(T item)
+        {
+            var index = Array.IndexOf(_items, item);
+
+            if (index == -1)
+                return this;
+
+            if (_items.Length == 1)
+                return null;
+
+            var newItems = _items.RemoveAt(index);
+            return new SetBackend<T>(newItems);
         }
     }
 }

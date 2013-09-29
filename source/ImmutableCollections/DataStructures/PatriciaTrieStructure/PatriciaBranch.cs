@@ -1,81 +1,84 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using ImmutableCollections.DataStructures.AssociativeBackendStructure;
+using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
-    /// <summary>
-    /// Patricia Trie's branch, i. e. node containing common prefix for all keys stored in it.
-    /// </summary>
-    /// <typeparam name="TValue">Type of the values stored in the leaf.</typeparam>
-    /// <typeparam name="TBackend">Type of the backend to store the values in.</typeparam>
-    class PatriciaBranch<TValue, TBackend> : IPatriciaNode<TValue, TBackend>
-        where TBackend : IAssociativeBackend<TValue>, new()
+    class PatriciaBranch<T> : IPatriciaNode<T>
+        where T : class
     {
         public readonly int Prefix;
 
         public readonly int Mask;
 
-        public readonly IPatriciaNode<TValue, TBackend> Left;
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        public readonly IPatriciaNode<T>[] Children;
 
-        public readonly IPatriciaNode<TValue, TBackend> Right;
+        // Constructors
 
-        // Constructor
-
-        public PatriciaBranch(int prefix, int mask, IPatriciaNode<TValue, TBackend> left, IPatriciaNode<TValue, TBackend> right)
+        public PatriciaBranch(int prefix, int mask, IPatriciaNode<T>[] children)
         {
+            if (children == null)
+                throw new ArgumentNullException("children", "Patricia branch cannot be empty.");
+
+            if (children.Length != 2)
+                throw new ArgumentOutOfRangeException("children", "Patricia branch must have exactly two children.");
+
+            if (children.OfType<EmptyPatriciaTrie<T>>().Any())
+                throw new ArgumentException("Patricia branch child cannot be EmptyPatriciaTrie.", "children");
+
             Prefix = prefix;
             Mask = mask;
-            Left = left;
-            Right = right;
+            Children = children;
         }
+
+        public PatriciaBranch(int prefix, int mask, IPatriciaNode<T> left, IPatriciaNode<T> right)
+            : this(prefix, mask, new[] { left, right }) { }
 
         // IPatriciaNode
 
-        public bool Contains(int key, TValue item)
+        public T Find(int key)
         {
-            return GetPropagationNode(key).Contains(key, item);
+            return PropagationNode(key).Find(key);
         }
 
-        public IPatriciaNode<TValue, TBackend> Insert(int key, TValue item)
+        public IPatriciaNode<T> Modify(int key, Func<T, T> operation)
         {
-            if (PatriciaHelper.MatchPrefix(key, Prefix, Mask))
+            if (!PatriciaHelper.MatchPrefix(key, Prefix, Mask))
             {
-                var propagate = GetPropagationNode(key).Insert(key, item);
-                return CopyBranch(key, propagate);
+                // Key doesn't match the prefix, so we need to create new leaf and join with it.
+                var item = operation(null);
+
+                // Unless operation doesn't create any item.
+                if (item == null)
+                    return this;
+
+                var leaf = new PatriciaLeaf<T>(key, item);
+                return PatriciaHelper.Join(key, leaf, Prefix, this);
             }
+            
+            var index = PropagationIndex(key);
+            var child = Children[index];
+            var propagation = child.Modify(key, operation);
 
-            var leaf = new PatriciaLeaf<TValue, TBackend>(key, item);
-            return PatriciaHelper.Join(key, leaf, Prefix, this);
-        }
+            // Child item was removed.
+            if (propagation == null)
+                return Children[OtherIndex(key)];
 
-        public IEnumerable<TValue> GetItems()
-        {
-            return Left.GetItems().Concat(Right.GetItems());
-        }
-
-        public IPatriciaNode<TValue, TBackend> Remove(int key, TValue item)
-        {
-            var propagateLeft = PropagateLeft(key);
-
-            var child = propagateLeft ? Left : Right;
-            var other = propagateLeft ? Right : Left;
-
-            var propagate = child.Remove(key, item);
-
-            if (propagate == child)
+            // Child didn't change.
+            if (propagation == child)
                 return this;
 
-            if (propagate == null)
-                return other;
-                //return other.Promote(Prefix, Mask);
-
-            return CopyBranch(key, propagate);
+            // Child changed.
+            var newChildren = Children.Change(propagation, index);
+            return new PatriciaBranch<T>(Prefix, Mask, newChildren);
         }
 
-        public int Count()
+        public IEnumerable<T> GetItems()
         {
-            return Left.Count() + Right.Count();
+            return Children.SelectMany(c => c.GetItems());
         }
 
         // Public methods
@@ -87,24 +90,19 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         // Private methods
 
-        private IPatriciaNode<TValue, TBackend> CopyBranch(int key, IPatriciaNode<TValue, TBackend> changedNode)
+        private IPatriciaNode<T> PropagationNode(int key)
         {
-            var propagateLeft = PropagateLeft(key);
-
-            var newLeft = propagateLeft ? changedNode : Left;
-            var newRight = propagateLeft ? Right : changedNode;
-
-            return new PatriciaBranch<TValue, TBackend>(Prefix, Mask, newLeft, newRight);
+            return Children[PropagationIndex(key)];
         }
 
-        private IPatriciaNode<TValue, TBackend> GetPropagationNode(int key)
+        private int PropagationIndex(int key)
         {
-            return PropagateLeft(key) ? Left : Right;
+            return (key & Mask) == 0 ? 0 : 1;
         }
 
-        private bool PropagateLeft(int key)
+        private int OtherIndex(int key)
         {
-            return (key & Mask) == 0;
+            return (key & Mask) == 0 ? 1 : 0;
         }
     }
 }

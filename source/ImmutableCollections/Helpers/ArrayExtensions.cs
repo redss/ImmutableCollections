@@ -58,5 +58,12 @@ namespace ImmutableCollections.Helpers
 
             return newArray;
         }
+
+        [Pure]
+        public static T[] RemoveAt<T>(this T[] array, int index)
+        {
+            // TODO: Optimize.
+            return array.Where((v, i) => i != index).ToArray();
+        }
     }
 }

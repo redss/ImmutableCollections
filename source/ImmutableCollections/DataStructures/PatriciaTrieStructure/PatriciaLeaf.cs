@@ -1,81 +1,75 @@
-﻿using System.Collections.Generic;
-using ImmutableCollections.DataStructures.AssociativeBackendStructure;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
-    /// <summary>
-    /// Patricia Trie's leafs; they contain trie values. 
-    /// Leaf can have many values if they have tha same key.
-    /// </summary>
-    /// <typeparam name="TValue">Type stored in trie's leafs.</typeparam>
-    /// <typeparam name="TBackend">Type of the backend to store the values in.</typeparam>
-    class PatriciaLeaf<TValue, TBackend> : IPatriciaNode<TValue, TBackend>
-        where TBackend : IAssociativeBackend<TValue>, new()
+    class PatriciaLeaf<T> : IPatriciaNode<T>
+        where T : class
     {
         public readonly int Key;
 
-        public readonly IAssociativeBackend<TValue> Values;
+        public readonly T Item;
 
-        // Constructor
+        // Constructors
 
-        public PatriciaLeaf(int key, TValue item)
+        public PatriciaLeaf(int key, T item)
         {
-            Key = key;
-            Values = new TBackend().Insert(item);
-        }
+            if (item == null)
+                throw new ArgumentNullException("item", "Patricia Leaf cannot be empty!");
 
-        private PatriciaLeaf(int key, TBackend backend)
-        {
             Key = key;
-            Values = backend;
+            Item = item;
         }
 
         // IPatriciaNode
 
-        public bool Contains(int key, TValue item)
+        public T Find(int key)
         {
-            return (key == Key) && Values.Contains(item);
+            return key == Key ? Item : null;
         }
 
-        public IPatriciaNode<TValue, TBackend> Insert(int key, TValue item)
+        public IPatriciaNode<T> Modify(int key, Func<T, T> operation)
         {
+            if (operation == null)
+                throw new ArgumentNullException("operation");
+
             if (key != Key)
-                return PatriciaHelper.Join(Key, this, key, new PatriciaLeaf<TValue, TBackend>(key, item));
+            {
+                var result = operation(null);
 
-            if (Values.Contains(item))
-                return this;
+                // This situation shouldn't occur, maybe it should throw exception instead?
+                if (result == null)
+                    return this;
 
-            var newValues = (TBackend) Values.Insert(item);
-            return new PatriciaLeaf<TValue, TBackend>(key, newValues);
+                // Create new leaf with new item.
+                var newLeaf = new PatriciaLeaf<T>(key, result);
+                return PatriciaHelper.Join(Key, this, key, newLeaf);
+            }
+            else
+            {
+                // Modify item.
+                var result = operation(Item);
+
+                if (result == null)
+                    return null;
+
+                if (result == Item)
+                    return this;
+
+                return new PatriciaLeaf<T>(key, result);
+            }
         }
 
-        public IEnumerable<TValue> GetItems()
+        public IEnumerable<T> GetItems()
         {
-            return Values.GetValues();
-        }
-
-        public IPatriciaNode<TValue, TBackend> Remove(int key, TValue item)
-        {
-            if (key != Key || !Values.Contains(item))
-                return this;
-
-            if (Values.IsSingle())
-                return null;
-
-            var newValues = (TBackend) Values.Remove(item);
-            return new PatriciaLeaf<TValue, TBackend>(key, newValues);
-        }
-
-        public int Count()
-        {
-            return Values.Count();
+            yield return Item;
         }
 
         // Public methods
 
         public override string ToString()
         {
-            return string.Format("Lf({0} -> {1})", Key, Values);
+            return string.Format("Lf({0} -> {1})", Key, Item);
         }
     }
 }

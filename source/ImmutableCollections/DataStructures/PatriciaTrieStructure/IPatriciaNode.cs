@@ -1,48 +1,36 @@
-﻿using System.Collections.Generic;
-using ImmutableCollections.DataStructures.AssociativeBackendStructure;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     /// <summary>
     /// Patricia Trie node.
     /// </summary>
-    /// <typeparam name="TValue">Type stored in trie's leafs.</typeparam>
-    /// <typeparam name="TBackend">Type of the backend to store the values in.</typeparam>
-    interface IPatriciaNode<TValue, TBackend>
-        where TBackend : IAssociativeBackend<TValue>, new()
+    /// <typeparam name="T">Type of items associated with keys. 
+    /// Type should either be immutable, or not modified.</typeparam>
+    interface IPatriciaNode<T>
+        where T : class
     {
         /// <summary>
-        /// True, if this Patricia trie contains given item.
+        /// Finds item associated with given key.
         /// </summary>
-        /// <param name="key">Usually hash key of searched item.</param>
-        /// <param name="item">Searched item.</param>
-        /// <returns>True, if element is contained in the collection.</returns>
-        bool Contains(int key, TValue item);
+        /// <param name="key">Key associated with searched item.</param>
+        /// <returns>Found item, or null if it was no found.</returns>
+        T Find(int key);
 
         /// <summary>
-        /// Inserts given item to the trie returning null, or returns element with given key.
+        /// Modifies item associated with key using operation. If key was not found, null is passed to operation; if it returns non-null result, 
+        /// node with given key is created. If key was found, but operation returns null, node associated with key is deleted.
         /// </summary>
-        /// <param name="key">Usually hash key of searched item.</param>
-        /// <param name="item">Item to be inserted.</param>
-        /// <returns>Prapageted node or null, if element was already in collection.</returns>
-        IPatriciaNode<TValue, TBackend> Insert(int key, TValue item);
+        /// <param name="key">Key associated with modified or inserted item.</param>
+        /// <param name="operation">Operation to be performed on existing item, or if parameter is null, an inserted item.</param>
+        /// <returns>Propagated node, this, if nothing changed, or null if node was deleted.</returns>
+        IPatriciaNode<T> Modify(int key, Func<T, T> operation);
 
         /// <summary>
-        /// Iterates over values in the trie.
+        /// Ierates over all items stored in this trie.
         /// </summary>
-        IEnumerable<TValue> GetItems();
-
-        /// <summary>
-        /// Removes item with given key and value.
-        /// </summary>
-        /// <returns>Propagated node. If null, it means tree was left empty
-        /// and thus shall be replaced with EmptyParticiaTrie.</returns>
-        IPatriciaNode<TValue, TBackend> Remove(int key, TValue item);
-
-        /// <summary>
-        /// Count items in the leafs.
-        /// </summary>
-        /// <returns>Number of items.</returns>
-        int Count();
+        /// <returns>Collection of items.</returns>
+        IEnumerable<T> GetItems();
     }
 }

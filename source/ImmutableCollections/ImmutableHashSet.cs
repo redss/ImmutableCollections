@@ -12,25 +12,25 @@ namespace ImmutableCollections
     /// <typeparam name="T">The type of the elements in the collection.</typeparam>
     public class ImmutableHashSet<T> : IImmutableSet<T>
     {
-        private readonly IPatriciaNode<T, SetBackend<T>> _root;
+        private readonly IPatriciaNode<SetBackend<T>> _root;
 
         // Constructors
 
         public ImmutableHashSet()
         {
-            _root = new EmptyPatriciaTrie<T, SetBackend<T>>();
+            _root = new EmptyPatriciaTrie<SetBackend<T>>();
         }
 
-        private ImmutableHashSet(IPatriciaNode<T, SetBackend<T>> root)
+        private ImmutableHashSet(IPatriciaNode<SetBackend<T>> root)
         {
-            _root = root ?? new EmptyPatriciaTrie<T, SetBackend<T>>();
+            _root = root ?? new EmptyPatriciaTrie<SetBackend<T>>();
         }
 
         // IEnumerable
 
         public IEnumerator<T> GetEnumerator()
         {
-            return _root.GetItems().GetEnumerator();
+            return _root.GetItems().SelectMany(i => i.GetValues()).GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -42,7 +42,7 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> Add(T item)
         {
-            var newRoot = _root.Insert(item.GetHashCode(), item);
+            var newRoot = Add(_root, item);
             return new ImmutableHashSet<T>(newRoot);
         }
         
@@ -58,7 +58,7 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> Remove(T item)
         {
-            var newRoot = _root.Remove(item.GetHashCode(), item);
+            var newRoot = Remove(_root, item);
             return new ImmutableHashSet<T>(newRoot);
         }
 
@@ -74,7 +74,7 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> ExceptWith(IEnumerable<T> other)
         {
-            var newRoot = other.Aggregate(_root, (current, i) => current.Remove(i.GetHashCode(), i));
+            var newRoot = other.Aggregate(_root, Remove);
             return new ImmutableHashSet<T>(newRoot);
         }
         
@@ -85,10 +85,10 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> IntersectWith(IEnumerable<T> other)
         {
-            IPatriciaNode<T, SetBackend<T>> empty = new EmptyPatriciaTrie<T, SetBackend<T>>();
+            IPatriciaNode<SetBackend<T>> empty = new EmptyPatriciaTrie<SetBackend<T>>();
             var newRoot = other
-                .Where(i => _root.Contains(i.GetHashCode(), i))
-                .Aggregate(empty, (c, i) => c.Insert(i.GetHashCode(), i));
+                .Where(i => Contains(_root, i))
+                .Aggregate(empty, Add);
 
             return new ImmutableHashSet<T>(newRoot);
         }
@@ -111,7 +111,7 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> UnionWith(IEnumerable<T> other)
         {
-            var newRoot = other.Aggregate(_root, (c, i) => c.Insert(i.GetHashCode(), i));
+            var newRoot = other.Aggregate(_root, Add);
             return new ImmutableHashSet<T>(newRoot);
         }
         
@@ -122,12 +122,30 @@ namespace ImmutableCollections
 
         public int Length
         {
-            get { return _root.Count(); }
+            get { return _root.GetItems().Sum(x => x.GetValues().Count()); }
         }
 
         public bool Contains(T item)
         {
-            return _root.Contains(item.GetHashCode(), item);
+            return Contains(_root, item);
+        }
+
+        // Private methods
+
+        private IPatriciaNode<SetBackend<T>> Add(IPatriciaNode<SetBackend<T>> node, T item)
+        {
+            return node.Modify(item.GetHashCode(), i => i == null ? new SetBackend<T>(item) : i.Insert(item));
+        }
+
+        private IPatriciaNode<SetBackend<T>> Remove(IPatriciaNode<SetBackend<T>> node, T item)
+        {
+            return node.Modify(item.GetHashCode(), i => i == null ? null : i.Remove(item));
+        }
+
+        private bool Contains(IPatriciaNode<SetBackend<T>> node, T item)
+        {
+            var backend = _root.Find(item.GetHashCode());
+            return backend != null && backend.Contains(item);
         }
     }
 }

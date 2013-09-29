@@ -20,6 +20,8 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 
         private readonly int[] _lowestBitSource = new[] { 1, 2, 3, 123, 31412, 41241412, 1 << 30, -10, -20 };
 
+        // Tests
+
         [TestCaseSource("_branchingBitSource")]
         public void BranchingBit_Test(int prefixA, int prefixB)
         {
@@ -37,6 +39,8 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 
             Assert.AreEqual(expected, result);
         }
+
+        // Private methods
 
         private int NaiveBranchingBit(int prefixA, int prefixB)
         {
