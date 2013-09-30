@@ -205,6 +205,9 @@ namespace ImmutableCollections
 
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
+            if (item.Key == null)
+                throw new ArgumentException("Key cannot be null.", "item");
+
             return _items.Contains(item);
         }
 

@@ -9,6 +9,7 @@ using NUnit.Framework;
 namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(ImmutableCopyDictionary<string, int>))]
+    [TestFixture(typeof(ImmutableHashDictionary<string, int>))]
     public class ImmutableDirectoryTests<TDictionary>
         where TDictionary : IImmutableDictionary<string, int>, new()
     {
@@ -210,6 +211,13 @@ namespace ImmutableCollections.Tests
         public void Contains_WithNewItem_ReturnsFalse()
         {
             Assert.False(GetDictionaryWithSampleData().Contains(_item));
+        }
+
+        [Test]
+        public void Contains_WithNullKey_ThrowsArgumentException()
+        {
+            var item = new KeyValuePair<string, int>(null, 10);
+            Assert.Throws<ArgumentException>(() => GetDictionaryWithSampleData().Contains(item));
         }
 
         [Test]
