@@ -125,7 +125,7 @@ namespace ImmutableCollections
             return Remove(item.Key);
         }
 
-        public IImmutableDictionary<TKey, TValue> SetValue(TKey key, TValue value)
+        public ImmutableCopyDictionary<TKey, TValue> SetValue(TKey key, TValue value)
         {
             if (key == null)
                 throw new ArgumentNullException("key");
@@ -145,6 +145,11 @@ namespace ImmutableCollections
             }
 
             throw GetKeyNotFoundException(key);
+        }
+
+        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.SetValue(TKey key, TValue value)
+        {
+            return SetValue(key, value);
         }
 
         public TValue this[TKey key]
