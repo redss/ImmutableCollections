@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using ImmutableCollections.Helpers;
 
@@ -36,11 +37,13 @@ namespace ImmutableCollections
 
         // IEnumerable
 
+        [Pure]
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
             return _items.AsEnumerable().GetEnumerator();
         }
 
+        [Pure]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -48,6 +51,7 @@ namespace ImmutableCollections
 
         // IImmutableDictionary
 
+        [Pure]
         public ImmutableCopyDictionary<TKey, TValue> Add(TKey key, TValue value)
         {
             if (key == null)
@@ -56,11 +60,13 @@ namespace ImmutableCollections
             return Add(new KeyValuePair<TKey, TValue>(key, value));
         }
 
+        [Pure]
         IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Add(TKey key, TValue value)
         {
             return Add(key, value);
         }
 
+        [Pure]
         public ImmutableCopyDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
@@ -76,16 +82,19 @@ namespace ImmutableCollections
             return new ImmutableCopyDictionary<TKey, TValue>(newItems);
         }
 
+        [Pure]
         IImmutableCollection<KeyValuePair<TKey, TValue>> IImmutableCollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
             return Add(item);
         }
 
+        [Pure]
         IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Add(KeyValuePair<TKey, TValue> item)
         {
             return Add(item);
         }
 
+        [Pure]
         public ImmutableCopyDictionary<TKey, TValue> Remove(TKey key)
         {
             if (key == null)
@@ -115,16 +124,19 @@ namespace ImmutableCollections
             throw GetKeyNotFoundException(key);
         }
 
+        [Pure]
         IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Remove(TKey key)
         {
             return Remove(key);
         }
 
+        [Pure]
         IImmutableCollection<KeyValuePair<TKey, TValue>> IImmutableCollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
             return Remove(item.Key);
         }
 
+        [Pure]
         public ImmutableCopyDictionary<TKey, TValue> SetValue(TKey key, TValue value)
         {
             if (key == null)
@@ -147,11 +159,13 @@ namespace ImmutableCollections
             throw GetKeyNotFoundException(key);
         }
 
+        [Pure]
         IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.SetValue(TKey key, TValue value)
         {
             return SetValue(key, value);
         }
 
+        [Pure]
         public TValue this[TKey key]
         {
             get
@@ -167,6 +181,7 @@ namespace ImmutableCollections
             }
         }
 
+        [Pure]
         public bool TryGetValue(TKey key, out TValue value)
         {
             if (key == null)
@@ -185,16 +200,19 @@ namespace ImmutableCollections
             return false;
         }
 
+        [Pure]
         public IEnumerable<TKey> Keys
         {
             get { return this.Select(i => i.Key); }
         }
 
+        [Pure]
         public IEnumerable<TValue> Values
         {
             get { return this.Select(i => i.Value); }
         }
 
+        [Pure]
         public bool ContainsKey(TKey key)
         {
             if (key == null)
@@ -203,11 +221,13 @@ namespace ImmutableCollections
             return _items.Any(i => i.Key.Equals(key));
         }
 
+        [Pure]
         public bool ContainsValue(TValue value)
         {
             return _items.Any(i => i.Value.Equals(value));
         }
 
+        [Pure]
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
@@ -216,6 +236,7 @@ namespace ImmutableCollections
             return _items.Contains(item);
         }
 
+        [Pure]
         public int Length
         {
             get { return _items.Length; }
@@ -223,6 +244,7 @@ namespace ImmutableCollections
 
         // Private methods
 
+        [Pure]
         private KeyNotFoundException GetKeyNotFoundException(TKey key)
         {
             var message = string.Format("Key {0} was not found.", key);

@@ -52,6 +52,7 @@
     <Compile Include="DataStructures\ImmutableLinkedListStructure\IListNode.cs" />
     <Compile Include="DataStructures\ImmutableLinkedListStructure\ListNode.cs" />
     <Compile Include="Helpers\ArrayExtensions.cs" />
+    <Compile Include="ImmutableCopySet.cs" />
     <Compile Include="ImmutableHashDictionary.cs">
       <SubType>Code</SubType>
     </Compile>

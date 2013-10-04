@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace ImmutableCollections
 {
@@ -13,6 +14,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="item">Item to be added to a new set.</param>
         /// <returns>This, or new set.</returns>
+        [Pure]
         new IImmutableSet<T> Add(T item);
 
         /// <summary>
@@ -20,6 +22,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="item">Item to be removed.</param>
         /// <returns>This, or new set.</returns>
+        [Pure]
         new IImmutableSet<T> Remove(T item);
 
         /// <summary>
@@ -27,6 +30,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="other">Collection of items to remove form the set.</param>
         /// <returns>This, or new set.</returns>
+        [Pure]
         IImmutableSet<T> ExceptWith(IEnumerable<T> other);
 
         /// <summary>
@@ -34,6 +38,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="other">The collection to compare to current set.</param>
         /// <returns>This, or new set.</returns>
+        [Pure]
         IImmutableSet<T> IntersectWith(IEnumerable<T> other);
 
         /// <summary>
@@ -42,6 +47,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="other">The collection to compare to current set.</param>
         /// <returns>This, or new set.</returns>
+        [Pure]
         IImmutableSet<T> SymmetricExceptWith(IEnumerable<T> other);
 
         /// <summary>
@@ -49,6 +55,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="other">The collection to compare to current set.</param>
         /// <returns>This, or new set.</returns>
+        [Pure]
         IImmutableSet<T> UnionWith(IEnumerable<T> other);
     }
 }

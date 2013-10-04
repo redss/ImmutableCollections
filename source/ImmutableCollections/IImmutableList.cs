@@ -1,4 +1,6 @@
-﻿namespace ImmutableCollections
+﻿using System.Diagnostics.Contracts;
+
+namespace ImmutableCollections
 {
     /// <summary>
     /// Represents an immutable collection of objects that can be individually accessed by index.
@@ -11,6 +13,7 @@
         /// </summary>
         /// <param name="item">The object to add.</param>
         /// <returns>New list.</returns>
+        [Pure]
         new IImmutableList<T> Add(T item);
 
         /// <summary>
@@ -19,6 +22,7 @@
         /// <param name="index">The zero-based index at which item should be inserted.</param>
         /// <param name="item">The object to insert into the list.</param>
         /// <returns>New list.</returns>
+        [Pure]
         IImmutableList<T> Insert(int index, T item);
 
         /// <summary>
@@ -27,6 +31,7 @@
         /// <param name="index">The zero-based index at which item should be inserted.</param>
         /// <param name="item">The object a list will be updated with.</param>
         /// <returns>New list.</returns>
+        [Pure]
         IImmutableList<T> UpdateAt(int index, T item); 
 
         /// <summary>
@@ -34,6 +39,7 @@
         /// </summary>
         /// <param name="item">The object to remove.</param>
         /// <returns>New list.</returns>
+        [Pure]
         new IImmutableList<T> Remove(T item);
 
         /// <summary>
@@ -41,6 +47,7 @@
         /// </summary>
         /// <param name="index">The zero-based index of the item to remove.</param>
         /// <returns>New list.</returns>
+        [Pure]
         IImmutableList<T> RemoveAt(int index);
 
         /// <summary>
@@ -48,6 +55,7 @@
         /// </summary>
         /// <param name="index">The zero-based index of the element to get.</param>
         /// <returns>The element at specified index.</returns>
+        [Pure]
         T this[int index] { get; }
 
         /// <summary>
@@ -55,6 +63,7 @@
         /// </summary>
         /// <param name="item">The object to locate.</param>
         /// <returns>The index of item if found, otherwise -1.</returns>
+        [Pure]
         int IndexOf(T item);
     }
 }

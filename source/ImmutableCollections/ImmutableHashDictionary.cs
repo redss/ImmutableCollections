@@ -198,11 +198,13 @@ namespace ImmutableCollections
 
         // Private methods
 
+        [Pure]
         private ImmutableCopyDictionary<TKey, TValue> CreateNewBackend(KeyValuePair<TKey, TValue> item)
         {
             return new ImmutableCopyDictionary<TKey, TValue>().Add(item);
         }
 
+        [Pure]
         private KeyNotFoundException GetKeyNotFoundException(TKey key)
         {
             var message = string.Format("Key {0} was not found.", key);

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace ImmutableCollections
 {
@@ -18,6 +19,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="item">The object to add.</param>
         /// <returns>New collection.</returns>
+        [Pure]
         IImmutableCollection<T> Add(T item);
 
         /// <summary>
@@ -25,11 +27,13 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="item">The object to remove.</param>
         /// <returns>New collection.</returns>
+        [Pure]
         IImmutableCollection<T> Remove(T item);
 
         /// <summary>
         /// Gets the number of elements in the collection.
         /// </summary>
+        [Pure]
         int Length { get; }
 
         /// <summary>
@@ -37,6 +41,7 @@ namespace ImmutableCollections
         /// </summary>
         /// <param name="item">The object to locate in the colection.</param>
         /// <returns>True, if item is found in the collection.</returns>
+        [Pure]
         bool Contains(T item);
     }
 }
