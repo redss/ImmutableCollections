@@ -46,6 +46,11 @@
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaLeaf.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaHelper.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaNodeExceptions.cs" />
+    <Compile Include="DataStructures\RedBlackTreeStructure\IRedBlack.cs" />
+    <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackExtensions.cs" />
+    <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackHelper.cs" />
+    <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackLeaf.cs" />
+    <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackNode.cs" />
     <Compile Include="ImmutableCopyDictionary.cs" />
     <Compile Include="ImmutableCopyList.cs" />
     <Compile Include="DataStructures\ImmutableLinkedListStructure\EmptyList.cs" />
