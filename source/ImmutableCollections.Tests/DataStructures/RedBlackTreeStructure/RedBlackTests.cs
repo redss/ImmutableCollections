@@ -19,7 +19,9 @@ namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
         public void Update_Test()
         {
             var items = GetRandomNumbers(100);
-            var node = items.Aggregate(RedBlackLeaf<int>.Instance, (current, i) => current.Update(i, _comparer));
+            var node = items.Aggregate(RedBlackLeaf<int>.Instance, (current, i) => current.Update(i, _comparer).MakeRoot());
+
+            node.Validate();
 
             foreach (var i in items)
             {
@@ -31,6 +33,27 @@ namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
             }
 
             CollectionAssert.AreEqual(items.OrderBy(x => x, _comparer), node.GetValues());
+        }
+
+        [Test]
+        public void Remove_Test()
+        {
+            var items = GetRandomNumbers(100);
+            var expected = new SortedSet<int>(items);
+
+            var node = items.Aggregate(RedBlackLeaf<int>.Instance, (current, i) => current.Update(i, _comparer).MakeRoot());
+
+            foreach (var i in items)
+            {
+                node = node.Remove(i, _comparer).MakeRoot();
+                node.Validate();
+
+                expected.Remove(i);
+
+                CollectionAssert.AreEqual(expected, node.GetValues());
+            }
+
+            Assert.IsInstanceOf<RedBlackLeaf<int>>(node);
         }
 
         // Private methods

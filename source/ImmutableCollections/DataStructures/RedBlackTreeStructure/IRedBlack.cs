@@ -32,7 +32,7 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
         /// Finds node matching given value (i. e. value that is equal according to given comparer).
         /// </summary>
         /// <param name="searched">Value, that is searched.</param>
-        /// <param name="comparer">Comperer used for comparing nodes.</param>
+        /// <param name="comparer">Comperer used for comparing values.</param>
         /// <param name="value">Found value. Note, that it can be diffrent value than the one searched.</param>
         /// <returns>True, if value was found.</returns>
         bool TryFind(T searched, IComparer<T> comparer, out T value);
@@ -41,14 +41,35 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
         /// Updated or inserts node with given value (i. e. value that is equal according to given comparer).
         /// </summary>
         /// <param name="value">Inserted or updated value.</param>
-        /// <param name="comparer">Comparer used for comparing nodes.</param>
+        /// <param name="comparer">Comparer used for comparing values.</param>
         /// <returns>Propagated node.</returns>
         IRedBlack<T> Update(T value, IComparer<T> comparer);
 
+        /// <summary>
+        /// Removes node with given value (i. e. value that is equal according to given comparer).
+        /// </summary>
+        /// <param name="value">Removed value.</param>
+        /// <param name="comparer">Comperer used for comparing values.</param>
+        /// <returns>Propagated node with removed value or same node if value was not found.</returns>
+        IRedBlack<T> Remove(T value, IComparer<T> comparer);
+
+        /// <summary>
+        /// Removes the minimal value from the tree (leftmost).
+        /// </summary>
+        /// <param name="value">Removed value.</param>
+        /// <returns>Subtree with smallest value removed.</returns>
+        IRedBlack<T> RemoveMin(out T value);
+        
         /// <summary>
         /// Gets all the values stored in this subtree.
         /// </summary>
         /// <returns>Collection of stored values.</returns>
         IEnumerable<T> GetValues();
+
+        /// <summary>
+        /// Checks is given tree is valid Red Black Tree.
+        /// </summary>
+        /// <returns>Number of black nodes from this node to the leafs.</returns>
+        int Validate(int blackNodes = 0);
     }
 }

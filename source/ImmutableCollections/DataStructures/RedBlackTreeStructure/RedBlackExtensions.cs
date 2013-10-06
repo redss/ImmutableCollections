@@ -15,5 +15,23 @@
         {
             return node is RedBlackNode<T> && !node.IsBlack;
         }
+
+        public static bool IsNode<T>(this IRedBlack<T> node)
+        {
+            return node is RedBlackNode<T>;
+        }
+
+        public static bool IsLeaf<T>(this IRedBlack<T> node)
+        {
+            return node is RedBlackLeaf<T>;
+        }
+
+        public static IRedBlack<T> MakeRoot<T>(this IRedBlack<T> node)
+        {
+            if (node.IsRedNode())
+                return new RedBlackNode<T>(true, node.Value, node.Left, node.Right);
+
+            return node;
+        }
     }
 }
