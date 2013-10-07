@@ -50,6 +50,7 @@
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaHelperTests.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaLeafTests.cs" />
     <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackTests.cs" />
+    <Compile Include="DataStructures\TwoThreeTreeStructure\EmptyTests.cs" />
     <Compile Include="Helpers\ArrayExtensionsTests.cs" />
     <Compile Include="ImmutableCollectionTests.cs" />
     <Compile Include="ImmutableDirectoryTests.cs" />
