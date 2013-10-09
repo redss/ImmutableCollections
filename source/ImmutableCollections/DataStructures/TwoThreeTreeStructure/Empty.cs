@@ -17,6 +17,12 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             yield break;
         }
 
+        public bool TryFind(T item, IComparer<T> comparer, out T value)
+        {
+            value = default(T);
+            return false;
+        }
+
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
         {
             splitLeft = splitRight = Instance;

@@ -49,6 +49,19 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 yield return value;
         }
 
+        public bool TryFind(T item, IComparer<T> comparer, out T value)
+        {
+            var side = GetSide(item, comparer);
+
+            if (IsSame(side))
+            {
+                value = side == Side.SameFirst ? _first : _second;
+                return true;
+            }
+
+            return GetChild(side).TryFind(item, comparer, out value);
+        }
+
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
         {
             // Default split values.

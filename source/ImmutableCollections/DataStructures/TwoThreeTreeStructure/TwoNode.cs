@@ -38,6 +38,19 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 yield return value;
         }
 
+        public bool TryFind(T item, IComparer<T> comparer, out T value)
+        {
+            var side = GetSide(item, comparer);
+
+            if (side == Side.Same)
+            {
+                value = _value;
+                return true;
+            }
+
+            return GetChild(side).TryFind(item, comparer, out value);
+        }
+
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
         {
             var side = GetSide(item, comparer);
@@ -51,7 +64,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 return this;
             }
 
-            var child = GetChilf(side);
+            var child = GetChild(side);
             var node = child.Insert(item, comparer, out splitLeft, out splitRight, out splitValue);
 
             if (node == null)
@@ -79,7 +92,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             if (side == Side.Same)
                 return item.Equals(_value) ? this : new TwoNode<T>(item, _left, _right);
 
-            var child = GetChilf(side);
+            var child = GetChild(side);
             var node = child.Update(item, comparer);
 
             return child == node ? this : node;
@@ -97,7 +110,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return result < 0 ? Side.Left : Side.Right;
         }
 
-        private ITwoThree<T> GetChilf(Side side)
+        private ITwoThree<T> GetChild(Side side)
         {
             Debug.Assert(side != Side.Same);
 

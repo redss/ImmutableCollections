@@ -17,6 +17,16 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         IEnumerable<T> GetValues();
 
         /// <summary>
+        /// Finds node matching given value (i. e. value that is equal according to given comparer).
+        /// </summary>
+        /// <param name="item">Value, that is searched.</param>
+        /// <param name="comparer">Comperer used for comparing values.</param>
+        /// <param name="value">Found value. Note, that it can be diffrent value than the one searched.</param>
+        /// <returns>True, if value was found.</returns>
+        [Pure]
+        bool TryFind(T item, IComparer<T> comparer, out T value);
+
+        /// <summary>
         /// Inserts given value into the tree.
         /// </summary>
         /// <param name="item">Inserted value.</param>

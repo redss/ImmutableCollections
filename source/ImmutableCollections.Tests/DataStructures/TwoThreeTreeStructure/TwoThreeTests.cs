@@ -11,11 +11,45 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
     [TestFixture]
     public class TwoThreeTests
     {
-        
-
         private readonly Random _random = new Random(0);
 
         // Tests
+
+        [Test]
+        public void TryFind_Test()
+        {
+            const int count = 100;
+
+            var keys = RandomHelper.UniqueSequence(_random, count);
+            var values = RandomHelper.UniqueSequence(_random, count);
+            var items = keys.Zip(values, (k, v) => new KeyValuePair<int, int>(k, v)).ToArray();
+            var comparer = new KeyComparer<int, int>();
+
+            var node = CreateTree(items, comparer);
+
+            foreach (var item in items)
+            {
+                var searched = new KeyValuePair<int, int>(item.Key, 12345);
+                KeyValuePair<int, int> foundItem;
+
+                var result = node.TryFind(searched, comparer, out foundItem);
+
+                Assert.IsTrue(result);
+                Assert.AreEqual(item, foundItem);
+            }
+
+            var absentKeys = GetAbsentElements(keys);
+            
+            foreach (var key in absentKeys)
+            {
+                var searched = new KeyValuePair<int, int>(key, 123);
+                KeyValuePair<int, int> foundItem;
+
+                var result = node.TryFind(searched, comparer, out foundItem);
+
+                Assert.IsFalse(result);
+            }
+        }
 
         [Test]
         public void Insert_Test()
@@ -61,12 +95,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
         {
             var items = RandomHelper.UniqueSequence(_random, 100);
             var node = CreateTree(items);
-
-            var absentMiddleElement = items[items.Length / 2];
-            while (items.Contains(absentMiddleElement))
-                absentMiddleElement++;
-
-            var absentElements = new[] { -100, absentMiddleElement, 123123213 };
+            var absentElements = GetAbsentElements(items);
 
             foreach (var item in absentElements)
             {
@@ -103,6 +132,16 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
         private ITwoThree<T> CreateTree<T>(IEnumerable<T> items, IComparer<T> comparer = null)
         {
             return items.Aggregate((ITwoThree<T>)Empty<T>.Instance, (current, item) => TwoThreeHelper.Insert(current, item, comparer));
+        }
+
+        private int[] GetAbsentElements(int[] items)
+        {
+            var absentMiddleElement = items.ElementAt(items.Count() / 2);
+
+            while (items.Contains(absentMiddleElement))
+                absentMiddleElement++;
+
+            return new[] { -100, absentMiddleElement, 123123213 };
         }
     }
 }
