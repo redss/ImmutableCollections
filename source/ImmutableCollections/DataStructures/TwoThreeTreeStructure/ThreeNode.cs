@@ -4,6 +4,10 @@ using System.Diagnostics;
 
 namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 {
+    /// <summary>
+    /// 3-node from 2-3 Tree. Can split into two 2-nodes if value is inserted into it.
+    /// </summary>
+    /// <typeparam name="T">Type stored in the tree.</typeparam>
     class ThreeNode<T> : ITwoThree<T>
     {
         private enum Side { Same, Left, Middle, Right }
@@ -61,11 +65,12 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             // Insert value into proper node.
             T pv;
             ITwoThree<T> pl, pr;
-            var node = GetChild(side).Insert(item, comparer, out pl, out pr, out pv);
+            var child = GetChild(side);
+            var node = child.Insert(item, comparer, out pl, out pr, out pv);
 
             // Insert propagated single node.
             if (node != null)
-                return NewChangedNode(node, side);
+                return node == child ? this : NewChangedNode(node, side);
 
             // Insert propagated two nodes and value, meaning it split.
             // Sinde this is 3-node, we are at full capacity and need to split too.

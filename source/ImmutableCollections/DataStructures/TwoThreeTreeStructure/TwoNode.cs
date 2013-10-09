@@ -2,6 +2,10 @@
 
 namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 {
+    /// <summary>
+    /// 2-node from 2-3 Tree. Can grow to 3-node if value is inserted into it.
+    /// </summary>
+    /// <typeparam name="T">Type stored in the tree.</typeparam>
     class TwoNode<T> : ITwoThree<T>
     {
         private readonly T _value;
@@ -49,13 +53,17 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
             if (node == null)
             {
-                // Child node split and splitValue value.
+                // Child node split.
                 return result < 0
                     ? new ThreeNode<T>(splitValue, _value, splitLeft, splitRight, _right)
                     : new ThreeNode<T>(_value, splitValue, _left, splitLeft, splitRight);
             }
 
             // Single node was splitValue.
+
+            if (node == child)
+                return this;
+
             return result < 0
                 ? new TwoNode<T>(_value, node, _right)
                 : new TwoNode<T>(_value, _left, node);
