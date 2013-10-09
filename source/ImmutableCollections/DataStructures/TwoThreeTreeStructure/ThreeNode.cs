@@ -1,90 +1,150 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 {
     class ThreeNode<T> : ITwoThree<T>
     {
-        private readonly T[] _values;
+        private enum Side { Same, Left, Middle, Right }
 
-        private readonly ITwoThree<T>[] _children;
+        private readonly T _first, _second;
+
+        private readonly ITwoThree<T> _left, _middle, _right; 
 
         // Constructors
 
         public ThreeNode(T first, T second, ITwoThree<T> left, ITwoThree<T> middle, ITwoThree<T> right)
         {
-            _values = new[] { first, second };
-            _children = new[] { left, middle, right };
+            _first = first;
+            _second = second;
 
-            Debug.Assert(_children.All(c => c is Empty<T>) || _children.All(c => !(c is Empty<T>)));
-        }
+            _left = left;
+            _middle = middle;
+            _right = right;
 
-        public ThreeNode(T[] values, ITwoThree<T>[] children)
-        {
-            Debug.Assert(values.Length == 2);
-            Debug.Assert(children.Length == 3);
-            Debug.Assert(children.All(c => c is Empty<T>) || children.All(c => !(c is Empty<T>)));
-
-            _values = values;
-            _children = children;
+            Debug.Assert(left.IsNullOrEmpty() && middle.IsNullOrEmpty() && right.IsNullOrEmpty()
+                || !left.IsNullOrEmpty() && !middle.IsNullOrEmpty() && !right.IsNullOrEmpty());
         }
 
         // ITwoThree
 
-        public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> left, out ITwoThree<T> right, out T propagated)
+        public IEnumerable<T> GetValues()
         {
-            left = right = null;
-            propagated = default(T);
+            foreach (var value in _left.GetValues())
+                yield return value;
 
-            int index;
+            yield return _first;
 
-            var firstResult = comparer.Compare(item, _values[0]);
-            var secondResult = comparer.Compare(item, _values[1]);
+            foreach (var value in _middle.GetValues())
+                yield return value;
 
-            if (firstResult * secondResult == 0)
+            yield return _second;
+
+            foreach (var value in _right.GetValues())
+                yield return value;
+        }
+
+        public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
+        {
+            // Default split values.
+            splitLeft = splitRight = null;
+            splitValue = default(T);
+
+            // Get side to insert node.
+            var side = GetSide(item, comparer);
+
+            // Values are equal, no need to change tree.
+            if (side == Side.Same)
                 return this;
 
-            if (firstResult < 0)
-                index = 0;
-            else if (secondResult > 0)
-                index = 2;
-            else
-                index = 1;
+            // Insert value into proper node.
+            T pv;
+            ITwoThree<T> pl, pr;
+            var node = GetChild(side).Insert(item, comparer, out pl, out pr, out pv);
 
-            T propValue;
-            ITwoThree<T> propLeft, propRight;
-            var node = _children[index].Insert(item, comparer, out propLeft, out propRight, out propValue);
-
+            // Insert propagated single node.
             if (node != null)
-            {
-                var newChildren = _children.ToArray();
-                newChildren[index] = node;
+                return NewChangedNode(node, side);
 
-                return new ThreeNode<T>(_values, newChildren);
+            // Insert propagated two nodes and value, meaning it split.
+            // Sinde this is 3-node, we are at full capacity and need to split too.
+            switch (side)
+            {
+                case Side.Left:
+                    splitLeft = new TwoNode<T>(pv, pl, pr);
+                    splitRight = new TwoNode<T>(_second, _middle, _right);
+                    splitValue = _first;
+                    break;
+
+                case Side.Middle:
+                    splitLeft = new TwoNode<T>(_first, _left, pl);
+                    splitRight = new TwoNode<T>(_second, pr, _right);
+                    splitValue = pv;
+                    break;
+
+                case Side.Right:
+                    splitLeft = new TwoNode<T>(_first, _left, _middle);
+                    splitRight = new TwoNode<T>(pv, pl, pr);
+                    splitValue = _second;
+                    break;
             }
 
-            // Split
+            return null;
+        }
 
-            switch (index)
+        // Private methods
+
+        private Side GetSide(T item, IComparer<T> comparer)
+        {
+            var firstResult = comparer.Compare(item, _first);
+            var secondResult = comparer.Compare(item, _second);
+
+            if (firstResult * secondResult == 0)
+                return Side.Same;
+
+            if (firstResult < 0)
+                return Side.Left;
+            
+            if (secondResult > 0)
+                return Side.Right;
+            
+            return Side.Middle;
+        }
+
+        private ITwoThree<T> GetChild(Side side)
+        {
+            switch (side)
             {
-                case 0:
-                    left = new TwoNode<T>(propValue, propLeft, propRight);
-                    right = new TwoNode<T>(_values[1], _children[1], _children[2]);
-                    propagated = _values[0];
-                    return null;
+                case Side.Left:
+                    return _left;
 
-                case 1:
-                    left = new TwoNode<T>(_values[0], _children[0], propLeft);
-                    right = new TwoNode<T>(_values[0], propRight, _children[2]);
-                    propagated = propValue;
-                    return null;
+                case Side.Middle:
+                    return _middle;
+
+                case Side.Right:
+                    return _right;
 
                 default:
-                    left = new TwoNode<T>(_values[0], _children[0], _children[1]);
-                    right = new TwoNode<T>(propValue, propLeft, propRight);
-                    propagated = _values[1];
-                    return null;
+                    throw new InvalidOperationException();
+            }
+        }
+
+        private ITwoThree<T> NewChangedNode(ITwoThree<T> node, Side side)
+        {
+            switch (side)
+            {
+                case Side.Left:
+                    return new ThreeNode<T>(_first, _second, node, _middle, _right);
+
+                case Side.Middle:
+                    return new ThreeNode<T>(_first, _second, _left, node, _right);
+
+                case Side.Right:
+                    return new ThreeNode<T>(_first, _second, _left, _middle, node);
+
+                default:
+                    throw new InvalidOperationException();
             }
         }
     }

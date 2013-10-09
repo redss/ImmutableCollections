@@ -12,10 +12,15 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         // ITwoThree
 
-        public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> left, out ITwoThree<T> right, out T propagated)
+        public IEnumerable<T> GetValues()
         {
-            left = right = Instance;
-            propagated = item;
+            yield break;
+        }
+
+        public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
+        {
+            splitLeft = splitRight = Instance;
+            splitValue = item;
 
             return null;
         }
