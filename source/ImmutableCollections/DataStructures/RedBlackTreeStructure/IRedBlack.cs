@@ -46,21 +46,6 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
         IRedBlack<T> Update(T value, IComparer<T> comparer);
 
         /// <summary>
-        /// Removes node with given value (i. e. value that is equal according to given comparer).
-        /// </summary>
-        /// <param name="value">Removed value.</param>
-        /// <param name="comparer">Comperer used for comparing values.</param>
-        /// <returns>Propagated node with removed value or same node if value was not found.</returns>
-        IRedBlack<T> Remove(T value, IComparer<T> comparer);
-
-        /// <summary>
-        /// Removes the minimal value from the tree (leftmost).
-        /// </summary>
-        /// <param name="value">Removed value.</param>
-        /// <returns>Subtree with smallest value removed.</returns>
-        IRedBlack<T> RemoveMin(out T value);
-        
-        /// <summary>
         /// Gets all the values stored in this subtree.
         /// </summary>
         /// <returns>Collection of stored values.</returns>

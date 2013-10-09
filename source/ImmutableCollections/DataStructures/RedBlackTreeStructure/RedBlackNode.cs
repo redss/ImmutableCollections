@@ -72,49 +72,6 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
             return new RedBlackNode<T>(IsBlack, value, Left, Right);
         }
 
-        public IRedBlack<T> Remove(T value, IComparer<T> comparer)
-        {
-            Debug.Assert(comparer != null);
-
-            var result = comparer.Compare(value, Value);
-
-            if (result < 0)
-                return Balance(IsBlack, Value, Left.Remove(value, comparer), Right);
-
-            if (result > 0)
-                return Balance(IsBlack, Value, Left, Right.Remove(value, comparer));
-
-            // Value was found (result == 0).
-
-            if (Left.IsLeaf() && Right.IsLeaf())
-                return RedBlackLeaf<T>.Instance;
-
-            if (Left.IsLeaf() && Right.IsNode())
-                return Right;
-
-            if (Left.IsNode() && Right.IsLeaf())
-                return Left;
-
-            // Both children are nodes.
-
-            T newValue;
-            var newRight = Right.RemoveMin(out newValue);
-
-            return Balance(IsBlack, newValue, Left, newRight);
-        }
-
-        public IRedBlack<T> RemoveMin(out T value)
-        {
-            if (Left.IsNode())
-            {
-                var newLeft = Left.RemoveMin(out value);
-                return Balance(IsBlack, Value, newLeft, Right);
-            }
-
-            value = Value;
-            return Right;
-        }
-
         public IEnumerable<T> GetValues()
         {
             foreach (var v in Left.GetValues())

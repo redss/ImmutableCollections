@@ -50,16 +50,6 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
             return new RedBlackNode<T>(false, value, Instance, Instance);
         }
 
-        public IRedBlack<T> Remove(T value, IComparer<T> comparer)
-        {
-            return this;
-        }
-
-        public IRedBlack<T> RemoveMin(out T value)
-        {
-            throw new InvalidOperationException();
-        }
-
         public IEnumerable<T> GetValues()
         {
             yield break;

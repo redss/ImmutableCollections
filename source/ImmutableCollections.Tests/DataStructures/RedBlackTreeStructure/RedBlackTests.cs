@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ImmutableCollections.DataStructures.RedBlackTreeStructure;
+using ImmutableCollections.Tests.TestInfrastructure;
 using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
@@ -18,7 +19,7 @@ namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
         [Test]
         public void Update_Test()
         {
-            var items = GetRandomNumbers(100);
+            var items = RandomHelper.UniqueSequence(_random, 100);
             var node = items.Aggregate(RedBlackLeaf<int>.Instance, (current, i) => current.Update(i, _comparer).MakeRoot());
 
             node.Validate();
@@ -33,34 +34,6 @@ namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
             }
 
             CollectionAssert.AreEqual(items.OrderBy(x => x, _comparer), node.GetValues());
-        }
-
-        [Test]
-        public void Remove_Test()
-        {
-            var items = GetRandomNumbers(100);
-            var expected = new SortedSet<int>(items);
-
-            var node = items.Aggregate(RedBlackLeaf<int>.Instance, (current, i) => current.Update(i, _comparer).MakeRoot());
-
-            foreach (var i in items)
-            {
-                node = node.Remove(i, _comparer).MakeRoot();
-                node.Validate();
-
-                expected.Remove(i);
-
-                CollectionAssert.AreEqual(expected, node.GetValues());
-            }
-
-            Assert.IsInstanceOf<RedBlackLeaf<int>>(node);
-        }
-
-        // Private methods
-
-        private int[] GetRandomNumbers(int count)
-        {
-            return Enumerable.Repeat(0, count).Select(x => _random.Next()).ToArray();
         }
     }
 }
