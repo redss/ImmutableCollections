@@ -24,5 +24,10 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
             return null;
         }
+
+        public ITwoThree<T> Update(T item, IComparer<T> comparer)
+        {
+            return null;
+        }
     }
 }

@@ -10,7 +10,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
     /// <typeparam name="T">Type stored in the tree.</typeparam>
     class ThreeNode<T> : ITwoThree<T>
     {
-        private enum Side { Same, Left, Middle, Right }
+        private enum Side { Left, SameFirst, Middle, SameSecond, Right }
 
         private readonly T _first, _second;
 
@@ -59,7 +59,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             var side = GetSide(item, comparer);
 
             // Values are equal, no need to change tree.
-            if (side == Side.Same)
+            if (IsSame(side))
                 return this;
 
             // Insert value into proper node.
@@ -98,6 +98,22 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return null;
         }
 
+        public ITwoThree<T> Update(T item, IComparer<T> comparer)
+        {
+            var side = GetSide(item, comparer);
+
+            if (side == Side.SameFirst)
+                return item.Equals(_first) ? this : new ThreeNode<T>(item, _second, _left, _middle, _right);
+
+            if (side == Side.SameSecond)
+                return item.Equals(_second) ? this : new ThreeNode<T>(_first, item, _left, _middle, _right);
+
+            var child = GetChild(side);
+            var node = child.Update(item, comparer);
+
+            return child == node ? this : node;
+        }
+
         // Private methods
 
         private Side GetSide(T item, IComparer<T> comparer)
@@ -105,8 +121,11 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             var firstResult = comparer.Compare(item, _first);
             var secondResult = comparer.Compare(item, _second);
 
-            if (firstResult * secondResult == 0)
-                return Side.Same;
+            if (firstResult == 0)
+                return Side.SameFirst;
+
+            if (secondResult == 0)
+                return Side.SameSecond; ;
 
             if (firstResult < 0)
                 return Side.Left;
@@ -115,6 +134,11 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 return Side.Right;
             
             return Side.Middle;
+        }
+
+        private static bool IsSame(Side side)
+        {
+            return side == Side.SameFirst || side == Side.SameSecond;
         }
 
         private ITwoThree<T> GetChild(Side side)

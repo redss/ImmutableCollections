@@ -27,6 +27,17 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         /// <returns>Propagated node; same node if item was in this subtree;
         /// or null, if child node split (use out parameters in this case).</returns>
         [Pure]
-        ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue); 
+        ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue);
+
+        /// <summary>
+        /// Updates given item in the tree.
+        /// </summary>
+        /// <param name="item">Updated item. Note, that it can be different
+        /// from found value (but equal according to comparer).</param>
+        /// <param name="comparer">Comparer used for comparing values.</param>
+        /// <returns>Propagated node, if value was updated; same node, if items
+        /// were the same; or null, if item was not found.</returns>
+        [Pure]
+        ITwoThree<T> Update(T item, IComparer<T> comparer);
     }
 }

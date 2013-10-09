@@ -22,5 +22,12 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
             Assert.IsInstanceOf<Empty<int>>(splitLeft);
             Assert.IsInstanceOf<Empty<int>>(splitRight);
         }
+
+        [Test]
+        public void Update_ReturnsNull()
+        {
+            var result = Empty<int>.Instance.Update(10, Comparer<int>.Default);
+            Assert.IsNull(result);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 {
@@ -8,6 +9,8 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
     /// <typeparam name="T">Type stored in the tree.</typeparam>
     class TwoNode<T> : ITwoThree<T>
     {
+        private enum Side { Left, Right, Same }
+
         private readonly T _value;
 
         private readonly ITwoThree<T> _left, _right;
@@ -37,9 +40,9 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
         {
-            var result = comparer.Compare(item, _value);
+            var side = GetSide(item, comparer);
 
-            if (result == 0)
+            if (side == Side.Same)
             {
                 splitLeft = null;
                 splitRight = null;
@@ -48,13 +51,13 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 return this;
             }
 
-            var child = result < 0 ? _left : _right;
+            var child = GetChilf(side);
             var node = child.Insert(item, comparer, out splitLeft, out splitRight, out splitValue);
 
             if (node == null)
             {
                 // Child node split.
-                return result < 0
+                return side == Side.Left
                     ? new ThreeNode<T>(splitValue, _value, splitLeft, splitRight, _right)
                     : new ThreeNode<T>(_value, splitValue, _left, splitLeft, splitRight);
             }
@@ -64,9 +67,41 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             if (node == child)
                 return this;
 
-            return result < 0
+            return side == Side.Left
                 ? new TwoNode<T>(_value, node, _right)
                 : new TwoNode<T>(_value, _left, node);
+        }
+
+        public ITwoThree<T> Update(T item, IComparer<T> comparer)
+        {
+            var side = GetSide(item, comparer);
+
+            if (side == Side.Same)
+                return item.Equals(_value) ? this : new TwoNode<T>(item, _left, _right);
+
+            var child = GetChilf(side);
+            var node = child.Update(item, comparer);
+
+            return child == node ? this : node;
+        }
+
+        // Private members
+
+        private Side GetSide(T item, IComparer<T> comparer)
+        {
+            var result = comparer.Compare(item, _value);
+
+            if (result == 0)
+                return Side.Same;
+
+            return result < 0 ? Side.Left : Side.Right;
+        }
+
+        private ITwoThree<T> GetChilf(Side side)
+        {
+            Debug.Assert(side != Side.Same);
+
+            return side == Side.Left ? _left : _right;
         }
     }
 }
