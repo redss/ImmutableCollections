@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 {
@@ -23,6 +24,11 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return false;
         }
 
+        public T Min()
+        {
+            throw new InvalidOperationException();
+        }
+
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
         {
             splitLeft = splitRight = Instance;
@@ -34,6 +40,13 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         public ITwoThree<T> Update(T item, IComparer<T> comparer)
         {
             return null;
+        }
+
+        public ITwoThree<T> Remove(T item, IComparer<T> comparer, out bool removed)
+        {
+            // Item wasn't found.
+            removed = false;
+            return Instance;
         }
     }
 }

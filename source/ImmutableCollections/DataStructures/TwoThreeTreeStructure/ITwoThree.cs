@@ -27,6 +27,13 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         bool TryFind(T item, IComparer<T> comparer, out T value);
 
         /// <summary>
+        /// Gets the minimal value of the subtree.
+        /// </summary>
+        /// <returns>Smallest value.</returns>
+        [Pure]
+        T Min();
+
+        /// <summary>
         /// Inserts given value into the tree.
         /// </summary>
         /// <param name="item">Inserted value.</param>
@@ -49,5 +56,17 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         /// were the same; or null, if item was not found.</returns>
         [Pure]
         ITwoThree<T> Update(T item, IComparer<T> comparer);
+
+        /// <summary>
+        /// Removes the given item from the tree.
+        /// </summary>
+        /// <param name="item">Item equivalent to removed item.</param>
+        /// <param name="comparer">Comparer used to compare values.</param>
+        /// <param name="removed">True, if returned subtree depth was lessened 
+        /// due to removing (and thus redistributing or merging is needed).</param>
+        /// <returns>Subtree without given item; same tree, if it wasn't found; 
+        /// or empty node, if whole tree was deleted.</returns>
+        [Pure]
+        ITwoThree<T> Remove(T item, IComparer<T> comparer, out bool removed);
     }
 }

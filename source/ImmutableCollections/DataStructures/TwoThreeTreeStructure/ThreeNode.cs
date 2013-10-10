@@ -12,20 +12,20 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
     {
         private enum Side { Left, SameFirst, Middle, SameSecond, Right }
 
-        private readonly T _first, _second;
+        public readonly T First, Second;
 
-        private readonly ITwoThree<T> _left, _middle, _right; 
+        public readonly ITwoThree<T> Left, Middle, Right; 
 
         // Constructors
 
         public ThreeNode(T first, T second, ITwoThree<T> left, ITwoThree<T> middle, ITwoThree<T> right)
         {
-            _first = first;
-            _second = second;
+            First = first;
+            Second = second;
 
-            _left = left;
-            _middle = middle;
-            _right = right;
+            Left = left;
+            Middle = middle;
+            Right = right;
 
             Debug.Assert(left.IsNullOrEmpty() && middle.IsNullOrEmpty() && right.IsNullOrEmpty()
                 || !left.IsNullOrEmpty() && !middle.IsNullOrEmpty() && !right.IsNullOrEmpty());
@@ -35,17 +35,17 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public IEnumerable<T> GetValues()
         {
-            foreach (var value in _left.GetValues())
+            foreach (var value in Left.GetValues())
                 yield return value;
 
-            yield return _first;
+            yield return First;
 
-            foreach (var value in _middle.GetValues())
+            foreach (var value in Middle.GetValues())
                 yield return value;
 
-            yield return _second;
+            yield return Second;
 
-            foreach (var value in _right.GetValues())
+            foreach (var value in Right.GetValues())
                 yield return value;
         }
 
@@ -55,11 +55,16 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
             if (IsSame(side))
             {
-                value = side == Side.SameFirst ? _first : _second;
+                value = side == Side.SameFirst ? First : Second;
                 return true;
             }
 
             return GetChild(side).TryFind(item, comparer, out value);
+        }
+
+        public T Min()
+        {
+            return Left is Empty<T> ? First : Left.Min();
         }
 
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
@@ -91,20 +96,20 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             {
                 case Side.Left:
                     splitLeft = new TwoNode<T>(pv, pl, pr);
-                    splitRight = new TwoNode<T>(_second, _middle, _right);
-                    splitValue = _first;
+                    splitRight = new TwoNode<T>(Second, Middle, Right);
+                    splitValue = First;
                     break;
 
                 case Side.Middle:
-                    splitLeft = new TwoNode<T>(_first, _left, pl);
-                    splitRight = new TwoNode<T>(_second, pr, _right);
+                    splitLeft = new TwoNode<T>(First, Left, pl);
+                    splitRight = new TwoNode<T>(Second, pr, Right);
                     splitValue = pv;
                     break;
 
                 case Side.Right:
-                    splitLeft = new TwoNode<T>(_first, _left, _middle);
+                    splitLeft = new TwoNode<T>(First, Left, Middle);
                     splitRight = new TwoNode<T>(pv, pl, pr);
-                    splitValue = _second;
+                    splitValue = Second;
                     break;
             }
 
@@ -116,10 +121,10 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             var side = GetSide(item, comparer);
 
             if (side == Side.SameFirst)
-                return item.Equals(_first) ? this : new ThreeNode<T>(item, _second, _left, _middle, _right);
+                return item.Equals(First) ? this : new ThreeNode<T>(item, Second, Left, Middle, Right);
 
             if (side == Side.SameSecond)
-                return item.Equals(_second) ? this : new ThreeNode<T>(_first, item, _left, _middle, _right);
+                return item.Equals(Second) ? this : new ThreeNode<T>(First, item, Left, Middle, Right);
 
             var child = GetChild(side);
             var node = child.Update(item, comparer);
@@ -127,18 +132,107 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return child == node ? this : node;
         }
 
+        public ITwoThree<T> Remove(T item, IComparer<T> comparer, out bool removed)
+        {
+            removed = false;
+            var side = GetSide(item, comparer);
+
+            if (side == Side.Left)
+            {
+                bool leftRemoved;
+                var newLeft = Left.Remove(item, comparer, out leftRemoved);
+
+                if (newLeft == Left)
+                    return this;
+
+                if (!leftRemoved)
+                    return new ThreeNode<T>(First, Second, newLeft, Middle, Right);
+
+                return Redistribute(First, Second, newLeft, Middle, Right, side, out removed);
+            }
+
+            if (side == Side.Middle)
+            {
+                bool middleRemoved;
+                var newMiddle = Middle.Remove(item, comparer, out middleRemoved);
+
+                if (newMiddle == Middle)
+                    return this;
+
+                if (!middleRemoved)
+                    return new ThreeNode<T>(First, Second, Left, newMiddle, Right);
+
+                return Redistribute(First, Second, Left, newMiddle, Right, side, out removed);
+            }
+
+            if (side == Side.Right)
+            {
+                bool rightRemoved;
+                var newRight = Right.Remove(item, comparer, out rightRemoved);
+
+                if (newRight == Right)
+                    return this;
+
+                if (!rightRemoved)
+                    return new ThreeNode<T>(First, Second, Left, Middle, newRight);
+
+                return Redistribute(First, Second, Left, Middle, newRight, side, out removed);
+            }
+
+            if (IsLeaf())
+            {
+                if (side == Side.SameFirst)
+                {
+                    return new TwoNode<T>(Second, Empty<T>.Instance, Empty<T>.Instance);
+                }
+
+                if (side == Side.SameSecond)
+                {
+                    return new TwoNode<T>(First, Empty<T>.Instance, Empty<T>.Instance);
+                }
+            }
+
+            if (side == Side.SameFirst)
+            {
+                var cons = Middle.Min();
+
+                bool consRemoved;
+                var newCons = Middle.Remove(cons, comparer, out consRemoved);
+
+                if (consRemoved)
+                    return Redistribute(cons, Second, Left, newCons, Right, Side.Middle, out removed);
+
+                return new ThreeNode<T>(cons, Second, Left, newCons, Right);
+            }
+
+            if (side == Side.SameSecond)
+            {
+                var cons = Right.Min();
+
+                bool consRemoved;
+                var newCons = Right.Remove(cons, comparer, out consRemoved);
+
+                if (consRemoved)
+                    return Redistribute(First, cons, Left, Middle, newCons, Side.Right, out removed);
+
+                return new ThreeNode<T>(First, cons, Left, Middle, newCons);
+            }
+
+            throw new InvalidOperationException();
+        }
+
         // Private methods
 
         private Side GetSide(T item, IComparer<T> comparer)
         {
-            var firstResult = comparer.Compare(item, _first);
-            var secondResult = comparer.Compare(item, _second);
+            var firstResult = comparer.Compare(item, First);
+            var secondResult = comparer.Compare(item, Second);
 
             if (firstResult == 0)
                 return Side.SameFirst;
 
             if (secondResult == 0)
-                return Side.SameSecond; ;
+                return Side.SameSecond;
 
             if (firstResult < 0)
                 return Side.Left;
@@ -159,13 +253,13 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             switch (side)
             {
                 case Side.Left:
-                    return _left;
+                    return Left;
 
                 case Side.Middle:
-                    return _middle;
+                    return Middle;
 
                 case Side.Right:
-                    return _right;
+                    return Right;
 
                 default:
                     throw new InvalidOperationException();
@@ -177,17 +271,32 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             switch (side)
             {
                 case Side.Left:
-                    return new ThreeNode<T>(_first, _second, node, _middle, _right);
+                    return new ThreeNode<T>(First, Second, node, Middle, Right);
 
                 case Side.Middle:
-                    return new ThreeNode<T>(_first, _second, _left, node, _right);
+                    return new ThreeNode<T>(First, Second, Left, node, Right);
 
                 case Side.Right:
-                    return new ThreeNode<T>(_first, _second, _left, _middle, node);
+                    return new ThreeNode<T>(First, Second, Left, Middle, node);
 
                 default:
                     throw new InvalidOperationException();
             }
+        }
+
+        private bool IsLeaf()
+        {
+            return Left is Empty<T> && Right is Empty<T>;
+        }
+
+        private ITwoThree<T> Redistribute(T first, T second, ITwoThree<T> left, 
+            ITwoThree<T> middle, ITwoThree<T> right, Side side, out bool removed)
+        {
+            removed = false;
+
+            // TODO
+
+            return null;
         }
     }
 }
