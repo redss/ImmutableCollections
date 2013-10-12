@@ -150,6 +150,25 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return RemoveElement(comparer, side, out removed);
         }
 
+        public bool IsBalanced(out int depth)
+        {
+            int ld, md, rd;
+
+            var lv = Left.IsBalanced(out ld);
+            var mv = Middle.IsBalanced(out md);
+            var rv = Right.IsBalanced(out rd);
+
+            depth = ld + 1;
+            return lv && mv && rv && (ld == rd) && (ld == md);
+        }
+
+        // Public methods
+
+        public override string ToString()
+        {
+            return string.Format("3-node({0}, {1})", First, Second);
+        }
+
         // Private methods
 
         private Side GetSide(T item, IComparer<T> comparer)
@@ -307,10 +326,10 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             if (!consequentRemoved)
             {
                 removed = false;
-                return NewChangedWithConsequent(consequent, newChild, consequentSide);
+                return NewChangedWithConsequent(consequent, newChild, side);
             }
 
-            return RedistributeCons(consequent, newChild, consequentSide, out removed);
+            return RedistributeCons(consequent, newChild, side, out removed);
         }
 
         private ITwoThree<T> RedistributeFrom(ITwoThree<T> changed, Side side, out bool removed)
@@ -426,7 +445,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 var m = new TwoNode<T>(second, middle, sr.Left);
                 var r = new TwoNode<T>(sr.Second, sr.Middle, sr.Right);
 
-                return new ThreeNode<T>(first, sr.First, l, r, m);
+                return new ThreeNode<T>(first, sr.First, l, m, r);
             }
 
             // Case C
@@ -438,7 +457,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 var m = new TwoNode<T>(first, sl.Right, middle);
                 var r = right;
 
-                return new ThreeNode<T>(sl.First, second, l, m, r);
+                return new ThreeNode<T>(sl.Second, second, l, m, r);
             }
 
             throw new InvalidOperationException();
@@ -479,7 +498,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                 var m = new TwoNode<T>(first, sl.Right, sm.Left);
                 var r = new TwoNode<T>(second, sm.Right, right);
 
-                return new ThreeNode<T>(sl.First, sm.Value, l, m, r);
+                return new ThreeNode<T>(sl.Second, sm.Value, l, m, r);
             }
 
             throw new InvalidOperationException();

@@ -48,5 +48,18 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             removed = false;
             return Instance;
         }
+
+        public bool IsBalanced(out int depth)
+        {
+            depth = 0;
+            return true;
+        }
+
+        // Public methods
+
+        public override string ToString()
+        {
+            return string.Format("Empty");
+        }
     }
 }

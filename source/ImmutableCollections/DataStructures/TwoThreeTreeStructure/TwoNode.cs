@@ -165,6 +165,24 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return new TwoNode<T>(consequent, Left, newCons);
         }
 
+        public bool IsBalanced(out int depth)
+        {
+            int ld, rd;
+
+            var lv = Left.IsBalanced(out ld);
+            var rv = Right.IsBalanced(out rd);
+
+            depth = ld + 1;
+            return lv && rv && ld == rd;
+        }
+
+        // Public methods
+
+        public override string ToString()
+        {
+            return string.Format("2-node({0})", Value);
+        }
+
         // Private members
 
         private Side GetSide(T item, IComparer<T> comparer)
@@ -216,7 +234,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
             if (removedSide == Side.Left)
             {
-                if (left is ThreeNode<T>)
+                if (right is ThreeNode<T>)
                 {
                     // Left redistribute case.
 
@@ -229,7 +247,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
                 // Left merge case.
 
-                var m = (TwoNode<T>) left;
+                var m = (TwoNode<T>) right;
 
                 removed = true;
                 return new ThreeNode<T>(value, m.Value, left, m.Left, m.Right);

@@ -68,5 +68,13 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         /// or empty node, if whole tree was deleted.</returns>
         [Pure]
         ITwoThree<T> Remove(T item, IComparer<T> comparer, out bool removed);
+
+        /// <summary>
+        /// Diagnostic method checking if 2-3 Tree is balanced.
+        /// </summary>
+        /// <param name="depth">Depth of the tree.</param>
+        /// <returns>True, if tree is balanced.</returns>
+        [Pure]
+        bool IsBalanced(out int depth);
     }
 }

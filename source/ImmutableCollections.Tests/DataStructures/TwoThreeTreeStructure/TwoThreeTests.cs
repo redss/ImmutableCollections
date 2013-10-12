@@ -51,6 +51,8 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
             }
         }
 
+        // Insert tests
+
         [Test]
         public void Insert_Test()
         {
@@ -76,6 +78,8 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
                 Assert.AreSame(node, result);
             }
         }
+
+        // Update tests
 
         [Test]
         public void UpdateExistingEqualElement_ReturnsSameNode()
@@ -127,6 +131,38 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
             }
         }
 
+        // Remove tests
+
+        [Test]
+        public void Remove_Test()
+        {
+            const int count = 100;
+            var items = RandomHelper.UniqueSequence(_random, count);
+            var itemSet = new SortedSet<int>(items);
+
+            var node = CreateTree(items);
+
+            var shuffled = RandomHelper.Shuffle(_random, items);
+
+            foreach (var i in shuffled)
+            {
+                node = TwoThreeHelper.Remove(node, i);
+                itemSet.Remove(i);
+
+                var values = node.GetValues().ToArray();
+                
+                Assert.True(node.IsBalanced());
+                Assert.AreEqual(itemSet.Count, values.Length);
+
+                CollectionAssert.IsOrdered(values);
+                CollectionAssert.DoesNotContain(values, i);
+                CollectionAssert.AllItemsAreUnique(values);
+                CollectionAssert.AreEqual(itemSet, values);
+            }
+
+            Assert.IsInstanceOf<Empty<int>>(node);
+        }
+
         // Private methods
 
         private ITwoThree<T> CreateTree<T>(IEnumerable<T> items, IComparer<T> comparer = null)
@@ -134,7 +170,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
             return items.Aggregate((ITwoThree<T>)Empty<T>.Instance, (current, item) => TwoThreeHelper.Insert(current, item, comparer));
         }
 
-        private int[] GetAbsentElements(int[] items)
+        private static int[] GetAbsentElements(int[] items)
         {
             var absentMiddleElement = items.ElementAt(items.Count() / 2);
 

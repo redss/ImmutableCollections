@@ -25,5 +25,22 @@ namespace ImmutableCollections.Tests.TestInfrastructure
 
             return sequence.ToArray();
         }
+
+        public static T[] Shuffle<T>(Random random, IEnumerable<T> items)
+        {
+            var sequence = items.ToArray();
+            
+            var n = sequence.Length;
+            while (n > 1)
+            {
+                n--;
+                var k = random.Next(n + 1);
+                T value = sequence[k];
+                sequence[k] = sequence[n];
+                sequence[n] = value;
+            }
+
+            return sequence;
+        }
     }
 }
