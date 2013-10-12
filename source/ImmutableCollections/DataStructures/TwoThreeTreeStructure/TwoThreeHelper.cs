@@ -14,5 +14,13 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
             return node ?? new TwoNode<T>(propagated, left, right);
         }
+
+        public static ITwoThree<T> Remove<T>(ITwoThree<T> root, T item, IComparer<T> comparer = null)
+        {
+            comparer = comparer ?? Comparer<T>.Default;
+
+            bool removed;
+            return root.Remove(item, comparer, out removed);
+        }
     }
 }

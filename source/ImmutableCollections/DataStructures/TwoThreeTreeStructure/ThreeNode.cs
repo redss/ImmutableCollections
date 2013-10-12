@@ -134,91 +134,20 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public ITwoThree<T> Remove(T item, IComparer<T> comparer, out bool removed)
         {
-            removed = false;
             var side = GetSide(item, comparer);
 
-            if (side == Side.Left)
-            {
-                bool leftRemoved;
-                var newLeft = Left.Remove(item, comparer, out leftRemoved);
+            // Element was not found, continue search.
+            if (IsSide(side))
+                return RemoveFromSide(item, comparer, side, out removed);
 
-                if (newLeft == Left)
-                    return this;
+            // Element was found.
 
-                if (!leftRemoved)
-                    return new ThreeNode<T>(First, Second, newLeft, Middle, Right);
-
-                return Redistribute(First, Second, newLeft, Middle, Right, side, out removed);
-            }
-
-            if (side == Side.Middle)
-            {
-                bool middleRemoved;
-                var newMiddle = Middle.Remove(item, comparer, out middleRemoved);
-
-                if (newMiddle == Middle)
-                    return this;
-
-                if (!middleRemoved)
-                    return new ThreeNode<T>(First, Second, Left, newMiddle, Right);
-
-                return Redistribute(First, Second, Left, newMiddle, Right, side, out removed);
-            }
-
-            if (side == Side.Right)
-            {
-                bool rightRemoved;
-                var newRight = Right.Remove(item, comparer, out rightRemoved);
-
-                if (newRight == Right)
-                    return this;
-
-                if (!rightRemoved)
-                    return new ThreeNode<T>(First, Second, Left, Middle, newRight);
-
-                return Redistribute(First, Second, Left, Middle, newRight, side, out removed);
-            }
-
+            // We are at leaf - just shrink to 2-node.
             if (IsLeaf())
-            {
-                if (side == Side.SameFirst)
-                {
-                    return new TwoNode<T>(Second, Empty<T>.Instance, Empty<T>.Instance);
-                }
+                return Shrink(side, out removed);
 
-                if (side == Side.SameSecond)
-                {
-                    return new TwoNode<T>(First, Empty<T>.Instance, Empty<T>.Instance);
-                }
-            }
-
-            if (side == Side.SameFirst)
-            {
-                var cons = Middle.Min();
-
-                bool consRemoved;
-                var newCons = Middle.Remove(cons, comparer, out consRemoved);
-
-                if (consRemoved)
-                    return Redistribute(cons, Second, Left, newCons, Right, Side.Middle, out removed);
-
-                return new ThreeNode<T>(cons, Second, Left, newCons, Right);
-            }
-
-            if (side == Side.SameSecond)
-            {
-                var cons = Right.Min();
-
-                bool consRemoved;
-                var newCons = Right.Remove(cons, comparer, out consRemoved);
-
-                if (consRemoved)
-                    return Redistribute(First, cons, Left, Middle, newCons, Side.Right, out removed);
-
-                return new ThreeNode<T>(First, cons, Left, Middle, newCons);
-            }
-
-            throw new InvalidOperationException();
+            // We aren't at leaf - find removed value consequent.
+            return RemoveElement(comparer, side, out removed);
         }
 
         // Private methods
@@ -243,9 +172,29 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return Side.Middle;
         }
 
+        private Side GetConsequentSide(Side side)
+        {
+            switch (side)
+            {
+                case Side.SameFirst:
+                    return Side.Middle;
+                    
+                case Side.SameSecond:
+                    return Side.Right;
+
+                default:
+                    throw new ArgumentOutOfRangeException("side");
+            }
+        }
+
         private static bool IsSame(Side side)
         {
             return side == Side.SameFirst || side == Side.SameSecond;
+        }
+
+        private static bool IsSide(Side side)
+        {
+            return side == Side.Left || side == Side.Middle || side == Side.Right;
         }
 
         private ITwoThree<T> GetChild(Side side)
@@ -284,19 +233,256 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             }
         }
 
+        private ITwoThree<T> NewChangedWithConsequent(T value, ITwoThree<T> node, Side side)
+        {
+            switch (side)
+            {
+                case Side.SameFirst:
+                    return new ThreeNode<T>(value, Second, Left, node, Right);
+
+                case Side.SameSecond:
+                    return new ThreeNode<T>(First, value, Left, Middle, node);
+
+                default:
+                    throw new ArgumentOutOfRangeException("side");
+            }
+        }
+
         private bool IsLeaf()
         {
             return Left is Empty<T> && Right is Empty<T>;
         }
 
-        private ITwoThree<T> Redistribute(T first, T second, ITwoThree<T> left, 
+        private TwoNode<T> Shrink(Side side, out bool removed)
+        {
+            removed = false;
+
+            switch (side)
+            {
+                case Side.SameFirst:
+                    return new TwoNode<T>(Second, Empty<T>.Instance, Empty<T>.Instance);
+
+                case Side.SameSecond:
+                    return new TwoNode<T>(First, Empty<T>.Instance, Empty<T>.Instance);
+
+                default:
+                    throw new ArgumentOutOfRangeException("side");
+            }
+        }
+
+        private ITwoThree<T> RemoveFromSide(T item, IComparer<T> comparer, Side side, out bool removed)
+        {
+            removed = false;
+
+            var child = GetChild(side);
+
+            // Remove item from child.
+            bool childRemoved;
+            var newChild = child.Remove(item, comparer, out childRemoved);
+
+            // Element was not found and nothing was removed.
+            if (newChild == child)
+                return this;
+
+            // Child subtree was not shortened, so we just propagate change.
+            if (!childRemoved)
+                return NewChangedNode(newChild, side);
+
+            // Child subtree was shortened, we need to redistribute nodes.
+            return RedistributeFrom(newChild, side, out removed);
+        }
+
+        private ITwoThree<T> RemoveElement(IComparer<T> comparer, Side side, out bool removed)
+        {
+            Debug.Assert(side == Side.SameFirst || side == Side.SameSecond);
+
+            var consequentSide = GetConsequentSide(side);
+            var child = GetChild(consequentSide);
+
+            var consequent = GetChild(consequentSide).Min();
+
+            bool consequentRemoved;
+            var newChild = child.Remove(consequent, comparer, out consequentRemoved);
+
+            if (!consequentRemoved)
+            {
+                removed = false;
+                return NewChangedWithConsequent(consequent, newChild, consequentSide);
+            }
+
+            return RedistributeCons(consequent, newChild, consequentSide, out removed);
+        }
+
+        private ITwoThree<T> RedistributeFrom(ITwoThree<T> changed, Side side, out bool removed)
+        {
+            switch (side)
+            {
+                case Side.Left:
+                    return Redistribute(First, Second, changed, Middle, Right, side, out removed);
+
+                case Side.Middle:
+                    return Redistribute(First, Second, Left, changed, Right, side, out removed);
+
+                case Side.Right:
+                    return Redistribute(First, Second, Left, Middle, changed, side, out removed);
+
+                default:
+                    throw new ArgumentOutOfRangeException("side");
+            }
+        }
+
+        private ITwoThree<T> RedistributeCons(T value, ITwoThree<T> changed, Side side, out bool removed)
+        {
+            switch (side)
+            {
+                case Side.SameFirst:
+                    return Redistribute(value, Second, Left, changed, Right, Side.Middle, out removed);
+
+                case Side.SameSecond:
+                    return Redistribute(First, value, Left, Middle, changed, Side.Right, out removed);
+
+                default:
+                    throw new ArgumentOutOfRangeException("side");
+            }
+        }
+
+        private static ITwoThree<T> Redistribute(T first, T second, ITwoThree<T> left, 
             ITwoThree<T> middle, ITwoThree<T> right, Side side, out bool removed)
         {
             removed = false;
 
-            // TODO
+            if (side == Side.Left)
+                return RedistributeLeft(first, second, left, middle, right);
 
-            return null;
+            if (side == Side.Middle)
+                return RedistributeMiddle(first, second, left, middle, right);
+
+            if (side == Side.Right)
+                return RedistributeRight(first, second, left, middle, right);
+            
+            throw new ArgumentOutOfRangeException("side");
+        }
+
+        private static ITwoThree<T> RedistributeLeft(T first, T second, ITwoThree<T> left, ITwoThree<T> middle, ITwoThree<T> right)
+        {
+            // Case A
+            if (middle is TwoNode<T> && right is TwoNode<T>)
+            {
+                var sm = (TwoNode<T>) middle;
+
+                var l = new ThreeNode<T>(first, sm.Value, left, sm.Left, sm.Right);
+                var r = right;
+
+                return new TwoNode<T>(second, l, r);
+            }
+
+            // Case B
+            if (middle is ThreeNode<T>)
+            {
+                var sm = (ThreeNode<T>) middle;
+
+                var l = new TwoNode<T>(first, left, sm.Left);
+                var m = new TwoNode<T>(sm.Second, sm.Middle, sm.Right);
+                var r = right;
+
+                return new ThreeNode<T>(sm.First, second, l, m, r);
+            }
+
+            // Case C
+            if (middle is TwoNode<T> && right is ThreeNode<T>)
+            {
+                var sm = (TwoNode<T>) middle;
+                var sr = (ThreeNode<T>) right;
+
+                var l = new TwoNode<T>(first, left, sm.Left);
+                var m = new TwoNode<T>(second, sm.Right, sr.Left);
+                var r = new TwoNode<T>(sr.Second, sr.Middle, sr.Right);
+
+                return new ThreeNode<T>(sm.Value, sr.First, l, m, r);
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        private static ITwoThree<T> RedistributeMiddle(T first, T second, ITwoThree<T> left, ITwoThree<T> middle, ITwoThree<T> right)
+        {
+            // Case A
+            if (left is TwoNode<T> && right is TwoNode<T>)
+            {
+                var sl = (TwoNode<T>) left;
+
+                var l = new ThreeNode<T>(sl.Value, first, sl.Left, sl.Right, middle);
+                var r = right;
+
+                return new TwoNode<T>(second, l, r);
+            }
+
+            // Case B
+            if (right is ThreeNode<T>)
+            {
+                var sr = (ThreeNode<T>) right;
+
+                var l = left;
+                var m = new TwoNode<T>(second, middle, sr.Left);
+                var r = new TwoNode<T>(sr.Second, sr.Middle, sr.Right);
+
+                return new ThreeNode<T>(first, sr.First, l, r, m);
+            }
+
+            // Case C
+            if (left is ThreeNode<T> && right is TwoNode<T>)
+            {
+                var sl = (ThreeNode<T>) left;
+
+                var l = new TwoNode<T>(sl.First, sl.Left, sl.Middle);
+                var m = new TwoNode<T>(first, sl.Right, middle);
+                var r = right;
+
+                return new ThreeNode<T>(sl.First, second, l, m, r);
+            }
+
+            throw new InvalidOperationException();
+        }
+
+        private static ITwoThree<T> RedistributeRight(T first, T second, ITwoThree<T> left, ITwoThree<T> middle, ITwoThree<T> right)
+        {
+            // Case A
+            if (left is TwoNode<T> && middle is TwoNode<T>)
+            {
+                var sm = (TwoNode<T>) middle;
+
+                var l = left;
+                var r = new ThreeNode<T>(sm.Value, second, sm.Left, sm.Right, right);
+
+                return new TwoNode<T>(first, l, r);
+            }
+
+            // Case B
+            if (middle is ThreeNode<T>)
+            {
+                var sm = (ThreeNode<T>) middle;
+
+                var l = left;
+                var m = new TwoNode<T>(sm.First, sm.Left, sm.Middle);
+                var r = new TwoNode<T>(second, sm.Right, right);
+
+                return new ThreeNode<T>(first, sm.Second, l, m, r);
+            }
+
+            // Case C
+            if (left is ThreeNode<T> && middle is TwoNode<T>)
+            {
+                var sl = (ThreeNode<T>) left;
+                var sm = (TwoNode<T>) middle;
+
+                var l = new TwoNode<T>(sl.First, sl.Left, sl.Middle);
+                var m = new TwoNode<T>(first, sl.Right, sm.Left);
+                var r = new TwoNode<T>(second, sm.Right, right);
+
+                return new ThreeNode<T>(sl.First, sm.Value, l, m, r);
+            }
+
+            throw new InvalidOperationException();
         }
     }
 }
