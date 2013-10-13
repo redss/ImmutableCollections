@@ -67,6 +67,7 @@
     </Compile>
     <Compile Include="ImmutableHashSet.cs" />
     <Compile Include="ImmutableLinkedList.cs" />
+    <Compile Include="ImmutableSortedDictionary.cs" />
     <Compile Include="ImmutableSortedSet.cs" />
     <Compile Include="ImmutableVector.cs" />
     <Compile Include="DataStructures\VectorStructure\EmptyVector.cs" />

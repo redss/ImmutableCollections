@@ -10,6 +10,7 @@ namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(ImmutableCopyDictionary<string, int>))]
     [TestFixture(typeof(ImmutableHashDictionary<string, int>))]
+    [TestFixture(typeof(ImmutableSortedDictionary<string, int>))]
     public class ImmutableDirectoryTests<TDictionary>
         where TDictionary : IImmutableDictionary<string, int>, new()
     {
