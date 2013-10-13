@@ -57,6 +57,21 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
             return node.TryFind(searched, comparer, out value);
         }
 
+        public IRedBlack<T> Insert(T value, IComparer<T> comparer)
+        {
+            Debug.Assert(comparer != null);
+
+            var result = comparer.Compare(value, Value);
+
+            if (result < 0)
+                return Balance(IsBlack, _value, Left.Insert(value, comparer), Right);
+
+            if (result > 0)
+                return Balance(IsBlack, _value, Left, Right.Insert(value, comparer));
+
+            return this;
+        }
+
         public IRedBlack<T> Update(T value, IComparer<T> comparer)
         {
             Debug.Assert(comparer != null);
@@ -105,8 +120,11 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
 
         // Private methods
 
-        private static IRedBlack<T> Balance(bool isBlack, T value, IRedBlack<T> left, IRedBlack<T> right)
+        private IRedBlack<T> Balance(bool isBlack, T value, IRedBlack<T> left, IRedBlack<T> right)
         {
+            if (Value.Equals(value) && Left == left && Right == right)
+                return this;
+
             return RedBlackHelper.Balance(isBlack, value, left, right);
         }
     }

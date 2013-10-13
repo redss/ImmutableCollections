@@ -1,10 +1,24 @@
-﻿namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
+﻿using System.Collections.Generic;
+
+namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
 {
     /// <summary>
     /// Helper methods for Red Black Tree operations.
     /// </summary>
     static class RedBlackHelper
     {
+        public static IRedBlack<T> Insert<T>(IRedBlack<T> root, T item, IComparer<T> comparer = null)
+        {
+            comparer = comparer ?? Comparer<T>.Default;
+            return root.Insert(item, comparer).MakeRoot();
+        }
+
+        public static IRedBlack<T> Update<T>(IRedBlack<T> root, T item, IComparer<T> comparer = null)
+        {
+            comparer = comparer ?? Comparer<T>.Default;
+            return root.Update(item, comparer).MakeRoot();
+        }
+
         /// <summary>
         /// Balances the given subtree.
         /// </summary>
@@ -52,6 +66,8 @@
 
             return new RedBlackNode<T>(isBlack, value, left, right);
         }
+
+        // Private methods
 
         /// <summary>
         /// Creates new black node.

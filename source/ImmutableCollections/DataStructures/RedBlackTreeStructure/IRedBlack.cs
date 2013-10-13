@@ -38,6 +38,14 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
         bool TryFind(T searched, IComparer<T> comparer, out T value);
 
         /// <summary>
+        /// Inserts given value into the tree.
+        /// </summary>
+        /// <param name="value">Value to be inserted.</param>
+        /// <param name="comparer">Comparer used for comparing values.</param>
+        /// <returns>Propagated node.</returns>
+        IRedBlack<T> Insert(T value, IComparer<T> comparer);
+        
+        /// <summary>
         /// Updated or inserts node with given value (i. e. value that is equal according to given comparer).
         /// </summary>
         /// <param name="value">Inserted or updated value.</param>

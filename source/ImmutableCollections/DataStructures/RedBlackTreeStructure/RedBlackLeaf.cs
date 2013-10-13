@@ -26,17 +26,17 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
 
         public T Value
         {
-            get { throw new InvalidOperationException(); }
+            get { return default(T); }
         }
 
         public IRedBlack<T> Left
         {
-            get { throw new InvalidOperationException(); }
+            get { return null; }
         }
 
         public IRedBlack<T> Right
         {
-            get { throw new InvalidOperationException(); }
+            get { return null; }
         }
 
         public bool TryFind(T searched, IComparer<T> comparer, out T value)
@@ -45,9 +45,14 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
             return false;
         }
 
-        public IRedBlack<T> Update(T value, IComparer<T> comparer)
+        public IRedBlack<T> Insert(T value, IComparer<T> comparer)
         {
             return new RedBlackNode<T>(false, value, Instance, Instance);
+        }
+
+        public IRedBlack<T> Update(T value, IComparer<T> comparer)
+        {
+            return this;
         }
 
         public IEnumerable<T> GetValues()
