@@ -156,7 +156,8 @@ namespace ImmutableCollections
                 }
             }
 
-            throw GetKeyNotFoundException(key);
+            var newArray = _items.Append(new KeyValuePair<TKey, TValue>(key, value));
+            return new ImmutableCopyDictionary<TKey, TValue>(newArray);
         }
 
         [Pure]

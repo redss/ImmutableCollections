@@ -35,13 +35,17 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\PatriciaTrieStructure\SetBackend.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\DictionaryOperations\DictionaryAddOperation.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\DictionaryOperations\DictionaryRemoveOperation.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\DictionaryOperations\DictionarySetValueOperation.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\IPatriciaOperation.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\EmptyPatriciaTrie.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\IPatriciaNode.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaBranch.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaLeaf.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaHelper.cs" />
-    <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaNodeExceptions.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\SetOperations\SetAddOperation.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\SetOperations\SetRemoveOperation.cs" />
     <Compile Include="DataStructures\RedBlackTreeStructure\InvalidRedBlackTreeException.cs" />
     <Compile Include="DataStructures\RedBlackTreeStructure\IRedBlack.cs" />
     <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackExtensions.cs" />

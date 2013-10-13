@@ -1,7 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure;
+using ImmutableCollections.DataStructures.PatriciaTrieStructure.SetOperations;
+
+// ReSharper disable CompareNonConstrainedGenericWithNull
 
 namespace ImmutableCollections
 {
@@ -11,25 +15,28 @@ namespace ImmutableCollections
     /// <typeparam name="T">The type of the elements in the collection.</typeparam>
     public class ImmutableHashSet<T> : IImmutableSet<T>
     {
-        private readonly IPatriciaNode<SetBackend<T>> _root;
+        private readonly IPatriciaNode<T> _root;
 
         // Constructors
 
         public ImmutableHashSet()
         {
-            _root = new EmptyPatriciaTrie<SetBackend<T>>();
+            _root = EmptyPatriciaTrie<T>.Instance;
         }
 
-        private ImmutableHashSet(IPatriciaNode<SetBackend<T>> root)
+        private ImmutableHashSet(IPatriciaNode<T> root)
         {
-            _root = root ?? new EmptyPatriciaTrie<SetBackend<T>>();
+            if (root == null)
+                throw new ArgumentNullException("root");
+
+            _root = root;
         }
 
         // IEnumerable
 
         public IEnumerator<T> GetEnumerator()
         {
-            return _root.GetItems().SelectMany(i => i.GetValues()).GetEnumerator();
+            return _root.GetItems().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -41,8 +48,13 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> Add(T item)
         {
-            var newRoot = Add(_root, item);
-            return new ImmutableHashSet<T>(newRoot);
+            if (item == null)
+                throw new ArgumentNullException("item");
+
+            var operation = new SetAddOperation<T>(item);
+            var newRoot = _root.Modify(item.GetHashCode(), operation);
+
+            return newRoot == _root ? this : new ImmutableHashSet<T>(newRoot);
         }
         
         IImmutableSet<T> IImmutableSet<T>.Add(T item)
@@ -57,8 +69,13 @@ namespace ImmutableCollections
 
         public ImmutableHashSet<T> Remove(T item)
         {
-            var newRoot = Remove(_root, item);
-            return new ImmutableHashSet<T>(newRoot);
+            if (item == null)
+                throw new ArgumentNullException("item");
+
+            var operation = new SetRemoveOperation<T>(item);
+            var newRoot = _root.Modify(item.GetHashCode(), operation);
+
+            return newRoot == _root ? this : new ImmutableHashSet<T>(newRoot);
         }
 
         IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
@@ -73,25 +90,13 @@ namespace ImmutableCollections
 
         public int Length
         {
-            get { return _root.GetItems().Sum(x => x.GetValues().Count()); }
+            get { return _root.GetItems().Count(); }
         }
 
         public bool Contains(T item)
         {
-            var backend = _root.Find(item.GetHashCode());
-            return backend != null && backend.Contains(item);
-        }
-
-        // Private methods
-
-        private IPatriciaNode<SetBackend<T>> Add(IPatriciaNode<SetBackend<T>> node, T item)
-        {
-            return node.Modify(item.GetHashCode(), i => i == null ? new SetBackend<T>(item) : i.Insert(item));
-        }
-
-        private IPatriciaNode<SetBackend<T>> Remove(IPatriciaNode<SetBackend<T>> node, T item)
-        {
-            return node.Modify(item.GetHashCode(), i => i == null ? null : i.Remove(item));
+            var items = _root.Find(item.GetHashCode());
+            return items != null && items.Contains(item);
         }
     }
 }

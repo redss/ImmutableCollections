@@ -1,21 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     class EmptyPatriciaTrie<T> : IPatriciaNode<T>
-        where T : class
     {
+        private static readonly EmptyPatriciaTrie<T> Empty = new EmptyPatriciaTrie<T>();  
+
+        // Constructor
+
+        private EmptyPatriciaTrie() { }
+
+        // Singleton
+
+        public static IPatriciaNode<T> Instance { get { return Empty; } }
+        
         // IPatriciaNode
 
-        public T Find(int key)
+        public T[] Find(int key)
         {
             return null;
         }
 
-        public IPatriciaNode<T> Modify(int key, Func<T, T> operation)
+        public IPatriciaNode<T> Modify(int key, IPatriciaOperation<T> operation)
         {
-            var result = operation(null);
+            var result = operation.OnInsert();
 
             if (result != null)
                 return new PatriciaLeaf<T>(key, result);

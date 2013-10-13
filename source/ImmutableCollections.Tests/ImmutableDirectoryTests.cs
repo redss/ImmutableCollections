@@ -103,9 +103,12 @@ namespace ImmutableCollections.Tests
         }
 
         [Test]
-        public void SetValue_ThrowsKeyNotFoundException_WhenKeyIsNull()
+        public void SetValue_AddsValue_WhenKeyExists()
         {
-            Assert.Throws<KeyNotFoundException>(() => GetDictionaryWithSampleData().SetValue(_item.Key, _item.Value));
+            var dict = GetDictionaryWithSampleData();
+            var result = dict.SetValue(_item.Key, _item.Value);
+
+            CollectionAssert.Contains(result, _item);
         }
 
         [Test]

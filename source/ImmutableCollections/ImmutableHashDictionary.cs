@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure;
+using ImmutableCollections.DataStructures.PatriciaTrieStructure.DictionaryOperations;
 
 // ReSharper disable CompareNonConstrainedGenericWithNull
 
@@ -16,15 +17,18 @@ namespace ImmutableCollections
     /// <typeparam name="TValue">The type of values in dictionary.</typeparam>
     public class ImmutableHashDictionary<TKey, TValue> : IImmutableDictionary<TKey, TValue>
     {
-        private readonly IPatriciaNode<ImmutableCopyDictionary<TKey, TValue>> _root;
+        private readonly IPatriciaNode<KeyValuePair<TKey, TValue>> _root;
 
         // Constructors
 
-        public ImmutableHashDictionary() : this(null) { }
-
-        private ImmutableHashDictionary(IPatriciaNode<ImmutableCopyDictionary<TKey, TValue>> root)
+        public ImmutableHashDictionary()
         {
-            _root = root ?? new EmptyPatriciaTrie<ImmutableCopyDictionary<TKey, TValue>>();
+            _root = EmptyPatriciaTrie<KeyValuePair<TKey, TValue>>.Instance;
+        }
+
+        private ImmutableHashDictionary(IPatriciaNode<KeyValuePair<TKey, TValue>> root)
+        {
+            _root = root;
         }
 
         // IEnumerable
@@ -32,7 +36,7 @@ namespace ImmutableCollections
         [Pure]
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return _root.GetItems().SelectMany(i => i).GetEnumerator();
+            return _root.GetItems().GetEnumerator();
         }
 
         [Pure]
@@ -64,7 +68,12 @@ namespace ImmutableCollections
             if (item.Key == null)
                 throw new ArgumentException("Key cannot be null.", "item");
 
-            var newRoot = _root.Modify(item.Key.GetHashCode(), i => i.Add(item), () => CreateNewBackend(item));
+            var operation = new DictionaryAddOperation<TKey, TValue>(item);
+            var newRoot = _root.Modify(item.Key.GetHashCode(), operation);
+            
+            if (newRoot == _root)
+                throw new ArgumentException("Key was already in the dictionary.", "item");
+            
             return new ImmutableHashDictionary<TKey, TValue>(newRoot);
         }
 
@@ -86,7 +95,15 @@ namespace ImmutableCollections
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            var newRoot = _root.Modify(key.GetHashCode(), i => null, () => { throw GetKeyNotFoundException(key); });
+            var operation = new DictionaryRemoveOperation<TKey, TValue>(key);
+            var newRoot = _root.Modify(key.GetHashCode(), operation);
+
+            if (newRoot == null)
+                return new ImmutableHashDictionary<TKey, TValue>();
+
+            if (newRoot == _root)
+                throw GetKeyNotFoundException(key);
+
             return new ImmutableHashDictionary<TKey, TValue>(newRoot);
         }
 
@@ -108,7 +125,12 @@ namespace ImmutableCollections
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            var newRoot = _root.Modify(key.GetHashCode(), i => i.SetValue(key, value), () => { throw GetKeyNotFoundException(key); });
+            var operation = new DictionarySetValueOperation<TKey, TValue>(key, value);
+            var newRoot = _root.Modify(key.GetHashCode(), operation);
+
+            if (newRoot == _root)
+                return this;
+
             return new ImmutableHashDictionary<TKey, TValue>(newRoot);
         }
         
@@ -131,7 +153,11 @@ namespace ImmutableCollections
                 if (found == null)
                     throw GetKeyNotFoundException(key);
 
-                return found[key];
+                foreach (var i in found)
+                    if (i.Key.Equals(key))
+                        return i.Value;
+
+                throw GetKeyNotFoundException(key);
             }
         }
 
@@ -149,7 +175,16 @@ namespace ImmutableCollections
                 return false;
             }
 
-            return found.TryGetValue(key, out value);
+            foreach (var i in found)
+            {
+                if (i.Key.Equals(key))
+                {
+                    value = i.Value;
+                    return true;
+                }
+            }
+
+            throw GetKeyNotFoundException(key);
         }
 
         [Pure]
@@ -171,7 +206,7 @@ namespace ImmutableCollections
                 throw new ArgumentNullException("key");
 
             var found = _root.Find(key.GetHashCode());
-            return found != null && found.ContainsKey(key);
+            return found != null && found.Any(i => i.Key.Equals(key));
         }
 
         [Pure]
@@ -193,16 +228,10 @@ namespace ImmutableCollections
         [Pure]
         public int Length
         {
-            get { return _root.GetItems().Sum(i => i.Length); }
+            get { return _root.GetItems().Count(); }
         }
 
         // Private methods
-
-        [Pure]
-        private ImmutableCopyDictionary<TKey, TValue> CreateNewBackend(KeyValuePair<TKey, TValue> item)
-        {
-            return new ImmutableCopyDictionary<TKey, TValue>().Add(item);
-        }
 
         [Pure]
         private KeyNotFoundException GetKeyNotFoundException(TKey key)

@@ -35,8 +35,7 @@
         /// <param name="nodeB">Second Trie.</param>
         /// <returns>New Patritia Trie node having given nodes as her children.</returns>
         public static IPatriciaNode<T> Join<T>(int prefixA, IPatriciaNode<T> nodeA, int prefixB, IPatriciaNode<T> nodeB)
-            where T : class
-        {
+        {   
             var bb = BranchingBit(prefixA, prefixB);
             var newPrefix = prefixA & (bb - 1);
 

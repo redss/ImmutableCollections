@@ -7,7 +7,6 @@ using ImmutableCollections.Helpers;
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     class PatriciaBranch<T> : IPatriciaNode<T>
-        where T : class
     {
         public readonly int Prefix;
 
@@ -39,17 +38,17 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         // IPatriciaNode
 
-        public T Find(int key)
+        public T[] Find(int key)
         {
             return PropagationNode(key).Find(key);
         }
 
-        public IPatriciaNode<T> Modify(int key, Func<T, T> operation)
+        public IPatriciaNode<T> Modify(int key, IPatriciaOperation<T> operation)
         {
             if (!PatriciaHelper.MatchPrefix(key, Prefix, Mask))
             {
                 // Key doesn't match the prefix, so we need to create new leaf and join with it.
-                var item = operation(null);
+                var item = operation.OnInsert();
 
                 // Unless operation doesn't create any item.
                 if (item == null)

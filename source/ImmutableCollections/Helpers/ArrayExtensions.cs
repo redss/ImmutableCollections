@@ -59,11 +59,27 @@ namespace ImmutableCollections.Helpers
             return newArray;
         }
 
+        /// <summary>
+        /// Creates copy of the array without element at given index.
+        /// If array contains only one element, returns null;
+        /// </summary>
         [Pure]
         public static T[] RemoveAt<T>(this T[] array, int index)
         {
-            // TODO: Optimize.
-            return array.Where((v, i) => i != index).ToArray();
+            var length = array.Length;
+
+            if (length == 1)
+                return null;
+
+            var newArray = new T[length - 1];
+
+            if (index > 0)
+                Array.Copy(array, 0, newArray, 0, index);
+
+            if (index < length)
+                Array.Copy(array, index + 1, newArray, index, length - index - 1);
+
+            return newArray;
         }
     }
 }

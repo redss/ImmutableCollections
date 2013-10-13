@@ -69,5 +69,26 @@ namespace ImmutableCollections.Tests.Helpers
             CollectionAssert.AreEqual(values, arr);
             CollectionAssert.AreEqual(arr.Take(Index), changed);
         }
+
+        [Test]
+        public void RemoveAt_Test()
+        {
+            var values = Enumerable.Range(0, Count).ToArray();
+            var arr = values.ToArray();
+
+            var changed = arr.RemoveAt(Index);
+            var expected = arr.Where((x, i) => i != Index).ToArray();
+
+            CollectionAssert.AreEqual(expected, changed);
+        }
+
+        [Test]
+        public void RemoveAt_WithOneElement_ReturnsNull()
+        {
+            var arr = new[] { 1 };
+            var result = arr.RemoveAt(1);
+            
+            Assert.IsNull(result);
+        }
     }
 }

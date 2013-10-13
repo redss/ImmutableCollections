@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure;
+using ImmutableCollections.DataStructures.PatriciaTrieStructure.SetOperations;
 using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
@@ -20,7 +21,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var node = CreateNode(_items);
 
             foreach (var i in _items)
-                Assert.AreEqual(i, node.Find(i.GetHashCode()));
+                Assert.AreEqual(i, node.Find(i.GetHashCode())[0]);
 
             foreach (var i in _secondItems)
                 Assert.IsNull(node.Find(i.GetHashCode()));
@@ -32,8 +33,9 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             const string item = "foo", otherItem = "bar";
 
             var node = CreateNode(new[] { item, otherItem });
+            var operation = new OperationStub<string>(i => null, () => null);
 
-            var result = node.Modify(item.GetHashCode(), i => null);
+            var result = node.Modify(item.GetHashCode(), operation);
 
             Assert.IsInstanceOf<PatriciaLeaf<string>>(result);
             CollectionAssert.AreEquivalent(new[] { otherItem }, result.GetItems());
@@ -45,12 +47,12 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             var items = Enumerable.Range(0, _items.Length).
                 Zip(_items, (i, s) => new KeyValuePair<int, string>(i, s)).ToArray();
 
-            IPatriciaNode<string> empty = new EmptyPatriciaTrie<string>();
-            var node = items.Aggregate(empty, (current, item) => current.Modify(item.Key, i => item.Value));
+            IPatriciaNode<string> empty = EmptyPatriciaTrie<string>.Instance;
+            var node = items.Aggregate(empty, (current, item) => current.Modify(item.Key, InsertOperation(item.Value)));
 
             foreach (var item in items)
             {
-                node = node.Modify(item.Key, i => null) ?? new EmptyPatriciaTrie<string>();
+                node = node.Modify(item.Key, NullOperation<string>()) ?? EmptyPatriciaTrie<string>.Instance;
                 CollectionAssert.DoesNotContain(node.GetItems(), item.Value);
             }
         }
@@ -62,7 +64,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 
             foreach (var item in _items)
             {
-                node = node.Modify(item.GetHashCode(), i => null) ?? new EmptyPatriciaTrie<string>();
+                node = node.Modify(item.GetHashCode(), NullOperation<string>()) ?? EmptyPatriciaTrie<string>.Instance;
                 CollectionAssert.DoesNotContain(node.GetItems(), item);
             }
         }
@@ -81,10 +83,18 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
         private IPatriciaNode<T> CreateNode<T>(IEnumerable<T> items)
             where T : class
         {
-            IPatriciaNode<T> empty = new EmptyPatriciaTrie<T>();
-            return items.Aggregate(empty, (current, item) => current.Modify(item.GetHashCode(), i => item));
+            IPatriciaNode<T> empty = EmptyPatriciaTrie<T>.Instance;
+            return items.Aggregate(empty, (current, item) => current.Modify(item.GetHashCode(), InsertOperation(item)));
         }
 
-        
+        private IPatriciaOperation<T> InsertOperation<T>(T item)
+        {
+            return new SetAddOperation<T>(item);
+        }
+
+        private IPatriciaOperation<T> NullOperation<T>()
+        {
+            return new OperationStub<T>(i => null, () => null);
+        }
     }
 }

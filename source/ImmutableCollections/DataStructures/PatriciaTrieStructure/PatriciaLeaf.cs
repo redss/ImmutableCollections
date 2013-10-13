@@ -1,41 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     class PatriciaLeaf<T> : IPatriciaNode<T>
-        where T : class
     {
         public readonly int Key;
 
-        public readonly T Item;
+        public readonly T[] Items;
 
         // Constructors
 
-        public PatriciaLeaf(int key, T item)
+        public PatriciaLeaf(int key, T[] items)
         {
-            if (item == null)
-                throw new ArgumentNullException("item", "Patricia Leaf cannot be empty!");
+            Debug.Assert(items != null);
 
             Key = key;
-            Item = item;
+            Items = items;
         }
 
         // IPatriciaNode
 
-        public T Find(int key)
+        public T[] Find(int key)
         {
-            return key == Key ? Item : null;
+            return key == Key ? Items : null;
         }
 
-        public IPatriciaNode<T> Modify(int key, Func<T, T> operation)
+        public IPatriciaNode<T> Modify(int key, IPatriciaOperation<T> operation)
         {
             if (operation == null)
                 throw new ArgumentNullException("operation");
 
             if (key != Key)
             {
-                var result = operation(null);
+                var result = operation.OnInsert();
 
                 // This situation shouldn't occur, maybe it should throw exception instead?
                 if (result == null)
@@ -48,12 +47,14 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
             else
             {
                 // Modify item.
-                var result = operation(Item);
+                var result = operation.OnFound(Items);
 
+                // Remove case.
                 if (result == null)
                     return null;
 
-                if (result == Item)
+                // Nothing changed.
+                if (result == Items)
                     return this;
 
                 return new PatriciaLeaf<T>(key, result);
@@ -62,14 +63,15 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         public IEnumerable<T> GetItems()
         {
-            yield return Item;
+            return Items;
         }
 
         // Public methods
 
         public override string ToString()
         {
-            return string.Format("Lf({0} -> {1})", Key, Item);
+            var items = string.Join(", ", Items);
+            return string.Format("Lf({0} -> {1})", Key, items);
         }
     }
 }
