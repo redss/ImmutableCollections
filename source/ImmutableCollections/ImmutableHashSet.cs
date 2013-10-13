@@ -72,54 +72,6 @@ namespace ImmutableCollections
             return Remove(item);
         }
 
-        public ImmutableHashSet<T> ExceptWith(IEnumerable<T> other)
-        {
-            var newRoot = other.Aggregate(_root, Remove);
-            return new ImmutableHashSet<T>(newRoot);
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.ExceptWith(IEnumerable<T> other)
-        {
-            return ExceptWith(other);
-        }
-
-        public ImmutableHashSet<T> IntersectWith(IEnumerable<T> other)
-        {
-            IPatriciaNode<SetBackend<T>> empty = new EmptyPatriciaTrie<SetBackend<T>>();
-            var newRoot = other
-                .Where(i => Contains(_root, i))
-                .Aggregate(empty, Add);
-
-            return new ImmutableHashSet<T>(newRoot);
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.IntersectWith(IEnumerable<T> other)
-        {
-            return IntersectWith(other);
-        }
-
-        public ImmutableHashSet<T> SymmetricExceptWith(IEnumerable<T> other)
-        {
-            var items = other.ToArray();
-            return ExceptWith(items).UnionWith(items.Except(this));
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.SymmetricExceptWith(IEnumerable<T> other)
-        {
-            return SymmetricExceptWith(other);
-        }
-
-        public ImmutableHashSet<T> UnionWith(IEnumerable<T> other)
-        {
-            var newRoot = other.Aggregate(_root, Add);
-            return new ImmutableHashSet<T>(newRoot);
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.UnionWith(IEnumerable<T> other)
-        {
-            return UnionWith(other);
-        }
-
         public int Length
         {
             get { return _root.GetItems().Sum(x => x.GetValues().Count()); }
@@ -127,7 +79,8 @@ namespace ImmutableCollections
 
         public bool Contains(T item)
         {
-            return Contains(_root, item);
+            var backend = _root.Find(item.GetHashCode());
+            return backend != null && backend.Contains(item);
         }
 
         // Private methods
@@ -140,12 +93,6 @@ namespace ImmutableCollections
         private IPatriciaNode<SetBackend<T>> Remove(IPatriciaNode<SetBackend<T>> node, T item)
         {
             return node.Modify(item.GetHashCode(), i => i == null ? null : i.Remove(item));
-        }
-
-        private bool Contains(IPatriciaNode<SetBackend<T>> node, T item)
-        {
-            var backend = _root.Find(item.GetHashCode());
-            return backend != null && backend.Contains(item);
         }
     }
 }

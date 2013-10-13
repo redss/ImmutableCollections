@@ -65,46 +65,6 @@ namespace ImmutableCollections
             return Remove(item);
         }
 
-        public ImmutableHashSet<T> ExceptWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.ExceptWith(IEnumerable<T> other)
-        {
-            return ExceptWith(other);
-        }
-
-        public ImmutableHashSet<T> IntersectWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.IntersectWith(IEnumerable<T> other)
-        {
-            return IntersectWith(other);
-        }
-
-        public ImmutableHashSet<T> SymmetricExceptWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.SymmetricExceptWith(IEnumerable<T> other)
-        {
-            return SymmetricExceptWith(other);
-        }
-
-        public ImmutableHashSet<T> UnionWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-        
-        IImmutableSet<T> IImmutableSet<T>.UnionWith(IEnumerable<T> other)
-        {
-            return UnionWith(other);
-        }
-
         public int Length
         {
             get { throw new NotImplementedException(); }

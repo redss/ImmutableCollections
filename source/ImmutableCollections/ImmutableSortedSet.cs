@@ -88,46 +88,6 @@ namespace ImmutableCollections
             return Remove(item);
         }
 
-        public ImmutableSortedSet<T> ExceptWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        IImmutableSet<T> IImmutableSet<T>.ExceptWith(IEnumerable<T> other)
-        {
-            return ExceptWith(other);
-        }
-
-        public ImmutableSortedSet<T> IntersectWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        IImmutableSet<T> IImmutableSet<T>.IntersectWith(IEnumerable<T> other)
-        {
-            return IntersectWith(other);
-        }
-
-        public ImmutableSortedSet<T> SymmetricExceptWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        IImmutableSet<T> IImmutableSet<T>.SymmetricExceptWith(IEnumerable<T> other)
-        {
-            return SymmetricExceptWith(other);
-        }
-
-        public ImmutableSortedSet<T> UnionWith(IEnumerable<T> other)
-        {
-            throw new NotImplementedException();
-        }
-
-        IImmutableSet<T> IImmutableSet<T>.UnionWith(IEnumerable<T> other)
-        {
-            return UnionWith(other);
-        }
-
         public int Length
         {
             get { return _root.GetValues().Count(); }

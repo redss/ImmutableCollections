@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 
 namespace ImmutableCollections
 {
@@ -24,38 +23,5 @@ namespace ImmutableCollections
         /// <returns>This, or new set.</returns>
         [Pure]
         new IImmutableSet<T> Remove(T item);
-
-        /// <summary>
-        /// Removes all the elements from a new set contained in the given collection.
-        /// </summary>
-        /// <param name="other">Collection of items to remove form the set.</param>
-        /// <returns>This, or new set.</returns>
-        [Pure]
-        IImmutableSet<T> ExceptWith(IEnumerable<T> other);
-
-        /// <summary>
-        /// Creates new set, so it only contains elements that are also in given collection.
-        /// </summary>
-        /// <param name="other">The collection to compare to current set.</param>
-        /// <returns>This, or new set.</returns>
-        [Pure]
-        IImmutableSet<T> IntersectWith(IEnumerable<T> other);
-
-        /// <summary>
-        /// Creates new set so that it contains only elements that are present either in 
-        /// the current set or in the specified collection, but not both.
-        /// </summary>
-        /// <param name="other">The collection to compare to current set.</param>
-        /// <returns>This, or new set.</returns>
-        [Pure]
-        IImmutableSet<T> SymmetricExceptWith(IEnumerable<T> other);
-
-        /// <summary>
-        /// Creates new set, so it contains all elements from given collection.
-        /// </summary>
-        /// <param name="other">The collection to compare to current set.</param>
-        /// <returns>This, or new set.</returns>
-        [Pure]
-        IImmutableSet<T> UnionWith(IEnumerable<T> other);
     }
 }

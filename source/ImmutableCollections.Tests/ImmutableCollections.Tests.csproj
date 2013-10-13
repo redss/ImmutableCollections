@@ -55,7 +55,6 @@
     <Compile Include="ImmutableCollectionTests.cs" />
     <Compile Include="ImmutableDirectoryTests.cs" />
     <Compile Include="ImmutableListTests.cs" />
-    <Compile Include="ImmutableSetTests.cs" />
     <Compile Include="ImmutableVectorTests.cs" />
     <Compile Include="TestInfrastructure\BaseTests.cs" />
     <Compile Include="TestInfrastructure\ImmutableCollectionFactory.cs" />
