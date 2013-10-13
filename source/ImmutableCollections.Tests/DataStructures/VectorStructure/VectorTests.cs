@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+using ImmutableCollections.DataStructures.VectorStructure;
 using NUnit.Framework;
-using ImmutableCollections.DataStructures.ImmutableVectorStructure;
 
-namespace ImmutableCollections.Tests.DataStructures
+namespace ImmutableCollections.Tests.DataStructures.VectorStructure
 {
     [TestFixture]
-    public class ImmutableVectorStructureTests
+    public class VectorTests
     {
         [Test]
         public void Fragmentation_IsTwoPowerShift()

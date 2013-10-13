@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ImmutableCollections.Helpers;
 
-namespace ImmutableCollections.DataStructures.AssociativeBackendStructure
+namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
     class SetBackend<T>
     {

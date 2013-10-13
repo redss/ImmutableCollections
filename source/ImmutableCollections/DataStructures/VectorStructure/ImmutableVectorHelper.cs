@@ -1,4 +1,4 @@
-﻿namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
+﻿namespace ImmutableCollections.DataStructures.VectorStructure
 {
     static class ImmutableVectorHelper
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
+namespace ImmutableCollections.DataStructures.VectorStructure
 {
     class EmptyVector<T> : IVectorNode<T>
     {

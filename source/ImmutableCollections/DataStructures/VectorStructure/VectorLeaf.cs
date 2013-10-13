@@ -2,7 +2,7 @@
 using System.Linq;
 using ImmutableCollections.Helpers;
 
-namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
+namespace ImmutableCollections.DataStructures.VectorStructure
 {
     class VectorLeaf<T> : IVectorNode<T>
     {

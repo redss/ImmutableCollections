@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ImmutableCollections.Helpers;
 
-namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
+namespace ImmutableCollections.DataStructures.VectorStructure
 {
     class VectorLevel<T> : IVectorNode<T>
     {

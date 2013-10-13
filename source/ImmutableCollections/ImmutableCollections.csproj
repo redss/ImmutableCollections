@@ -35,7 +35,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\AssociativeBackendStructure\SetBackend.cs" />
+    <Compile Include="DataStructures\PatriciaTrieStructure\SetBackend.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\EmptyPatriciaTrie.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\IPatriciaNode.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaBranch.cs" />
@@ -69,11 +69,11 @@
     <Compile Include="ImmutableLinkedList.cs" />
     <Compile Include="ImmutableSortedSet.cs" />
     <Compile Include="ImmutableVector.cs" />
-    <Compile Include="DataStructures\ImmutableVectorStructure\EmptyVector.cs" />
-    <Compile Include="DataStructures\ImmutableVectorStructure\ImmutableVectorHelper.cs" />
-    <Compile Include="DataStructures\ImmutableVectorStructure\IVectorNode.cs" />
-    <Compile Include="DataStructures\ImmutableVectorStructure\VectorLeaf.cs" />
-    <Compile Include="DataStructures\ImmutableVectorStructure\VectorLevel.cs" />
+    <Compile Include="DataStructures\VectorStructure\EmptyVector.cs" />
+    <Compile Include="DataStructures\VectorStructure\ImmutableVectorHelper.cs" />
+    <Compile Include="DataStructures\VectorStructure\IVectorNode.cs" />
+    <Compile Include="DataStructures\VectorStructure\VectorLeaf.cs" />
+    <Compile Include="DataStructures\VectorStructure\VectorLevel.cs" />
     <Compile Include="IImmutableCollection.cs" />
     <Compile Include="IImmutableDictionary.cs" />
     <Compile Include="IImmutableList.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ImmutableCollections.DataStructures.ImmutableVectorStructure
+namespace ImmutableCollections.DataStructures.VectorStructure
 {
     interface IVectorNode<T>
     {

@@ -35,7 +35,7 @@ namespace ImmutableCollections.Tests.TestInfrastructure
             {
                 n--;
                 var k = random.Next(n + 1);
-                T value = sequence[k];
+                var value = sequence[k];
                 sequence[k] = sequence[n];
                 sequence[n] = value;
             }

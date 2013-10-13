@@ -40,7 +40,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStructures\ImmutableVectorStructureTests.cs" />
+    <Compile Include="DataStructures\VectorStructure\VectorTests.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\EmptyPatriciaNodeTests.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaBranchTests.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaHelperTests.cs" />
@@ -70,6 +70,7 @@
       <Name>ImmutableCollections</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
