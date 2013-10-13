@@ -134,7 +134,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
         // Remove tests
 
         [Test]
-        public void Remove_Test()
+        public void RemoveRandomData_Test()
         {
             const int count = 100;
             var items = RandomHelper.UniqueSequence(_random, count);
@@ -149,18 +149,49 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
                 node = TwoThreeHelper.Remove(node, i);
                 itemSet.Remove(i);
 
-                var values = node.GetValues().ToArray();
-                
-                Assert.True(node.IsBalanced());
-                Assert.AreEqual(itemSet.Count, values.Length);
-
-                CollectionAssert.IsOrdered(values);
-                CollectionAssert.DoesNotContain(values, i);
-                CollectionAssert.AllItemsAreUnique(values);
-                CollectionAssert.AreEqual(itemSet, values);
+                AssertValid(node);
+                CollectionAssert.AreEqual(itemSet, node.GetValues());
             }
 
             Assert.IsInstanceOf<Empty<int>>(node);
+        }
+
+        [Test]
+        public void RemoveSequentialData_Test()
+        {
+            const int count = 100;
+            var items = Enumerable.Range(0, count).ToArray();
+            var itemSet = new SortedSet<int>(items);
+
+            var node = CreateTree(items);
+
+            foreach (var i in items)
+            {
+                node = TwoThreeHelper.Remove(node, i);
+                itemSet.Remove(i);
+
+                AssertValid(node);
+                CollectionAssert.AreEqual(itemSet, node.GetValues());
+            }
+        }
+
+        [Test]
+        public void RemoveSequentialData_InReversedOrder_Test()
+        {
+            const int count = 100;
+            var items = Enumerable.Range(0, count).ToArray();
+            var itemSet = new SortedSet<int>(items);
+
+            var node = CreateTree(items);
+
+            foreach (var i in items.Reverse())
+            {
+                node = TwoThreeHelper.Remove(node, i);
+                itemSet.Remove(i);
+
+                AssertValid(node);
+                CollectionAssert.AreEqual(itemSet, node.GetValues());
+            }
         }
 
         // Private methods
@@ -178,6 +209,15 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
                 absentMiddleElement++;
 
             return new[] { -100, absentMiddleElement, 123123213 };
+        }
+
+        private void AssertValid<T>(ITwoThree<T> tree)
+        {
+            var values = tree.GetValues().ToArray();
+
+            Assert.True(tree.IsBalanced());
+            CollectionAssert.IsOrdered(values);
+            CollectionAssert.AllItemsAreUnique(values);
         }
     }
 }
