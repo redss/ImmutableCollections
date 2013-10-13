@@ -130,7 +130,7 @@ namespace ImmutableCollections
             var newRoot = _root.Update(item, _comparer);
 
             if (newRoot == null)
-                throw new KeyNotFoundException();
+                return Add(item);
 
             if (newRoot == _root)
                 return this;
