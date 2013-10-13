@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using ImmutableCollections.DataStructures.TwoThreeTreeStructure;
 
@@ -38,11 +39,13 @@ namespace ImmutableCollections
 
         // IEnumerable
 
+        [Pure]
         public IEnumerator<T> GetEnumerator()
         {
             return _root.GetValues().GetEnumerator();
         }
 
+        [Pure]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -50,6 +53,7 @@ namespace ImmutableCollections
 
         // IImmutableSet
 
+        [Pure]
         public ImmutableSortedSet<T> Add(T item)
         {
             if (item == null)
@@ -59,16 +63,19 @@ namespace ImmutableCollections
             return new ImmutableSortedSet<T>(newRoot, _comparer);
         }
 
+        [Pure]
         IImmutableSet<T> IImmutableSet<T>.Add(T item)
         {
             return Add(item);
         }
 
+        [Pure]
         IImmutableCollection<T> IImmutableCollection<T>.Add(T item)
         {
             return Add(item);
         }
 
+        [Pure]
         public ImmutableSortedSet<T> Remove(T item)
         {
             if (item == null)
@@ -78,21 +85,25 @@ namespace ImmutableCollections
             return new ImmutableSortedSet<T>(newRoot, _comparer);
         }
 
+        [Pure]
         IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
         {
             return Remove(item);
         }
 
+        [Pure]
         IImmutableSet<T> IImmutableSet<T>.Remove(T item)
         {
             return Remove(item);
         }
 
+        [Pure]
         public int Length
         {
             get { return _root.GetValues().Count(); }
         }
 
+        [Pure]
         public bool Contains(T item)
         {
             var found = _root.TryFind(item, _comparer, out item);

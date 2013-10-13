@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using ImmutableCollections.DataStructures.RedBlackTreeStructure;
 using System.Linq;
 
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace ImmutableCollections
 {
-    public class ImmutableRedBlackSortedSet<T> : IEnumerable<T>
+    public class ImmutableRedBlackSet<T> : IEnumerable<T>
     {
         private readonly IRedBlack<T> _root;
 
@@ -16,13 +17,13 @@ namespace ImmutableCollections
 
         // Constructors
 
-        public ImmutableRedBlackSortedSet()
+        public ImmutableRedBlackSet()
         {
             _root = RedBlackLeaf<T>.Instance;
             _comparer = Comparer<T>.Default;
         }
 
-        public ImmutableRedBlackSortedSet(IComparer<T> comparer)
+        public ImmutableRedBlackSet(IComparer<T> comparer)
         {
             if (comparer == null)
                 throw new ArgumentNullException();
@@ -31,7 +32,7 @@ namespace ImmutableCollections
             _comparer = comparer;
         }
 
-        private ImmutableRedBlackSortedSet(IRedBlack<T> root, IComparer<T> comparer)
+        private ImmutableRedBlackSet(IRedBlack<T> root, IComparer<T> comparer)
         {
             _root = root;
             _comparer = comparer;
@@ -39,11 +40,13 @@ namespace ImmutableCollections
 
         // IEnumerable
 
+        [Pure]
         public IEnumerator<T> GetEnumerator()
         {
             return _root.GetValues().GetEnumerator();
         }
 
+        [Pure]
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
@@ -51,7 +54,8 @@ namespace ImmutableCollections
 
         // Public methods
 
-        public ImmutableRedBlackSortedSet<T> Add(T item)
+        [Pure]
+        public ImmutableRedBlackSet<T> Add(T item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -61,14 +65,16 @@ namespace ImmutableCollections
             if (newRoot == _root)
                 return this;
 
-            return new ImmutableRedBlackSortedSet<T>(newRoot, _comparer);
+            return new ImmutableRedBlackSet<T>(newRoot, _comparer);
         }
 
+        [Pure]
         public int Length
         {
             get { return this.Count(); }
         }
 
+        [Pure]
         public bool Contains(T item)
         {
             if (item == null)
