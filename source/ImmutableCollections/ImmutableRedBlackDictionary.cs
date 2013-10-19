@@ -140,6 +140,7 @@ namespace ImmutableCollections
 
         // Private methods
 
+        [Pure]
         private KeyValuePair<TKey, TValue> KeyPair(TKey key)
         {
             return new KeyValuePair<TKey, TValue>(key, default(TValue));
