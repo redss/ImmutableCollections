@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ImmutableCollections.DataStructures.VectorStructure;
+using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections
 {
@@ -228,16 +229,10 @@ namespace ImmutableCollections
         private void AssertIndexRange(int index, string argumentName = "index")
         {
             if (index >= _count)
-            {
-                var message = string.Format("Index ({0}) exceeded size of the vector ({1}).", index, _count);
-                throw new ArgumentOutOfRangeException(argumentName, message);
-            }
+                throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, argumentName);
 
             if (index < 0)
-            {
-                var message = string.Format("Index ({0}) must be greater or equal than zero.", index);
-                throw new ArgumentOutOfRangeException(argumentName, message);
-            }
+                throw ExceptionHelper.GetIndexNegativeException(index, argumentName);
         }
     }
 }

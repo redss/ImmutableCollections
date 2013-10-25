@@ -8,18 +8,18 @@ using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections
 {
-    public class ImmutableCopySet<T> : IImmutableSet<T>
+    public class ImmutableCopyHashSet<T> : IImmutableSet<T>
     {
         private readonly HashSet<T> _items;  
 
         // Constructors
 
-        public ImmutableCopySet()
+        public ImmutableCopyHashSet()
         {
             _items = new HashSet<T>();
         }
 
-        private ImmutableCopySet(HashSet<T> items)
+        private ImmutableCopyHashSet(HashSet<T> items)
         {
             _items = items;
         }
@@ -41,7 +41,7 @@ namespace ImmutableCollections
         // IImmutableSet
 
         [Pure]
-        public ImmutableCopySet<T> Add(T item)
+        public ImmutableCopyHashSet<T> Add(T item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -50,7 +50,7 @@ namespace ImmutableCollections
                 throw ExceptionHelper.GetItemAlreadyExistsException(item, "item");
 
             var newSet = new HashSet<T>(_items) { item };
-            return new ImmutableCopySet<T>(newSet);
+            return new ImmutableCopyHashSet<T>(newSet);
         }
 
         [Pure]
@@ -66,7 +66,7 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public ImmutableCopySet<T> Remove(T item)
+        public ImmutableCopyHashSet<T> Remove(T item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
@@ -77,7 +77,7 @@ namespace ImmutableCollections
             var newSet = new HashSet<T>(_items);
             newSet.Remove(item);
 
-            return new ImmutableCopySet<T>(newSet);
+            return new ImmutableCopyHashSet<T>(newSet);
         }
 
         [Pure]

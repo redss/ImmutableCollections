@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using ImmutableCollections.DataStructures.ImmutableLinkedListStructure;
+using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections
 {
@@ -65,13 +65,11 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableLinkedList<T> Insert(int index, T item)
         {
-            // TODO: Better exceptions.
-
             if (index < 0)
-                throw new ArgumentOutOfRangeException();
+                throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
             if (index > _count)
-                throw new ArgumentOutOfRangeException();
+                throw ExceptionHelper.GetIndexTooBigException(index, _count, "item");
 
             var nodes = new IListNode<T>[index];
             var current = _first;
@@ -100,10 +98,10 @@ namespace ImmutableCollections
         public ImmutableLinkedList<T> UpdateAt(int index, T item)
         {
             if (index < 0)
-                throw new ArgumentOutOfRangeException();
+                throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
             if (index >= _count)
-                throw new ArgumentOutOfRangeException();
+                throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, "item");
 
             var nodes = new IListNode<T>[index + 1];
             var current = _first;
@@ -163,10 +161,10 @@ namespace ImmutableCollections
         public ImmutableLinkedList<T> RemoveAt(int index)
         {
             if (index < 0)
-                throw new ArgumentOutOfRangeException();
+                throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
             if (index >= _count)
-                throw new ArgumentOutOfRangeException();
+                throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, "item");
 
             var nodes = new IListNode<T>[index];
             var current = _first;
@@ -210,10 +208,10 @@ namespace ImmutableCollections
             get
             {
                 if (index < 0)
-                    throw new ArgumentOutOfRangeException();
+                    throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
                 if (index >= _count)
-                    throw new ArgumentOutOfRangeException();
+                    throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, "item");
 
                 var current = _first;
 
