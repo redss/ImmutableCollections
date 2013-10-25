@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using ImmutableCollections.Helpers;
 
 // ReSharper disable CompareNonConstrainedGenericWithNull
 
@@ -18,16 +17,18 @@ namespace ImmutableCollections
     /// <typeparam name="TValue">The type of values in dictionary.</typeparam>
     public class ImmutableCopyDictionary<TKey, TValue> : IImmutableDictionary<TKey, TValue>
     {
-        private readonly KeyValuePair<TKey, TValue>[] _items;
+        private static readonly Dictionary<TKey, TValue> EmptyDictionary = new Dictionary<TKey, TValue>();
+
+        private readonly Dictionary<TKey, TValue> _items; 
 
         // Constructors
 
         public ImmutableCopyDictionary()
         {
-            _items = new KeyValuePair<TKey, TValue>[] {};
+            _items = EmptyDictionary;
         }
 
-        private ImmutableCopyDictionary(KeyValuePair<TKey, TValue>[] items)
+        private ImmutableCopyDictionary(Dictionary<TKey, TValue> items)
         {
             if (items == null)
                 throw new ArgumentNullException("items");
@@ -78,7 +79,9 @@ namespace ImmutableCollections
                 throw new ArgumentException(message, "item");
             }
 
-            var newItems = _items.Append(item);
+            var newItems = GetCopiedDictionary(Length + 1);
+            newItems.Add(item.Key, item.Value);
+
             return new ImmutableCopyDictionary<TKey, TValue>(newItems);
         }
 
@@ -100,28 +103,13 @@ namespace ImmutableCollections
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            var length = _items.Length;
+            if (!ContainsKey(key))
+                throw GetKeyNotFoundException(key);
 
-            if (length == 1)
-                return new ImmutableCopyDictionary<TKey, TValue>();
+            var newDictionary = GetCopiedDictionary(Length - 1);
+            newDictionary.Remove(key);
 
-            for (var i = 0; i < length; i++)
-            {
-                if (_items[i].Key.Equals(key))
-                {
-                    var newItems = new KeyValuePair<TKey, TValue>[length - 1];
-
-                    if (i > 0)
-                        Array.Copy(_items, 0, newItems, 0, i);
-
-                    if (i < length)
-                        Array.Copy(_items, i + 1, newItems, i, Length - i - 1);
-
-                    return new ImmutableCopyDictionary<TKey, TValue>(newItems);
-                }
-            }
-
-            throw GetKeyNotFoundException(key);
+            return new ImmutableCopyDictionary<TKey, TValue>(newDictionary);
         }
 
         [Pure]
@@ -142,22 +130,10 @@ namespace ImmutableCollections
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            var length = _items.Length;
+            var newDictionary = GetCopiedDictionary(Length);
+            newDictionary[key] = value;
 
-            for (var i = 0; i < length; i++)
-            {
-                if (_items[i].Key.Equals(key))
-                {
-                    var newItems = new KeyValuePair<TKey, TValue>[length];
-                    Array.Copy(_items, newItems, length);
-                    newItems[i] = new KeyValuePair<TKey, TValue>(key, value);
-
-                    return new ImmutableCopyDictionary<TKey, TValue>(newItems);
-                }
-            }
-
-            var newArray = _items.Append(new KeyValuePair<TKey, TValue>(key, value));
-            return new ImmutableCopyDictionary<TKey, TValue>(newArray);
+            return new ImmutableCopyDictionary<TKey, TValue>(newDictionary);
         }
 
         [Pure]
@@ -174,11 +150,10 @@ namespace ImmutableCollections
                 if (key == null)
                     throw new ArgumentNullException("key");
 
-                foreach (var item in _items)
-                    if (item.Key.Equals(key))
-                        return item.Value;
+                if (!ContainsKey(key))
+                    throw GetKeyNotFoundException(key);
 
-                throw GetKeyNotFoundException(key);
+                return _items[key];
             }
         }
 
@@ -188,13 +163,10 @@ namespace ImmutableCollections
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            foreach (var item in _items)
+            if (ContainsKey(key))
             {
-                if (item.Key.Equals(key))
-                {
-                    value = item.Value;
-                    return true;
-                }
+                value = _items[key];
+                return true;
             }
 
             value = default (TValue);
@@ -204,13 +176,13 @@ namespace ImmutableCollections
         [Pure]
         public IEnumerable<TKey> Keys
         {
-            get { return this.Select(i => i.Key); }
+            get { return _items.Keys; }
         }
 
         [Pure]
         public IEnumerable<TValue> Values
         {
-            get { return this.Select(i => i.Value); }
+            get { return _items.Values; }
         }
 
         [Pure]
@@ -219,13 +191,13 @@ namespace ImmutableCollections
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            return _items.Any(i => i.Key.Equals(key));
+            return _items.ContainsKey(key);
         }
 
         [Pure]
         public bool ContainsValue(TValue value)
         {
-            return _items.Any(i => i.Value.Equals(value));
+            return _items.ContainsValue(value);
         }
 
         [Pure]
@@ -240,7 +212,7 @@ namespace ImmutableCollections
         [Pure]
         public int Length
         {
-            get { return _items.Length; }
+            get { return _items.Count; }
         }
 
         // Private methods
@@ -250,6 +222,17 @@ namespace ImmutableCollections
         {
             var message = string.Format("Key {0} was not found.", key);
             return new KeyNotFoundException(message);
+        }
+
+        [Pure]
+        private Dictionary<TKey, TValue> GetCopiedDictionary(int capacity)
+        {
+            var newDictionary = new Dictionary<TKey, TValue>(capacity);
+
+            foreach (var item in _items)
+                newDictionary.Add(item.Key, item.Value);
+
+            return newDictionary;
         }
     }
 }
