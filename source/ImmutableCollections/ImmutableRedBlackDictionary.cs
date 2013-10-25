@@ -70,7 +70,7 @@ namespace ImmutableCollections
             var newRoot = RedBlackHelper.Insert(_root, item, _comparer);
 
             if (newRoot == _root)
-                throw new ArgumentException("Key was already present in the collection.", "item");
+                throw ExceptionHelper.GetKeyAlreadyExistsException(item.Key, "item");
 
             return new ImmutableRedBlackDictionary<TKey, TValue>(newRoot, _comparer);
         }
@@ -127,7 +127,7 @@ namespace ImmutableCollections
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", "item");
+                throw ExceptionHelper.GetKeyCannotBeNullException("item");
 
             return _root.GetValues().Contains(item);
         }

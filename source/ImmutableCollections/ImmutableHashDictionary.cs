@@ -67,13 +67,13 @@ namespace ImmutableCollections
         public ImmutableHashDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", "item");
+                throw ExceptionHelper.GetKeyCannotBeNullException("item");
 
             var operation = new DictionaryAddOperation<TKey, TValue>(item);
             var newRoot = _root.Modify(item.Key.GetHashCode(), operation);
-            
+
             if (newRoot == _root)
-                throw new ArgumentException("Key was already in the dictionary.", "item");
+                throw ExceptionHelper.GetKeyAlreadyExistsException(item.Key, "item");
             
             return new ImmutableHashDictionary<TKey, TValue>(newRoot);
         }
@@ -217,7 +217,7 @@ namespace ImmutableCollections
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", "item");
+                throw ExceptionHelper.GetKeyCannotBeNullException("item");
 
             var found = _root.Find(item.Key.GetHashCode());
             return found != null && found.Contains(item);

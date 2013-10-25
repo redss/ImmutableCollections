@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
 namespace ImmutableCollections.Helpers
@@ -13,6 +14,27 @@ namespace ImmutableCollections.Helpers
         {
             var message = string.Format("Key {0} was not found.", key);
             return new KeyNotFoundException(message);
+        }
+
+        [Pure]
+        public static ArgumentException GetKeyAlreadyExistsException<TKey>(TKey key, string parameterName)
+        {
+            var message = string.Format("An element with '{0}' key already exists in the dictionary.", key);
+            return new ArgumentException(message, parameterName);
+        }
+
+        [Pure]
+        public static ArgumentException GetItemAlreadyExistsException<T>(T item, string parameterName)
+        {
+            var message = string.Format("Item '{0}' already exists in the collection.", item);
+            return new ArgumentException(message, parameterName);
+        }
+
+        [Pure]
+        public static ArgumentException GetKeyCannotBeNullException(string parameterName)
+        {
+            const string message = "Key cannot be null.";
+            return new ArgumentException(message, parameterName);
         }
     }
 }

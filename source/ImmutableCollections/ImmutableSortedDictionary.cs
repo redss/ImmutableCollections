@@ -76,7 +76,7 @@ namespace ImmutableCollections
             var newRoot = TwoThreeHelper.Insert(_root, item, _comparer);
 
             if (newRoot == _root)
-                throw new ArgumentException("Key was present in the dictionary.", "item");
+                throw ExceptionHelper.GetKeyAlreadyExistsException(item.Key, "item");
 
             return new ImmutableSortedDictionary<TKey, TValue>(newRoot, _comparer);
         }
@@ -206,7 +206,7 @@ namespace ImmutableCollections
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", "item");
+                throw ExceptionHelper.GetKeyCannotBeNullException("item");
 
             KeyValuePair<TKey, TValue> foundItem;
             var found = _root.TryFind(item, _comparer, out foundItem);

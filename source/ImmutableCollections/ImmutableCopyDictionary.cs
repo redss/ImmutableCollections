@@ -72,14 +72,11 @@ namespace ImmutableCollections
         public ImmutableCopyDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", "item");
+                throw ExceptionHelper.GetKeyCannotBeNullException("item");
 
             if (ContainsKey(item.Key))
-            {
-                var message = string.Format("An element with '{0}' key already exists in the dictionary", item.Key);
-                throw new ArgumentException(message, "item");
-            }
-
+                throw ExceptionHelper.GetKeyAlreadyExistsException(item.Key, "item");
+            
             var newItems = GetCopiedDictionary(Length + 1);
             newItems.Add(item.Key, item.Value);
 
@@ -205,7 +202,7 @@ namespace ImmutableCollections
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentException("Key cannot be null.", "item");
+                throw ExceptionHelper.GetKeyCannotBeNullException("item");
 
             return _items.Contains(item);
         }

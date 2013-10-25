@@ -2,22 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
+using ImmutableCollections.Helpers;
+
+// ReSharper disable CompareNonConstrainedGenericWithNull
 
 namespace ImmutableCollections
 {
     public class ImmutableCopySet<T> : IImmutableSet<T>
     {
-        private readonly T[] _items;
+        private readonly HashSet<T> _items;  
 
         // Constructors
 
         public ImmutableCopySet()
         {
-            _items = new T[0];
+            _items = new HashSet<T>();
         }
 
-        private ImmutableCopySet(T[] items)
+        private ImmutableCopySet(HashSet<T> items)
         {
             _items = items;
         }
@@ -27,7 +29,7 @@ namespace ImmutableCollections
         [Pure]
         public IEnumerator<T> GetEnumerator()
         {
-            return _items.AsEnumerable().GetEnumerator();
+            return _items.GetEnumerator();
         }
 
         [Pure]
@@ -39,9 +41,16 @@ namespace ImmutableCollections
         // IImmutableSet
 
         [Pure]
-        public ImmutableHashSet<T> Add(T item)
+        public ImmutableCopySet<T> Add(T item)
         {
-            throw new NotImplementedException();
+            if (item == null)
+                throw new ArgumentNullException("item");
+
+            if (Contains(item))
+                throw ExceptionHelper.GetItemAlreadyExistsException(item, "item");
+
+            var newSet = new HashSet<T>(_items) { item };
+            return new ImmutableCopySet<T>(newSet);
         }
 
         [Pure]
@@ -57,9 +66,18 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public ImmutableHashSet<T> Remove(T item)
+        public ImmutableCopySet<T> Remove(T item)
         {
-            throw new NotImplementedException();
+            if (item == null)
+                throw new ArgumentNullException("item");
+
+            if (!Contains(item))
+                return this;
+
+            var newSet = new HashSet<T>(_items);
+            newSet.Remove(item);
+
+            return new ImmutableCopySet<T>(newSet);
         }
 
         [Pure]
@@ -77,13 +95,13 @@ namespace ImmutableCollections
         [Pure]
         public int Length
         {
-            get { throw new NotImplementedException(); }
+            get { return _items.Count; }
         }
 
         [Pure]
         public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return _items.Contains(item);
         }
     }
 }
