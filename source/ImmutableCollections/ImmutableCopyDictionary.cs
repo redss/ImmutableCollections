@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using ImmutableCollections.Helpers;
 
 // ReSharper disable CompareNonConstrainedGenericWithNull
 
@@ -104,7 +105,7 @@ namespace ImmutableCollections
                 throw new ArgumentNullException("key");
 
             if (!ContainsKey(key))
-                throw GetKeyNotFoundException(key);
+                throw ExceptionHelper.GetKeyNotFoundException(key);
 
             var newDictionary = GetCopiedDictionary(Length - 1);
             newDictionary.Remove(key);
@@ -151,7 +152,7 @@ namespace ImmutableCollections
                     throw new ArgumentNullException("key");
 
                 if (!ContainsKey(key))
-                    throw GetKeyNotFoundException(key);
+                    throw ExceptionHelper.GetKeyNotFoundException(key);
 
                 return _items[key];
             }
@@ -216,13 +217,6 @@ namespace ImmutableCollections
         }
 
         // Private methods
-
-        [Pure]
-        private KeyNotFoundException GetKeyNotFoundException(TKey key)
-        {
-            var message = string.Format("Key {0} was not found.", key);
-            return new KeyNotFoundException(message);
-        }
 
         [Pure]
         private Dictionary<TKey, TValue> GetCopiedDictionary(int capacity)

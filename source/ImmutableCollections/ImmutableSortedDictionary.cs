@@ -102,7 +102,7 @@ namespace ImmutableCollections
             var newRoot = TwoThreeHelper.Remove(_root, new KeyValuePair<TKey, TValue>(key, default(TValue)), _comparer);
 
             if (newRoot == _root)
-                throw new KeyNotFoundException();
+                throw ExceptionHelper.GetKeyNotFoundException(key);
 
             return new ImmutableSortedDictionary<TKey, TValue>(newRoot, _comparer);
         }
@@ -156,7 +156,7 @@ namespace ImmutableCollections
                 var found = _root.TryFind(KeyPair(key), _comparer, out item);
 
                 if (!found)
-                    throw new KeyNotFoundException();
+                    throw ExceptionHelper.GetKeyNotFoundException(key);
 
                 return item.Value;
             }

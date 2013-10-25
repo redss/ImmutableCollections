@@ -5,6 +5,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure;
 using ImmutableCollections.DataStructures.PatriciaTrieStructure.DictionaryOperations;
+using ImmutableCollections.Helpers;
 
 // ReSharper disable CompareNonConstrainedGenericWithNull
 
@@ -102,7 +103,7 @@ namespace ImmutableCollections
                 return new ImmutableHashDictionary<TKey, TValue>();
 
             if (newRoot == _root)
-                throw GetKeyNotFoundException(key);
+                throw ExceptionHelper.GetKeyNotFoundException(key);
 
             return new ImmutableHashDictionary<TKey, TValue>(newRoot);
         }
@@ -148,16 +149,13 @@ namespace ImmutableCollections
                 if (key == null)
                     throw new ArgumentNullException("key");
 
-                var found = _root.Find(key.GetHashCode());
-
-                if (found == null)
-                    throw GetKeyNotFoundException(key);
+                var found = _root.Find(key.GetHashCode()) ?? Enumerable.Empty<KeyValuePair<TKey, TValue>>();
 
                 foreach (var i in found)
                     if (i.Key.Equals(key))
                         return i.Value;
 
-                throw GetKeyNotFoundException(key);
+                throw ExceptionHelper.GetKeyNotFoundException(key);
             }
         }
 
@@ -184,7 +182,7 @@ namespace ImmutableCollections
                 }
             }
 
-            throw GetKeyNotFoundException(key);
+            throw ExceptionHelper.GetKeyNotFoundException(key);
         }
 
         [Pure]
@@ -229,15 +227,6 @@ namespace ImmutableCollections
         public int Length
         {
             get { return _root.GetItems().Count(); }
-        }
-
-        // Private methods
-
-        [Pure]
-        private KeyNotFoundException GetKeyNotFoundException(TKey key)
-        {
-            var message = string.Format("Key {0} was not found.", key);
-            return new KeyNotFoundException(message);
         }
     }
 }

@@ -101,7 +101,7 @@ namespace ImmutableCollections
                 var found = _root.TryFind(KeyPair(key), _comparer, out foundValue);
 
                 if (!found)
-                    throw new KeyNotFoundException();
+                    throw ExceptionHelper.GetKeyNotFoundException(key);
 
                 return foundValue.Value;
             }
