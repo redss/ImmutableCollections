@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using ImmutableCollections.DataStructures.ImmutableLinkedListStructure;
 
 namespace ImmutableCollections
@@ -15,7 +17,7 @@ namespace ImmutableCollections
 
         public ImmutableLinkedList()
         {
-            _first = new EmptyList<T>();
+            _first = EmptyList<T>.Instance;
             _count = 0;
         }
 
@@ -30,7 +32,8 @@ namespace ImmutableCollections
         [Pure]
         public IEnumerator<T> GetEnumerator()
         {
-            return _first.GetValues().GetEnumerator();
+            for (var node = _first; node is ListNode<T>; node = node.Tail)
+                yield return node.Value;
         }
 
         [Pure]
@@ -44,8 +47,7 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableLinkedList<T> Add(T item)
         {
-            var newFirst = _first.Append(item);
-            return new ImmutableLinkedList<T>(newFirst, _count + 1);
+            return Insert(_count, item);
         }
 
         [Pure]
@@ -63,8 +65,29 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableLinkedList<T> Insert(int index, T item)
         {
-            var newFirst = _first.Insert(index, item);
-            return new ImmutableLinkedList<T>(newFirst, _count + 1);
+            // TODO: Better exceptions.
+
+            if (index < 0)
+                throw new ArgumentOutOfRangeException();
+
+            if (index > _count)
+                throw new ArgumentOutOfRangeException();
+
+            var nodes = new IListNode<T>[index];
+            var current = _first;
+
+            for (var i = 0; i < index; i++)
+            {
+                nodes[i] = current;
+                current = current.Tail;
+            }
+
+            current = current.Prepend(item);
+
+            for (var i = index - 1; i >= 0; i--)
+                current = nodes[i].Change(current);
+
+            return new ImmutableLinkedList<T>(current, _count + 1);
         }
 
         [Pure]
@@ -76,8 +99,27 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableLinkedList<T> UpdateAt(int index, T item)
         {
-            var newFirst = _first.UpdateAt(index, item);
-            return new ImmutableLinkedList<T>(newFirst, _count);
+            if (index < 0)
+                throw new ArgumentOutOfRangeException();
+
+            if (index >= _count)
+                throw new ArgumentOutOfRangeException();
+
+            var nodes = new IListNode<T>[index + 1];
+            var current = _first;
+
+            for (var i = 0; i < index; i++)
+            {
+                nodes[i] = current;
+                current = current.Tail;
+            }
+
+            current = current.Change(item);
+
+            for (var i = index - 1; i >= 0; i--)
+                current = nodes[i].Change(current);
+
+            return new ImmutableLinkedList<T>(current, _count);
         }
 
         [Pure]
@@ -89,8 +131,20 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableLinkedList<T> Remove(T item)
         {
-            var newFirst = _first.Remove(item);
-            return new ImmutableLinkedList<T>(newFirst, _count - 1);
+            var stack = new Stack<IListNode<T>>(); 
+
+            for (var node = _first; node is ListNode<T>; node = node.Tail)
+            {
+                if (node.Value.Equals(item))
+                {
+                    var newNode = stack.Aggregate(node.Tail, (current, n) => n.Change(current));
+                    return new ImmutableLinkedList<T>(newNode, _count - 1);
+                }
+
+                stack.Push(node);
+            }
+
+            return this;
         }
 
         [Pure]
@@ -108,8 +162,27 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableLinkedList<T> RemoveAt(int index)
         {
-            var newFirst = _first.RemoveAt(index);
-            return new ImmutableLinkedList<T>(newFirst, _count - 1);
+            if (index < 0)
+                throw new ArgumentOutOfRangeException();
+
+            if (index >= _count)
+                throw new ArgumentOutOfRangeException();
+
+            var nodes = new IListNode<T>[index];
+            var current = _first;
+
+            for (var i = 0; i < index; i++)
+            {
+                nodes[i] = current;
+                current = current.Tail;
+            }
+
+            current = current.Tail;
+
+            for (var i = index - 1; i >= 0; i--)
+                current = nodes[i].Change(current);
+
+            return new ImmutableLinkedList<T>(current, _count - 1);
         }
 
         [Pure]
@@ -124,19 +197,47 @@ namespace ImmutableCollections
         [Pure]
         public bool Contains(T item)
         {
-            return _first.Contains(item);
+            for (var node = _first; _first is ListNode<T>; node = node.Tail)
+                if (node.Value.Equals(item))
+                    return true;
+
+            return false;
         }
 
         [Pure]
         public T this[int index]
         {
-            get { return _first.ElementAt(index); }
+            get
+            {
+                if (index < 0)
+                    throw new ArgumentOutOfRangeException();
+
+                if (index >= _count)
+                    throw new ArgumentOutOfRangeException();
+
+                var current = _first;
+
+                for (var i = 0; i != index; i++)
+                    current = current.Tail;
+
+                return current.Value;
+            }
         }
 
         [Pure]
         public int IndexOf(T item)
         {
-            return _first.IndexOf(item);
+            var index = 0;
+
+            for (var node = _first; node is ListNode<T>; node = node.Tail)
+            {
+                if (node.Value.Equals(item))
+                    return index;
+                
+                index++;
+            }
+
+            return -1;
         }
     }
 }

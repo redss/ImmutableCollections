@@ -1,12 +1,16 @@
-﻿using System.Collections.Generic;
-
-namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
+﻿namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
 {
+    /// <summary>
+    /// Concrete node, i. e. list having at least one element.
+    /// </summary>
+    /// <typeparam name="T">Type contained in the list.</typeparam>
     class ListNode<T> : IListNode<T>
     {
         private readonly T _value;
 
         private readonly IListNode<T> _tail;
+
+        // Constructor
 
         public ListNode(T value, IListNode<T> tail)
         {
@@ -14,76 +18,43 @@ namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
             _tail = tail;
         }
 
-        public IEnumerable<T> GetValues()
-        {
-            yield return _value;
+        // IListNode
 
-            foreach (var val in _tail.GetValues())
-                yield return val;
+        public IListNode<T> Next()
+        {
+            return _tail;
         }
 
-        public int Count { get { return _tail.Count + 1; } }
-        
-        public IListNode<T> Prepend(T item)
+        public T Value
         {
-            return new ListNode<T>(item, this);
+            get { return _value; }
         }
 
-        public IListNode<T> Append(T item)
+        public IListNode<T> Tail
         {
-            var newTail = _tail.Append(item);
-            return new ListNode<T>(_value, newTail);
+            get { return _tail; }
         }
 
-        public IListNode<T> Insert(int index, T item)
+        public IListNode<T> Prepend(T value)
         {
-            if (index == 0)
-                return Prepend(item);
-
-            var newTail = _tail.Insert(index - 1, item);
-            return new ListNode<T>(_value, newTail);
+            return new ListNode<T>(value, this);
         }
 
-        public IListNode<T> UpdateAt(int index, T item)
+        public IListNode<T> Change(T value)
         {
-            if (index == 0)
-                return new ListNode<T>(item, _tail);
-
-            var newTail = _tail.UpdateAt(index - 1, item);
-            return new ListNode<T>(_value, newTail);
+            return new ListNode<T>(value, _tail);
         }
 
-        public IListNode<T> Remove(T item)
+        public IListNode<T> Change(IListNode<T> tail)
         {
-            if (_value.Equals(item))
-                return _tail;
-
-            var newTail = _tail.Remove(item);
-            return new ListNode<T>(_value, newTail);
+            return new ListNode<T>(Value, tail);
         }
 
-        public IListNode<T> RemoveAt(int index)
-        {
-            if (index == 0)
-                return _tail;
+        // Public members
 
-            var newTail = _tail.RemoveAt(index - 1);
-            return new ListNode<T>(_value, newTail);
-        }
-
-        public bool Contains(T item)
+        public override string ToString()
         {
-            return _value.Equals(item) || _tail.Contains(item);
-        }
-
-        public int IndexOf(T item, int counter)
-        {
-            return _value.Equals(item) ? counter : _tail.IndexOf(item, counter + 1);
-        }
-
-        public T ElementAt(int index)
-        {
-            return index == 0 ? _value : _tail.ElementAt(index - 1);
+            return string.Format("Node({0})", _value);
         }
     }
 }

@@ -35,6 +35,9 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\IListNode.cs" />
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\EmptyList.cs" />
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\ListNode.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\DictionaryOperations\DictionaryAddOperation.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\DictionaryOperations\DictionaryRemoveOperation.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\DictionaryOperations\DictionarySetValueOperation.cs" />
@@ -62,9 +65,6 @@
     <Compile Include="Helpers\KeyComparer.cs" />
     <Compile Include="ImmutableCopyDictionary.cs" />
     <Compile Include="ImmutableCopyList.cs" />
-    <Compile Include="DataStructures\ImmutableLinkedListStructure\EmptyList.cs" />
-    <Compile Include="DataStructures\ImmutableLinkedListStructure\IListNode.cs" />
-    <Compile Include="DataStructures\ImmutableLinkedListStructure\ListNode.cs" />
     <Compile Include="Helpers\ArrayExtensions.cs" />
     <Compile Include="ImmutableCopySet.cs" />
     <Compile Include="ImmutableHashDictionary.cs">

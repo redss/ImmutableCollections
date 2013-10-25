@@ -1,29 +1,40 @@
-﻿using System.Collections.Generic;
-
-namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
+﻿namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
 {
-    interface IListNode<T>
+    /// <summary>
+    /// Immutable list, or its part.
+    /// </summary>
+    /// <typeparam name="T">Type contained in the list.</typeparam>
+    public interface IListNode<T>
     {
-        IEnumerable<T> GetValues();
+        /// <summary>
+        /// Gets the value stored in the node.
+        /// </summary>
+        T Value { get; }
 
-        int Count { get; }
+        /// <summary>
+        /// Gets the tail of the list.
+        /// </summary>
+        IListNode<T> Tail { get; }
 
-        IListNode<T> Prepend(T item);
+        /// <summary>
+        /// Inserts new node with given value before this node.
+        /// </summary>
+        /// <param name="value">Inserted value.</param>
+        /// <returns>New node.</returns>
+        IListNode<T> Prepend(T value);
 
-        IListNode<T> Append(T item);
+        /// <summary>
+        /// Creates new node with changed value.
+        /// </summary>
+        /// <param name="value">Changed value.</param>
+        /// <returns>New node.</returns>
+        IListNode<T> Change(T value);
 
-        IListNode<T> Insert(int index, T item);
-
-        IListNode<T> UpdateAt(int index, T item);
-
-        IListNode<T> Remove(T item);
-        
-        IListNode<T> RemoveAt(int index);
-
-        bool Contains(T item);
-
-        int IndexOf(T item, int counter = 0);
-
-        T ElementAt(int index);
+        /// <summary>
+        /// Creates new node with changed tail.
+        /// </summary>
+        /// <param name="tail">Changed tail.</param>
+        /// <returns>New node.</returns>
+        IListNode<T> Change(IListNode<T> tail);
     }
 }

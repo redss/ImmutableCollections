@@ -1,63 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
 {
+    /// <summary>
+    /// Empty list.
+    /// </summary>
+    /// <typeparam name="T">Type contained in the list.</typeparam>
     class EmptyList<T> : IListNode<T>
     {
-        public IEnumerable<T> GetValues()
+        // Singleton
+
+        public static readonly EmptyList<T> Instance = new EmptyList<T>();
+
+        private EmptyList() { }
+
+        // IListNode
+
+        public T Value
         {
-            yield break;
+            get { throw new InvalidOperationException(); }
         }
 
-        public int Count { get { return 0; } }
-        
-        public IListNode<T> Prepend(T item)
+        public IListNode<T> Tail
         {
-            return new ListNode<T>(item, this);
+            get { throw new InvalidOperationException(); }
         }
 
-        public IListNode<T> Append(T item)
+        public IListNode<T> Prepend(T value)
         {
-            return Prepend(item);
+            return new ListNode<T>(value, this);
         }
 
-        public IListNode<T> Insert(int index, T item)
+        public IListNode<T> Change(T value)
         {
-            if (index == 0)
-                return Append(item);
-
-            throw new ArgumentOutOfRangeException("index");
+            throw new InvalidOperationException();
         }
 
-        public IListNode<T> UpdateAt(int index, T item)
+        public IListNode<T> Change(IListNode<T> tail)
         {
-            throw new ArgumentOutOfRangeException("index");
+            throw new InvalidOperationException();
         }
 
-        public IListNode<T> Remove(T item)
-        {
-            return this;
-        }
+        // Public members
 
-        public IListNode<T> RemoveAt(int index)
+        public override string ToString()
         {
-            throw new ArgumentOutOfRangeException("index");
-        }
-
-        public bool Contains(T item)
-        {
-            return false;
-        }
-
-        public int IndexOf(T item, int counter)
-        {
-            return -1;
-        }
-
-        public T ElementAt(int index)
-        {
-            throw new ArgumentOutOfRangeException("index");
+            return "Empty";
         }
     }
 }
