@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Linq;
-using ImmutableCollections.DataStructures.VectorStructure;
+using ImmutableCollections.DataStructures.BitmappedVectorTrieStructure;
 using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections
@@ -23,7 +23,7 @@ namespace ImmutableCollections
         public ImmutableVector()
         {
             _count = 0;
-            _root = new EmptyVector<T>();
+            _root = EmptyVector<T>.Instance;
         }
 
         private ImmutableVector(IVectorNode<T> root, int count)
@@ -138,7 +138,7 @@ namespace ImmutableCollections
         {
             AssertIndexRange(index);
 
-            var newRoot = index > 0 ? _root.Remove(index - 1) : new EmptyVector<T>();
+            var newRoot = index > 0 ? _root.Remove(index - 1) : EmptyVector<T>.Instance;
 
             if (index == _count - 1)
                 return new ImmutableVector<T>(newRoot, _count - 1);

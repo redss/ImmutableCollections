@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ImmutableCollections.DataStructures.VectorStructure;
+using ImmutableCollections.DataStructures.BitmappedVectorTrieStructure;
 using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.VectorStructure
@@ -20,7 +20,7 @@ namespace ImmutableCollections.Tests.DataStructures.VectorStructure
         {
             foreach (var i in Enumerable.Range(0, 1000))
             {
-                var index = ImmutableVectorHelper.CountIndex(i, 0);
+                var index = ImmutableVectorHelper.ComputeIndex(i, 0);
                 var modulo = i % ImmutableVectorHelper.Fragmentation;
 
                 Assert.AreEqual(modulo, index);
@@ -30,7 +30,7 @@ namespace ImmutableCollections.Tests.DataStructures.VectorStructure
         [Test]
         public void AppendingToVectorNodes_DoesntThrowException()
         {
-            IVectorNode<int> root = new EmptyVector<int>();
+            IVectorNode<int> root = EmptyVector<int>.Instance;
 
             foreach (var i in Enumerable.Range(0, 1 << ImmutableVectorHelper.Shift * 3 + 1))
             {
@@ -51,7 +51,7 @@ namespace ImmutableCollections.Tests.DataStructures.VectorStructure
         {
             var range = Enumerable.Range(0, 1 << 16).ToArray();
 
-            IVectorNode<int> root = new EmptyVector<int>();
+            IVectorNode<int> root = EmptyVector<int>.Instance;
             root = range.Aggregate(root, (current, i) => current.Append(i, i));
 
             foreach (var i in range)

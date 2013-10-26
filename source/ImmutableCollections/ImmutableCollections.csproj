@@ -77,11 +77,11 @@
     <Compile Include="ImmutableSortedDictionary.cs" />
     <Compile Include="ImmutableSortedSet.cs" />
     <Compile Include="ImmutableVector.cs" />
-    <Compile Include="DataStructures\VectorStructure\EmptyVector.cs" />
-    <Compile Include="DataStructures\VectorStructure\ImmutableVectorHelper.cs" />
-    <Compile Include="DataStructures\VectorStructure\IVectorNode.cs" />
-    <Compile Include="DataStructures\VectorStructure\VectorLeaf.cs" />
-    <Compile Include="DataStructures\VectorStructure\VectorLevel.cs" />
+    <Compile Include="DataStructures\BitmappedVectorTrieStructure\EmptyVector.cs" />
+    <Compile Include="DataStructures\BitmappedVectorTrieStructure\ImmutableVectorHelper.cs" />
+    <Compile Include="DataStructures\BitmappedVectorTrieStructure\IVectorNode.cs" />
+    <Compile Include="DataStructures\BitmappedVectorTrieStructure\VectorLeaf.cs" />
+    <Compile Include="DataStructures\BitmappedVectorTrieStructure\VectorLevel.cs" />
     <Compile Include="IImmutableCollection.cs" />
     <Compile Include="IImmutableDictionary.cs" />
     <Compile Include="IImmutableList.cs" />

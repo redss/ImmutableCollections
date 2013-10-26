@@ -2,7 +2,7 @@
 using System.Linq;
 using ImmutableCollections.Helpers;
 
-namespace ImmutableCollections.DataStructures.VectorStructure
+namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
 {
     class VectorLeaf<T> : IVectorNode<T>
     {
@@ -82,7 +82,7 @@ namespace ImmutableCollections.DataStructures.VectorStructure
 
         private int CountIndex(int index)
         {
-            return ImmutableVectorHelper.CountIndex(index, 0);
+            return ImmutableVectorHelper.ComputeIndex(index, 0);
         }
     }
 }
