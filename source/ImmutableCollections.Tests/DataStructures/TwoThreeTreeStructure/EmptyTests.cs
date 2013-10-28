@@ -14,19 +14,19 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
 
             int splitValue;
             ITwoThree<int> splitLeft, splitRight;
-            var result = Empty<int>.Instance.Insert(item, Comparer<int>.Default, out splitLeft, out splitRight, out splitValue);
+            var result = EmptyTwoThree<int>.Instance.Insert(item, Comparer<int>.Default, out splitLeft, out splitRight, out splitValue);
 
             Assert.IsNull(result);
 
             Assert.AreEqual(item, splitValue);
-            Assert.IsInstanceOf<Empty<int>>(splitLeft);
-            Assert.IsInstanceOf<Empty<int>>(splitRight);
+            Assert.IsInstanceOf<EmptyTwoThree<int>>(splitLeft);
+            Assert.IsInstanceOf<EmptyTwoThree<int>>(splitRight);
         }
 
         [Test]
         public void Update_ReturnsNull()
         {
-            var result = Empty<int>.Instance.Update(10, Comparer<int>.Default);
+            var result = EmptyTwoThree<int>.Instance.Update(10, Comparer<int>.Default);
             Assert.IsNull(result);
         }
     }

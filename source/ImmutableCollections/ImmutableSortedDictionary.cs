@@ -20,7 +20,7 @@ namespace ImmutableCollections
 
         public ImmutableSortedDictionary()
         {
-            _root = Empty<KeyValuePair<TKey, TValue>>.Instance;
+            _root = EmptyTwoThree<KeyValuePair<TKey, TValue>>.Instance;
             _comparer = new KeyComparer<TKey, TValue>();
         }
 
@@ -29,7 +29,7 @@ namespace ImmutableCollections
             if (keyComparer == null)
                 throw new ArgumentNullException("keyComparer");
 
-            _root = Empty<KeyValuePair<TKey, TValue>>.Instance;
+            _root = EmptyTwoThree<KeyValuePair<TKey, TValue>>.Instance;
             _comparer = new KeyComparer<TKey, TValue>(keyComparer);
         }
 

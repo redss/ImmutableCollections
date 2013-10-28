@@ -4,13 +4,17 @@ using System.Diagnostics;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
+    /// <summary>
+    /// Patricia leaf node storing key and associated values.
+    /// </summary>
+    /// <typeparam name="T">Type of items associated with keys.</typeparam>
     class PatriciaLeaf<T> : IPatriciaNode<T>
     {
         public readonly int Key;
 
         public readonly T[] Items;
 
-        // Constructors
+        // Constructor
 
         public PatriciaLeaf(int key, T[] items)
         {

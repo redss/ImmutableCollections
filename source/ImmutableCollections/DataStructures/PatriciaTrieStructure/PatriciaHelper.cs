@@ -27,7 +27,7 @@
         }
 
         /// <summary>
-        /// Joins two Patricia Tries with common branch.
+        /// Joins two Patricia Tries having different keys with common branch.
         /// </summary>
         /// <param name="prefixA">Prfix of the first Trie.</param>
         /// <param name="nodeA">First Patricia Trie.</param>

@@ -19,7 +19,7 @@ namespace ImmutableCollections
 
         public ImmutableSortedSet()
         {
-            _root = Empty<T>.Instance;
+            _root = EmptyTwoThree<T>.Instance;
             _comparer = Comparer<T>.Default;
         }
 

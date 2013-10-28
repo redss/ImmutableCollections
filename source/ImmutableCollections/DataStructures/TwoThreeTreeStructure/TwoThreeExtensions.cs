@@ -4,7 +4,7 @@
     {
         public static bool IsNullOrEmpty<T>(this ITwoThree<T> node)
         {
-            return node == null || node is Empty<T>;
+            return node == null || node is EmptyTwoThree<T>;
         }
 
         public static bool IsBalanced<T>(this ITwoThree<T> node)

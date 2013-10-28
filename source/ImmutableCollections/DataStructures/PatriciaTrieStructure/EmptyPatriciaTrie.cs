@@ -2,18 +2,18 @@
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
+    /// <summary>
+    /// Represents only empty Patricia Trie.
+    /// </summary>
+    /// <typeparam name="T">Type of items associated with keys.</typeparam>
     class EmptyPatriciaTrie<T> : IPatriciaNode<T>
     {
-        private static readonly EmptyPatriciaTrie<T> Empty = new EmptyPatriciaTrie<T>();  
+        // Singleton
 
-        // Constructor
+        public static readonly EmptyPatriciaTrie<T> Instance = new EmptyPatriciaTrie<T>();
 
         private EmptyPatriciaTrie() { }
 
-        // Singleton
-
-        public static IPatriciaNode<T> Instance { get { return Empty; } }
-        
         // IPatriciaNode
 
         public T[] Find(int key)

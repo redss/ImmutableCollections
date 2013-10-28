@@ -6,6 +6,10 @@ using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 {
+    /// <summary>
+    /// Branch node of the Patricia Trie grouping nodes having same prefix.
+    /// </summary>
+    /// <typeparam name="T">Type of items associated with keys.</typeparam>
     class PatriciaBranch<T> : IPatriciaNode<T>
     {
         public readonly int Prefix;

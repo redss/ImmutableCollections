@@ -3,6 +3,10 @@ using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure.SetOperations
 {
+    /// <summary>
+    /// Operation removing item from the set.
+    /// </summary>
+    /// <typeparam name="T">Type of items stored in the set.</typeparam>
     class SetRemoveOperation<T> : IPatriciaOperation<T>
     {
         private readonly T _item;

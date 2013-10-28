@@ -3,18 +3,16 @@
 namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
 {
     /// <summary>
-    /// Red Black Tree leaf, ar just empty subtree. Every leaf is black.
+    /// Red Black Tree leaf, ar just empty tree. Every leaf is black.
     /// </summary>
     /// <typeparam name="T">Type of values stored in the tree.</typeparam>
     class RedBlackLeaf<T> : IRedBlack<T>
     {
-        // Constructor
-
-        private RedBlackLeaf() { }
-
         // Singleton
 
         public static readonly IRedBlack<T> Instance = new RedBlackLeaf<T>();
+
+        private RedBlackLeaf() { }
 
         // IRedBlack
 

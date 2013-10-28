@@ -55,7 +55,7 @@
     <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackHelper.cs" />
     <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackLeaf.cs" />
     <Compile Include="DataStructures\RedBlackTreeStructure\RedBlackNode.cs" />
-    <Compile Include="DataStructures\TwoThreeTreeStructure\Empty.cs" />
+    <Compile Include="DataStructures\TwoThreeTreeStructure\EmptyTwoThree.cs" />
     <Compile Include="DataStructures\TwoThreeTreeStructure\ITwoThree.cs" />
     <Compile Include="DataStructures\TwoThreeTreeStructure\ThreeNode.cs" />
     <Compile Include="DataStructures\TwoThreeTreeStructure\TwoNode.cs" />

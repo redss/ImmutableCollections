@@ -11,7 +11,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
         public void InsertNewElement_OnLeaf_SplitsNode()
         {
             const int a = 10, b = 20, c = 30;
-            var node = new ThreeNode<int>(a, b, Empty<int>.Instance, Empty<int>.Instance, Empty<int>.Instance);
+            var node = new ThreeNode<int>(a, b, EmptyTwoThree<int>.Instance, EmptyTwoThree<int>.Instance, EmptyTwoThree<int>.Instance);
 
             int splitValue;
             ITwoThree<int> splitLeft, splitRight;
@@ -28,7 +28,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
         public void InsertExistingElement_OnLeaf_ReturnsSameNode()
         {
             const int a = 10, b = 20;
-            var node = new ThreeNode<int>(a, b, Empty<int>.Instance, Empty<int>.Instance, Empty<int>.Instance);
+            var node = new ThreeNode<int>(a, b, EmptyTwoThree<int>.Instance, EmptyTwoThree<int>.Instance, EmptyTwoThree<int>.Instance);
 
             int splitValue;
             ITwoThree<int> splitLeft, splitRight;

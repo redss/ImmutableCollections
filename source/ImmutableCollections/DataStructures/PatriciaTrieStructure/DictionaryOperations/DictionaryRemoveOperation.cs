@@ -3,6 +3,11 @@ using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure.DictionaryOperations
 {
+    /// <summary>
+    /// Operation removing key from the set.
+    /// </summary>
+    /// <typeparam name="TKey">Type of the keys stored in the dictionary.</typeparam>
+    /// <typeparam name="TValue">Type of the values associated with the keys.</typeparam>
     class DictionaryRemoveOperation<TKey, TValue> : IPatriciaOperation<KeyValuePair<TKey, TValue>>
     {
         private readonly TKey _key;

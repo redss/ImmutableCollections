@@ -153,7 +153,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
                 CollectionAssert.AreEqual(itemSet, node.GetValues());
             }
 
-            Assert.IsInstanceOf<Empty<int>>(node);
+            Assert.IsInstanceOf<EmptyTwoThree<int>>(node);
         }
 
         [Test]
@@ -198,7 +198,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
 
         private ITwoThree<T> CreateTree<T>(IEnumerable<T> items, IComparer<T> comparer = null)
         {
-            return items.Aggregate((ITwoThree<T>)Empty<T>.Instance, (current, item) => TwoThreeHelper.Insert(current, item, comparer));
+            return items.Aggregate((ITwoThree<T>)EmptyTwoThree<T>.Instance, (current, item) => TwoThreeHelper.Insert(current, item, comparer));
         }
 
         private static int[] GetAbsentElements(int[] items)

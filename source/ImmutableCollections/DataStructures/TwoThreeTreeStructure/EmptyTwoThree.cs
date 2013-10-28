@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 {
-    class Empty<T> : ITwoThree<T>
+    class EmptyTwoThree<T> : ITwoThree<T>
     {
-        public static Empty<T> Instance = new Empty<T>();
+        // Singleton
 
-        // Constructor
+        public static readonly EmptyTwoThree<T> Instance = new EmptyTwoThree<T>();
 
-        private Empty() { }
+        private EmptyTwoThree() { }
 
         // ITwoThree
 

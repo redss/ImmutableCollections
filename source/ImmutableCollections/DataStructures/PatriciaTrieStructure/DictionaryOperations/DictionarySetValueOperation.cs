@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace ImmutableCollections.DataStructures.PatriciaTrieStructure.DictionaryOperations
 {
+    /// <summary>
+    /// Operation modifying value associated with a key in a dictionary.
+    /// </summary>
+    /// <typeparam name="TKey">Type of the keys stored in the dictionary.</typeparam>
+    /// <typeparam name="TValue">Type of the values associated with the keys.</typeparam>
     class DictionarySetValueOperation<TKey, TValue> : IPatriciaOperation<KeyValuePair<TKey, TValue>>
     {
         private readonly TKey _key;

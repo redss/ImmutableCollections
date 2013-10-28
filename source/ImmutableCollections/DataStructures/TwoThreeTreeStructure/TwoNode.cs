@@ -54,7 +54,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public T Min()
         {
-            return Left is Empty<T> ? Value : Left.Min();
+            return Left is EmptyTwoThree<T> ? Value : Left.Min();
         }
 
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
@@ -143,7 +143,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             {
                 // Since node is a leaf, we can just return an empty tree.
                 removed = true;
-                return Empty<T>.Instance;
+                return EmptyTwoThree<T>.Instance;
             }
 
             // Node is not leaf - we need to find item's consequent.
@@ -204,7 +204,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         private bool IsLeaf()
         {
-            return Left is Empty<T> && Right is Empty<T>;
+            return Left is EmptyTwoThree<T> && Right is EmptyTwoThree<T>;
         }
 
         private ITwoThree<T> RedistributeOrMerge(T value, ITwoThree<T> left, ITwoThree<T> right, Side removedSide, out bool removed)

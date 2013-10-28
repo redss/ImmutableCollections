@@ -64,7 +64,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public T Min()
         {
-            return Left is Empty<T> ? First : Left.Min();
+            return Left is EmptyTwoThree<T> ? First : Left.Min();
         }
 
         public ITwoThree<T> Insert(T item, IComparer<T> comparer, out ITwoThree<T> splitLeft, out ITwoThree<T> splitRight, out T splitValue)
@@ -269,7 +269,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         private bool IsLeaf()
         {
-            return Left is Empty<T> && Right is Empty<T>;
+            return Left is EmptyTwoThree<T> && Right is EmptyTwoThree<T>;
         }
 
         private TwoNode<T> Shrink(Side side, out bool removed)
@@ -279,10 +279,10 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             switch (side)
             {
                 case Side.SameFirst:
-                    return new TwoNode<T>(Second, Empty<T>.Instance, Empty<T>.Instance);
+                    return new TwoNode<T>(Second, EmptyTwoThree<T>.Instance, EmptyTwoThree<T>.Instance);
 
                 case Side.SameSecond:
-                    return new TwoNode<T>(First, Empty<T>.Instance, Empty<T>.Instance);
+                    return new TwoNode<T>(First, EmptyTwoThree<T>.Instance, EmptyTwoThree<T>.Instance);
 
                 default:
                     throw new ArgumentOutOfRangeException("side");
