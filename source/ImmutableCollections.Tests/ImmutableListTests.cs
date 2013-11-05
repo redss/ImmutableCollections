@@ -4,7 +4,6 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests
 {
-    [TestFixture(typeof(ImmutableCopyList<int>))]
     [TestFixture(typeof(ImmutableVector<int>))]
     [TestFixture(typeof(ImmutableLinkedList<int>))]
     public class ImmutableListTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>

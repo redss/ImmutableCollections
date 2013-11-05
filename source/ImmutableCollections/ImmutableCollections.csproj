@@ -65,10 +65,7 @@
     <Compile Include="DataStructures\TwoThreeTreeStructure\TwoThreeHelper.cs" />
     <Compile Include="Helpers\ExceptionHelper.cs" />
     <Compile Include="Helpers\KeyComparer.cs" />
-    <Compile Include="ImmutableCopyDictionary.cs" />
-    <Compile Include="ImmutableCopyList.cs" />
     <Compile Include="Helpers\ArrayExtensions.cs" />
-    <Compile Include="ImmutableCopyHashSet.cs" />
     <Compile Include="ImmutableHashDictionary.cs">
       <SubType>Code</SubType>
     </Compile>

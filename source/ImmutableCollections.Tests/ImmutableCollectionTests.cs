@@ -4,12 +4,10 @@ using ImmutableCollections.Tests.TestInfrastructure;
 
 namespace ImmutableCollections.Tests
 {
-    [TestFixture(typeof(ImmutableCopyList<int>))]
     [TestFixture(typeof(ImmutableVector<int>))]
     [TestFixture(typeof(ImmutableLinkedList<int>))]
     [TestFixture(typeof(ImmutableHashSet<int>))]
     [TestFixture(typeof(ImmutableSortedSet<int>))]
-    [TestFixture(typeof(ImmutableCopyHashSet<int>))]
     public class ImmutableCollectionTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableCollection<int>
     {
         [Test]
