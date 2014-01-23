@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using ImmutableCollections.DataStructures.RedBlackTreeStructure;
 using System.Linq;
+using ImmutableCollections.Helpers;
 
 // ReSharper disable CompareNonConstrainedGenericWithNull
 
 namespace ImmutableCollections
 {
-    public class ImmutableRedBlackSet<T> : IEnumerable<T>
+    public class ImmutableRedBlackSet<T> : IImmutableSet<T>
     {
         private readonly IRedBlack<T> _root;
 
@@ -66,6 +67,30 @@ namespace ImmutableCollections
                 return this;
 
             return new ImmutableRedBlackSet<T>(newRoot, _comparer);
+        }
+
+        [Pure]
+        IImmutableSet<T> IImmutableSet<T>.Add(T item)
+        {
+            return Add(item);
+        }
+
+        [Pure]
+        IImmutableCollection<T> IImmutableCollection<T>.Add(T item)
+        {
+            return Add(item);
+        }
+
+        [Pure]
+        IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
+        {
+            throw ExceptionHelper.GetNotSupportedException();
+        }
+
+        [Pure]
+        IImmutableSet<T> IImmutableSet<T>.Remove(T item)
+        {
+            throw ExceptionHelper.GetNotSupportedException();
         }
 
         [Pure]

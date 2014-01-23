@@ -25,7 +25,7 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         {
             if (children == null)
                 throw new ArgumentNullException("children", "Patricia branch cannot be empty.");
-
+                
             if (children.Length != 2)
                 throw new ArgumentOutOfRangeException("children", "Patricia branch must have exactly two children.");
 

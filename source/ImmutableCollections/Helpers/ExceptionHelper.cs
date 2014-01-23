@@ -50,5 +50,11 @@ namespace ImmutableCollections.Helpers
             var message = string.Format("Index {0} cannot be greater than {1}.", index, count);
             return new ArgumentOutOfRangeException(parameterName, message);
         }
+
+        [Pure]
+        public static InvalidOperationException GetNotSupportedException()
+        {
+            return new InvalidOperationException("Removing from this red-black tree is not supported.");
+        }
     }
 }

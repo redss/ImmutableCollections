@@ -10,7 +10,7 @@ using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections
 {
-    public class ImmutableRedBlackDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    public class ImmutableRedBlackDictionary<TKey, TValue> : IImmutableDictionary<TKey, TValue>
     {
         private readonly IRedBlack<KeyValuePair<TKey, TValue>> _root;
 
@@ -62,6 +62,12 @@ namespace ImmutableCollections
         }
 
         [Pure]
+        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Add(TKey key, TValue value)
+        {
+            return Add(key, value);
+        }
+
+        [Pure]
         public ImmutableRedBlackDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
@@ -76,6 +82,30 @@ namespace ImmutableCollections
         }
 
         [Pure]
+        IImmutableCollection<KeyValuePair<TKey, TValue>> IImmutableCollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
+        {
+            return Add(item);
+        }
+
+        [Pure]
+        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Add(KeyValuePair<TKey, TValue> item)
+        {
+            return Add(item);
+        }
+
+        [Pure]
+        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Remove(TKey key)
+        {
+            throw ExceptionHelper.GetNotSupportedException();
+        }
+
+        [Pure]
+        IImmutableCollection<KeyValuePair<TKey, TValue>> IImmutableCollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
+        {
+            throw ExceptionHelper.GetNotSupportedException();
+        }
+
+        [Pure]
         public ImmutableRedBlackDictionary<TKey, TValue> SetValue(TKey key, TValue value)
         {
             if (key == null)
@@ -87,6 +117,12 @@ namespace ImmutableCollections
                 return this;
 
             return new ImmutableRedBlackDictionary<TKey, TValue>(newRoot, _comparer);
+        }
+
+        [Pure]
+        IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.SetValue(TKey key, TValue value)
+        {
+            return SetValue(key, value);
         }
 
         [Pure]
@@ -105,6 +141,31 @@ namespace ImmutableCollections
 
                 return foundValue.Value;
             }
+        }
+
+        [Pure]
+        public bool TryGetValue(TKey key, out TValue value)
+        {
+            if (key == null)
+                throw new ArgumentNullException("key");
+
+            KeyValuePair<TKey, TValue> foundValue;
+            var found = _root.TryFind(KeyPair(key), _comparer, out foundValue);
+
+            value = foundValue.Value;
+            return found;
+        }
+
+        [Pure]
+        public IEnumerable<TKey> Keys
+        {
+            get { return _root.GetValues().Select(i => i.Key); }
+        }
+
+        [Pure]
+        public IEnumerable<TValue> Values
+        {
+            get { return _root.GetValues().Select(i => i.Value); }
         }
 
         [Pure]
@@ -144,6 +205,6 @@ namespace ImmutableCollections
         private KeyValuePair<TKey, TValue> KeyPair(TKey key)
         {
             return new KeyValuePair<TKey, TValue>(key, default(TValue));
-        } 
+        }
     }
 }

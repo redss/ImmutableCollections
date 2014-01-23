@@ -88,6 +88,13 @@ namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
             }
         }
 
+        [Test]
+        public void SampleTree()
+        {
+            var items = RandomHelper.Shuffle(_random, Enumerable.Range(0, 10));
+            var tree = CreateTree(items);
+        }
+
         // Private methods
 
         private IRedBlack<T> CreateTree<T>(IEnumerable<T> items, IComparer<T> comparer = null)
