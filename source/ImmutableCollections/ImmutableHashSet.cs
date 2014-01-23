@@ -56,7 +56,7 @@ namespace ImmutableCollections
                 throw new ArgumentNullException("item");
 
             var operation = new SetAddOperation<T>(item);
-            var newRoot = _root.Modify(item.GetHashCode(), operation);
+            var newRoot = _root.Modify(item.GetHashCode(), operation) ?? EmptyPatriciaTrie<T>.Instance;
 
             return newRoot == _root ? this : new ImmutableHashSet<T>(newRoot);
         }
