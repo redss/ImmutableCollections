@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 
 namespace ImmutableCollections.Helpers
 {
@@ -20,6 +21,7 @@ namespace ImmutableCollections.Helpers
             _keyComparer = keyComparer ?? Comparer<TKey>.Default;
         }
 
+        [Pure]
         public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
         {
             return _keyComparer.Compare(x.Key, y.Key);

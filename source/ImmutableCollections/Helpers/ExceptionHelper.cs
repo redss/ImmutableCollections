@@ -43,18 +43,5 @@ namespace ImmutableCollections.Helpers
             var message = string.Format("Index cannot be negative, but was: {0}.", index);
             return new ArgumentOutOfRangeException(parameterName, index, message);
         }
-
-        [Pure]
-        public static ArgumentOutOfRangeException GetIndexTooBigException(int index, int count, string parameterName)
-        {
-            var message = string.Format("Index {0} cannot be greater than {1}.", index, count);
-            return new ArgumentOutOfRangeException(parameterName, message);
-        }
-
-        [Pure]
-        public static InvalidOperationException GetNotSupportedException()
-        {
-            return new InvalidOperationException("Removing from this red-black tree is not supported.");
-        }
     }
 }

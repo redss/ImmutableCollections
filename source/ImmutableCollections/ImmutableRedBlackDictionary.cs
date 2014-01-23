@@ -96,13 +96,13 @@ namespace ImmutableCollections
         [Pure]
         IImmutableDictionary<TKey, TValue> IImmutableDictionary<TKey, TValue>.Remove(TKey key)
         {
-            throw ExceptionHelper.GetNotSupportedException();
+            throw GetNotSupportedException();
         }
 
         [Pure]
         IImmutableCollection<KeyValuePair<TKey, TValue>> IImmutableCollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            throw ExceptionHelper.GetNotSupportedException();
+            throw GetNotSupportedException();
         }
 
         [Pure]
@@ -205,6 +205,12 @@ namespace ImmutableCollections
         private KeyValuePair<TKey, TValue> KeyPair(TKey key)
         {
             return new KeyValuePair<TKey, TValue>(key, default(TValue));
+        }
+
+        [Pure]
+        private InvalidOperationException GetNotSupportedException()
+        {
+            return new InvalidOperationException("Removing from this red-black tree is not supported.");
         }
     }
 }
