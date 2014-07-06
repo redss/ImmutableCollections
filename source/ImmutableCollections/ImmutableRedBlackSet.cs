@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using ImmutableCollections.DataStructures.RedBlackTreeStructure;
 using System.Linq;
-using ImmutableCollections.Helpers;
 
 // ReSharper disable CompareNonConstrainedGenericWithNull
 
@@ -84,13 +83,13 @@ namespace ImmutableCollections
         [Pure]
         IImmutableCollection<T> IImmutableCollection<T>.Remove(T item)
         {
-            throw ExceptionHelper.GetNotSupportedException();
+            throw GetNotSupportedException();
         }
 
         [Pure]
         IImmutableSet<T> IImmutableSet<T>.Remove(T item)
         {
-            throw ExceptionHelper.GetNotSupportedException();
+            throw GetNotSupportedException();
         }
 
         [Pure]
@@ -107,6 +106,12 @@ namespace ImmutableCollections
 
             T foundItem;
             return _root.TryFind(item, _comparer, out foundItem);
+        }
+
+        [Pure]
+        private InvalidOperationException GetNotSupportedException()
+        {
+            return new InvalidOperationException("Removing from this red-black set is not supported.");
         }
     }
 }
