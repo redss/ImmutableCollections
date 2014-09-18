@@ -1,94 +1,71 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using ImmutableCollections.Helpers;
 
 namespace ImmutableCollections.Tests.Helpers
 {
-    [TestFixture]
-    public class ArrayExtensionsTests
+    class ArrayExtensionsTests
     {
-        private const int Count = 10;
-
-        private const int Foo = 20;
-
-        private const int Index = 4;
-
         [Test]
-        public void Append_Test()
+        public void Can_Append_Element_To_New_Array()
         {
-            var values = Enumerable.Range(0, Count).ToArray();
-            var arr = values.ToArray();
-
-            var appended = arr.Append(Foo);
-
-            CollectionAssert.AreEqual(values, arr);
-            CollectionAssert.AreEqual(values, appended.ArrayTake(Count));
-            Assert.AreEqual(Count + 1, appended.Length);
-            Assert.AreEqual(Foo, appended[Count]);
-        }
-
-        [Test]
-        public void Change_Test()
-        {
-            var values = Enumerable.Range(0, Count).ToArray();
-            var arr = values.ToArray();
-
-            var changed = arr.Change(Foo, Index);
+            var array = new[] { 1, 2, 3 };
             
-            CollectionAssert.AreEqual(values, arr);
-            Assert.AreEqual(Count, changed.Length);
-            Assert.AreEqual(Foo, changed[Index]);
-
-            foreach (var i in values.Where(x => x != Index))
-                Assert.AreEqual(arr[i], changed[i]);
+            var result = array.Append(4);
+            
+            Assert.That(result, Is.EqualTo(new[] { 1, 2, 3, 4 }));
         }
 
         [Test]
-        public void TakeAndChange_Test()
+        public void Can_Change_Element_In_Array()
         {
-            var values = Enumerable.Range(0, Count).ToArray();
-            var arr = values.ToArray();
+            var array = new[] { 1, 2, 3 };
 
-            var changed = arr.TakeAndChange(Foo, Index - 1, Index);
+            var result = array.Change(item: 100, index: 1);
 
-            CollectionAssert.AreEqual(values, arr);
-            CollectionAssert.AreEqual(arr.Take(Index - 1), arr.Take(Index - 1));
-            Assert.AreEqual(Index, changed.Length);
-            Assert.AreEqual(Foo, changed[Index - 1]);
+            Assert.That(result, Is.EqualTo(new[] { 1, 100, 3 }));
         }
 
         [Test]
-        public void Take_Test()
+        public void Can_Reduce_Array_Size_And_Chenge_One_Element()
         {
-            var values = Enumerable.Range(0, Count).ToArray();
-            var arr = values.ToArray();
+            var array = new[] { 1, 2, 3, 4 };
 
-            var changed = arr.ArrayTake(Index);
+            var result = array.TakeAndChange(item: 100, index: 1, take: 3);
 
-            CollectionAssert.AreEqual(values, arr);
-            CollectionAssert.AreEqual(arr.Take(Index), changed);
+            Assert.That(result, Is.EqualTo(new[] { 1, 100, 3 }));
         }
 
         [Test]
-        public void RemoveAt_Test()
+        public void Can_Create_Array_Copy_With_Reduced_Size()
         {
-            var values = Enumerable.Range(0, Count).ToArray();
-            var arr = values.ToArray();
+            var array = new[] { 1, 2, 3, 4 };
 
-            var changed = arr.RemoveAt(Index);
-            var expected = arr.Where((x, i) => i != Index).ToArray();
+            var result = array.Take(3);
 
-            CollectionAssert.AreEqual(expected, changed);
+            Assert.That(result, Is.EqualTo(new[] { 1, 2, 3 }));
         }
 
         [Test]
-        public void RemoveAt_WithOneElement_ReturnsNull()
+        public void Can_Create_Array_Copy_Without_Element_At_Given_Index()
         {
+            var array = new[] { 1, 2, 3 };
+
+            var result = array.RemoveAt(1);
+
+            Assert.That(result, Is.EqualTo(new[] { 1, 3 }));
+        }
+
+        [Test]
+        public void Removing_Last_Array_Element_Should_Return_Null()
+        {
+            // TODO: This behavior is strange and should be changed.
+
             var arr = new[] { 1 };
+
             var result = arr.RemoveAt(1);
             
-            Assert.IsNull(result);
+            Assert.That(result, Is.Null);
         }
     }
 }

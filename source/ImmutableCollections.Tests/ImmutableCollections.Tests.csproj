@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStructures\PatriciaTrieStructure\OperationStub.cs" />
+    <Compile Include="DataStructures\VectorStructure\EmptyVectorTests.cs" />
+    <Compile Include="DataStructures\VectorStructure\ImmutableVectorHelperTests.cs" />
     <Compile Include="DataStructures\VectorStructure\VectorTests.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\EmptyPatriciaNodeTests.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\PatriciaBranchTests.cs" />
