@@ -6,7 +6,6 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 {
-    [TestFixture]
     class PatriciaBranchTests
     {
         private readonly string[] _items = "Lorem ipsum dolor sit amet consectetur adipisicing elit sed".Split(' ');

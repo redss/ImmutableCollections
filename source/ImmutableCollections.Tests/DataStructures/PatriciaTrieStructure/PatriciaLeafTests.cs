@@ -4,8 +4,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 {
-    [TestFixture]
-    public class PatriciaLeafTests
+    class PatriciaLeafTests
     {
         const int Key = 10, SecondKey = 20;
         

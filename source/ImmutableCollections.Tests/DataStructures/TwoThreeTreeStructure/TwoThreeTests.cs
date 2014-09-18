@@ -8,8 +8,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
 {
-    [TestFixture]
-    public class TwoThreeTests
+    class TwoThreeTests
     {
         private readonly Random _random = new Random(0);
 

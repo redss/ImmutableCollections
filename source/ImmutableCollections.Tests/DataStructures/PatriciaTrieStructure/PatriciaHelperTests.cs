@@ -5,8 +5,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 {
-    [TestFixture]
-    public class PatriciaHelperTests
+    class PatriciaHelperTests
     {
         private readonly int[][] _branchingBitSource = new[]
         {

@@ -6,7 +6,7 @@ namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(ImmutableVector<int>))]
     [TestFixture(typeof(ImmutableLinkedList<int>))]
-    public class ImmutableListTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>
+    class ImmutableListTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableList<int>
     {
         private const int Count = 50;
 

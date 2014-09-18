@@ -8,7 +8,7 @@ namespace ImmutableCollections.Tests.TestInfrastructure
     /// </summary>
     /// <typeparam name="TCollection">Type of tested collection.</typeparam>
     /// <typeparam name="TValue">Type of tested collection.</typeparam>
-    public class BaseTests<TCollection, TValue> where TCollection : IImmutableCollection<TValue>
+    class BaseTests<TCollection, TValue> where TCollection : IImmutableCollection<TValue>
     {
         protected readonly ImmutableCollectionFactory CollectionFactory;
 

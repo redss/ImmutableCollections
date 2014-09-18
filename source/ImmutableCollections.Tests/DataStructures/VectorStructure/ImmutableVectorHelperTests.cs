@@ -4,8 +4,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.VectorStructure
 {
-    [TestFixture]
-    public class ImmutableVectorHelperTests
+    class ImmutableVectorHelperTests
     {
         [TestCase(5, 32)]
         [TestCase(6, 64)]

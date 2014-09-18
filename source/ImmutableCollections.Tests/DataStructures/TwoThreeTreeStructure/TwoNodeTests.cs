@@ -4,8 +4,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
 {
-    [TestFixture]
-    public class TwoNodeTests
+    class TwoNodeTests
     {
         [Test]
         public void InsertNewElement_ReturnsThreeNode()

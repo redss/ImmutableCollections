@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace ImmutableCollections.Tests
 {
     [TestFixture]
-    public class ImmutableVectorTests : TestInfrastructure.BaseTests<ImmutableVector<int>, int>
+    class ImmutableVectorTests : TestInfrastructure.BaseTests<ImmutableVector<int>, int>
     {
         private const int Count = 1000;
 

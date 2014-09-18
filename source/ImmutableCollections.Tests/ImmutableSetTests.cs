@@ -7,7 +7,7 @@ namespace ImmutableCollections.Tests
 {
     [TestFixture(typeof(ImmutableHashSet<string>))]
     [TestFixture(typeof(ImmutableSortedSet<string>))]
-    public class ImmutableSetTests<TCollection>
+    class ImmutableSetTests<TCollection>
         where TCollection : IImmutableSet<string>, new()
     {
         [Test]

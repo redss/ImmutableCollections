@@ -8,8 +8,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
 {
-    [TestFixture]
-    public class RedBlackTests
+    class RedBlackTests
     {
         private readonly Random _random = new Random(0);
 

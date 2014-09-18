@@ -3,8 +3,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.VectorStructure
 {
-    [TestFixture]
-    public class EmptyVectorTests
+    class EmptyVectorTests
     {
         [Test]
         public void Empty_Vector_Is_Always_On_Zero_Level()

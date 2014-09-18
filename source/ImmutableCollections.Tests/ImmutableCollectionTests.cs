@@ -8,7 +8,7 @@ namespace ImmutableCollections.Tests
     [TestFixture(typeof(ImmutableLinkedList<int>))]
     [TestFixture(typeof(ImmutableHashSet<int>))]
     [TestFixture(typeof(ImmutableSortedSet<int>))]
-    public class ImmutableCollectionTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableCollection<int>
+    class ImmutableCollectionTests<TCollection> : BaseTests<TCollection, int> where TCollection : IImmutableCollection<int>
     {
         [Test]
         public void Add_Test()

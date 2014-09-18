@@ -4,8 +4,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
 {
-    [TestFixture]
-    public class EmptyTests
+    class EmptyTests
     {
         [Test]
         public void Insert_PropagatesValueAndEmptyNodes()

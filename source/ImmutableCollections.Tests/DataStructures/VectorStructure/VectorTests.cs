@@ -5,8 +5,7 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.VectorStructure
 {
-    [TestFixture]
-    public class VectorTests
+    class VectorTests
     {
         [Test]
         public void AppendingToVectorNodes_DoesntThrowException()
