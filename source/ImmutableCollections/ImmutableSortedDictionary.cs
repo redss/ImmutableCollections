@@ -73,7 +73,7 @@ namespace ImmutableCollections
             if (item.Key == null)
                 throw new ArgumentNullException("item");
 
-            var newRoot = TwoThreeHelper.Insert(_root, item, _comparer);
+            var newRoot = _root.Insert(item, _comparer);
 
             if (newRoot == _root)
                 throw ExceptionHelper.GetKeyAlreadyExistsException(item.Key, "item");
@@ -99,7 +99,7 @@ namespace ImmutableCollections
             if (key == null)
                 throw new ArgumentNullException("key");
 
-            var newRoot = TwoThreeHelper.Remove(_root, new KeyValuePair<TKey, TValue>(key, default(TValue)), _comparer);
+            var newRoot = _root.Remove(new KeyValuePair<TKey, TValue>(key, default(TValue)), _comparer);
 
             if (newRoot == _root)
                 throw ExceptionHelper.GetKeyNotFoundException(key);

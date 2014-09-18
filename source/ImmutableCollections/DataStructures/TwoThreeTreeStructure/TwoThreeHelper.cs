@@ -4,7 +4,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 {
     static class TwoThreeHelper
     {
-        public static ITwoThree<T> Insert<T>(ITwoThree<T> root, T item, IComparer<T> comparer = null)
+        public static ITwoThree<T> Insert<T>(this ITwoThree<T> root, T item, IComparer<T> comparer = null)
         {
             comparer = comparer ?? Comparer<T>.Default;
 
@@ -15,7 +15,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             return node ?? new TwoNode<T>(propagated, left, right);
         }
 
-        public static ITwoThree<T> Remove<T>(ITwoThree<T> root, T item, IComparer<T> comparer = null)
+        public static ITwoThree<T> Remove<T>(this ITwoThree<T> root, T item, IComparer<T> comparer = null)
         {
             comparer = comparer ?? Comparer<T>.Default;
 

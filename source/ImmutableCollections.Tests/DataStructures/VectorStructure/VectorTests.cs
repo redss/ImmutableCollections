@@ -9,28 +9,9 @@ namespace ImmutableCollections.Tests.DataStructures.VectorStructure
     public class VectorTests
     {
         [Test]
-        public void Fragmentation_IsTwoPowerShift()
-        {
-            var fragmentation = (int) Math.Pow(2, ImmutableVectorHelper.Shift);
-            Assert.AreEqual(fragmentation, ImmutableVectorHelper.Fragmentation);
-        }
-
-        [Test]
-        public void CountIndex_GivesResultInModulo32()
-        {
-            foreach (var i in Enumerable.Range(0, 1000))
-            {
-                var index = ImmutableVectorHelper.ComputeIndex(i, 0);
-                var modulo = i % ImmutableVectorHelper.Fragmentation;
-
-                Assert.AreEqual(modulo, index);
-            }
-        }
-
-        [Test]
         public void AppendingToVectorNodes_DoesntThrowException()
         {
-            IVectorNode<int> root = EmptyVector<int>.Instance;
+            IVectorNode<int> root = new EmptyVector<int>();
 
             foreach (var i in Enumerable.Range(0, 1 << ImmutableVectorHelper.Shift * 3 + 1))
             {
@@ -51,7 +32,7 @@ namespace ImmutableCollections.Tests.DataStructures.VectorStructure
         {
             var range = Enumerable.Range(0, 1 << 16).ToArray();
 
-            IVectorNode<int> root = EmptyVector<int>.Instance;
+            IVectorNode<int> root = new EmptyVector<int>();
             root = range.Aggregate(root, (current, i) => current.Append(i, i));
 
             foreach (var i in range)

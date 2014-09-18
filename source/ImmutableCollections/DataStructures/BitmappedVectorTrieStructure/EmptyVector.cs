@@ -5,12 +5,6 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
 {
     class EmptyVector<T> : IVectorNode<T>
     {
-        // Singleton
-
-        public static readonly EmptyVector<T> Instance = new EmptyVector<T>();
- 
-        private EmptyVector() { } 
-
         // IVectorNode
 
         public int Level { get { return 0; } }

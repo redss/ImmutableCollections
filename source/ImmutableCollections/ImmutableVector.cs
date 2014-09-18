@@ -14,6 +14,8 @@ namespace ImmutableCollections
     /// <typeparam name="T"></typeparam>
     public class ImmutableVector<T> : IImmutableList<T>
     {
+        private static readonly IVectorNode<T> EmptyVector = new EmptyVector<T>();
+
         private readonly IVectorNode<T> _root;
 
         private readonly int _count;
@@ -23,7 +25,7 @@ namespace ImmutableCollections
         public ImmutableVector()
         {
             _count = 0;
-            _root = EmptyVector<T>.Instance;
+            _root = EmptyVector;
         }
 
         private ImmutableVector(IVectorNode<T> root, int count)
@@ -138,7 +140,7 @@ namespace ImmutableCollections
         {
             AssertIndexRange(index);
 
-            var newRoot = index > 0 ? _root.Remove(index - 1) : EmptyVector<T>.Instance;
+            var newRoot = index > 0 ? _root.Remove(index - 1) : EmptyVector;
 
             if (index == _count - 1)
                 return new ImmutableVector<T>(newRoot, _count - 1);
