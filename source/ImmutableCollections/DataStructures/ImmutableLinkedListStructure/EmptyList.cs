@@ -8,11 +8,7 @@ namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
     /// <typeparam name="T">Type contained in the list.</typeparam>
     class EmptyList<T> : IListNode<T>
     {
-        // Singleton
-
         public static readonly EmptyList<T> Instance = new EmptyList<T>();
-
-        private EmptyList() { }
 
         // IListNode
 
@@ -31,12 +27,12 @@ namespace ImmutableCollections.DataStructures.ImmutableLinkedListStructure
             return new ListNode<T>(value, this);
         }
 
-        public IListNode<T> Change(T value)
+        public IListNode<T> ChangeValue(T value)
         {
             throw new InvalidOperationException();
         }
 
-        public IListNode<T> Change(IListNode<T> tail)
+        public IListNode<T> ChangeTail(IListNode<T> tail)
         {
             throw new InvalidOperationException();
         }

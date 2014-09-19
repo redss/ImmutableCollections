@@ -28,13 +28,13 @@
         /// </summary>
         /// <param name="value">Changed value.</param>
         /// <returns>New node.</returns>
-        IListNode<T> Change(T value);
+        IListNode<T> ChangeValue(T value);
 
         /// <summary>
         /// Creates new node with changed tail.
         /// </summary>
         /// <param name="tail">Changed tail.</param>
         /// <returns>New node.</returns>
-        IListNode<T> Change(IListNode<T> tail);
+        IListNode<T> ChangeTail(IListNode<T> tail);
     }
 }

@@ -83,7 +83,7 @@ namespace ImmutableCollections
             current = current.Prepend(item);
 
             for (var i = index - 1; i >= 0; i--)
-                current = nodes[i].Change(current);
+                current = nodes[i].ChangeTail(current);
 
             return new ImmutableLinkedList<T>(current, _count + 1);
         }
@@ -112,10 +112,10 @@ namespace ImmutableCollections
                 current = current.Tail;
             }
 
-            current = current.Change(item);
+            current = current.ChangeValue(item);
 
             for (var i = index - 1; i >= 0; i--)
-                current = nodes[i].Change(current);
+                current = nodes[i].ChangeTail(current);
 
             return new ImmutableLinkedList<T>(current, _count);
         }
@@ -135,7 +135,7 @@ namespace ImmutableCollections
             {
                 if (node.Value.Equals(item))
                 {
-                    var newNode = stack.Aggregate(node.Tail, (current, n) => n.Change(current));
+                    var newNode = stack.Aggregate(node.Tail, (current, n) => n.ChangeTail(current));
                     return new ImmutableLinkedList<T>(newNode, _count - 1);
                 }
 
@@ -178,7 +178,7 @@ namespace ImmutableCollections
             current = current.Tail;
 
             for (var i = index - 1; i >= 0; i--)
-                current = nodes[i].Change(current);
+                current = nodes[i].ChangeTail(current);
 
             return new ImmutableLinkedList<T>(current, _count - 1);
         }

@@ -20,11 +20,6 @@
 
         // IListNode
 
-        public IListNode<T> Next()
-        {
-            return _tail;
-        }
-
         public T Value
         {
             get { return _value; }
@@ -40,12 +35,12 @@
             return new ListNode<T>(value, this);
         }
 
-        public IListNode<T> Change(T value)
+        public IListNode<T> ChangeValue(T value)
         {
             return new ListNode<T>(value, _tail);
         }
 
-        public IListNode<T> Change(IListNode<T> tail)
+        public IListNode<T> ChangeTail(IListNode<T> tail)
         {
             return new ListNode<T>(Value, tail);
         }

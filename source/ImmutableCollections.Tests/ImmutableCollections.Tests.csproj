@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\packages\FakeItEasy.1.24.0\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -40,6 +43,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\EmptyListTests.cs" />
+    <Compile Include="DataStructures\ImmutableLinkedListStructure\ListNodeTests.cs" />
     <Compile Include="DataStructures\PatriciaTrieStructure\OperationStub.cs" />
     <Compile Include="DataStructures\VectorStructure\EmptyVectorTests.cs" />
     <Compile Include="DataStructures\VectorStructure\ImmutableVectorHelperTests.cs" />
