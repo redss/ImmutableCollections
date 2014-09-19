@@ -18,21 +18,20 @@ namespace ImmutableCollections.Tests.Helpers
         [Test]
         public void Can_Compare_Only_Keys_With_Given_Comparer()
         {
-            var comparer = A.Fake<IComparer<int>>();
-            
             var a = new KeyValuePair<int, int>(100, 200);
             var b = new KeyValuePair<int, int>(300, 400);
+            var comparerResult = 123;
 
-            var innerComparerResult = 123;
+            var comparer = A.Fake<IComparer<int>>();
 
             A.CallTo(() => comparer.Compare(a.Key, b.Key))
-                .Returns(innerComparerResult);
+                .Returns(comparerResult);
 
             var sut = new KeyComparer<int, int>(comparer);
 
             var result = sut.Compare(a, b);
 
-            Assert.That(result, Is.EqualTo(innerComparerResult));
+            Assert.That(result, Is.EqualTo(comparerResult));
         }
     }
 }

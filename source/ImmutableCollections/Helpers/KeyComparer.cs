@@ -19,7 +19,7 @@ namespace ImmutableCollections.Helpers
 
         public KeyComparer(IComparer<TKey> keyComparer)
         {
-            InnerComparer = keyComparer ?? Comparer<TKey>.Default;
+            InnerComparer = keyComparer;
         }
 
         [Pure]
