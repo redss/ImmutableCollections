@@ -60,6 +60,7 @@
     <Compile Include="DataStructures\TwoThreeTreeStructure\TwoThreeHelperTests.cs" />
     <Compile Include="DataStructures\TwoThreeTreeStructure\TwoThreeTests.cs" />
     <Compile Include="Helpers\ArrayExtensionsTests.cs" />
+    <Compile Include="Helpers\KeyComparerTests.cs" />
     <Compile Include="ImmutableCollectionTests.cs" />
     <Compile Include="ImmutableDirectoryTests.cs" />
     <Compile Include="ImmutableListTests.cs" />

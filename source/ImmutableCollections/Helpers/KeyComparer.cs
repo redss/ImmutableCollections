@@ -10,21 +10,22 @@ namespace ImmutableCollections.Helpers
     /// <typeparam name="TValue">Type of the values.</typeparam>
     class KeyComparer<TKey, TValue> : IComparer<KeyValuePair<TKey, TValue>>
     {
-        private readonly IComparer<TKey> _keyComparer;
+        public readonly IComparer<TKey> InnerComparer;
 
-        /// <summary>
-        /// Creates new instance of KeyComparer.
-        /// </summary>
-        /// <param name="keyComparer">Key comparer; if null, will be set to default comparer.</param>
-        public KeyComparer(IComparer<TKey> keyComparer = null)
+        public KeyComparer()
         {
-            _keyComparer = keyComparer ?? Comparer<TKey>.Default;
+            InnerComparer = Comparer<TKey>.Default;
+        }
+
+        public KeyComparer(IComparer<TKey> keyComparer)
+        {
+            InnerComparer = keyComparer ?? Comparer<TKey>.Default;
         }
 
         [Pure]
         public int Compare(KeyValuePair<TKey, TValue> x, KeyValuePair<TKey, TValue> y)
         {
-            return _keyComparer.Compare(x.Key, y.Key);
+            return InnerComparer.Compare(x.Key, y.Key);
         }
     }
 }
