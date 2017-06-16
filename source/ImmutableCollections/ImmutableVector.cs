@@ -179,7 +179,7 @@ namespace ImmutableCollections
             get
             {
                 if (index >= _count || index < 0)
-                    throw new ArgumentOutOfRangeException("index");
+                    throw new ArgumentOutOfRangeException(nameof(index));
 
                 return _root.Nth(index);
             }

@@ -26,7 +26,7 @@ namespace ImmutableCollections
         public ImmutableSortedSet(IComparer<T> comparer)
         {
             if (comparer == null)
-                throw new ArgumentNullException("comparer");
+                throw new ArgumentNullException(nameof(comparer));
 
             _comparer = comparer;
         }
@@ -57,7 +57,7 @@ namespace ImmutableCollections
         public ImmutableSortedSet<T> Add(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             var newRoot = TwoThreeHelper.Insert(_root, item, _comparer);
             return new ImmutableSortedSet<T>(newRoot, _comparer);
@@ -79,7 +79,7 @@ namespace ImmutableCollections
         public ImmutableSortedSet<T> Remove(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             var newRoot = TwoThreeHelper.Remove(_root, item, _comparer);
             return new ImmutableSortedSet<T>(newRoot, _comparer);

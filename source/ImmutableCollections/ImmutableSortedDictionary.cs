@@ -27,7 +27,7 @@ namespace ImmutableCollections
         public ImmutableSortedDictionary(IComparer<TKey> keyComparer)
         {
             if (keyComparer == null)
-                throw new ArgumentNullException("keyComparer");
+                throw new ArgumentNullException(nameof(keyComparer));
 
             _root = EmptyTwoThree<KeyValuePair<TKey, TValue>>.Instance;
             _comparer = new KeyComparer<TKey, TValue>(keyComparer);
@@ -71,7 +71,7 @@ namespace ImmutableCollections
         public ImmutableSortedDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             var newRoot = _root.Insert(item, _comparer);
 
@@ -97,7 +97,7 @@ namespace ImmutableCollections
         public ImmutableSortedDictionary<TKey, TValue> Remove(TKey key)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             var newRoot = _root.Remove(new KeyValuePair<TKey, TValue>(key, default(TValue)), _comparer);
 
@@ -123,7 +123,7 @@ namespace ImmutableCollections
         public ImmutableSortedDictionary<TKey, TValue> SetValue(TKey key, TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             var item = new KeyValuePair<TKey, TValue>(key, value);
 
@@ -150,7 +150,7 @@ namespace ImmutableCollections
             get
             {
                 if (key == null)
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
 
                 KeyValuePair<TKey, TValue> item;
                 var found = _root.TryFind(KeyPair(key), _comparer, out item);
@@ -166,7 +166,7 @@ namespace ImmutableCollections
         public bool TryGetValue(TKey key, out TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             KeyValuePair<TKey, TValue> item;
             var found = _root.TryFind(KeyPair(key), _comparer, out item);

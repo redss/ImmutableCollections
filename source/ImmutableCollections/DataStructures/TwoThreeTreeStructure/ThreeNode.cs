@@ -202,7 +202,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                     return Side.Right;
 
                 default:
-                    throw new ArgumentOutOfRangeException("side");
+                    throw new ArgumentOutOfRangeException(nameof(side));
             }
         }
 
@@ -263,7 +263,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                     return new ThreeNode<T>(First, value, Left, Middle, node);
 
                 default:
-                    throw new ArgumentOutOfRangeException("side");
+                    throw new ArgumentOutOfRangeException(nameof(side));
             }
         }
 
@@ -285,7 +285,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                     return new TwoNode<T>(First, EmptyTwoThree<T>.Instance, EmptyTwoThree<T>.Instance);
 
                 default:
-                    throw new ArgumentOutOfRangeException("side");
+                    throw new ArgumentOutOfRangeException(nameof(side));
             }
         }
 
@@ -346,7 +346,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                     return Redistribute(First, Second, Left, Middle, changed, side, out removed);
 
                 default:
-                    throw new ArgumentOutOfRangeException("side");
+                    throw new ArgumentOutOfRangeException(nameof(side));
             }
         }
 
@@ -361,7 +361,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
                     return Redistribute(First, value, Left, Middle, changed, Side.Right, out removed);
 
                 default:
-                    throw new ArgumentOutOfRangeException("side");
+                    throw new ArgumentOutOfRangeException(nameof(side));
             }
         }
 
@@ -379,7 +379,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
             if (side == Side.Right)
                 return RedistributeRight(first, second, left, middle, right);
             
-            throw new ArgumentOutOfRangeException("side");
+            throw new ArgumentOutOfRangeException(nameof(side));
         }
 
         private static ITwoThree<T> RedistributeLeft(T first, T second, ITwoThree<T> left, ITwoThree<T> middle, ITwoThree<T> right)

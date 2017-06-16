@@ -24,13 +24,13 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         public PatriciaBranch(int prefix, int mask, IPatriciaNode<T>[] children)
         {
             if (children == null)
-                throw new ArgumentNullException("children", "Patricia branch cannot be empty.");
+                throw new ArgumentNullException(nameof(children), "Patricia branch cannot be empty.");
                 
             if (children.Length != 2)
-                throw new ArgumentOutOfRangeException("children", "Patricia branch must have exactly two children.");
+                throw new ArgumentOutOfRangeException(nameof(children), "Patricia branch must have exactly two children.");
 
             if (children.OfType<EmptyPatriciaTrie<T>>().Any())
-                throw new ArgumentException("Patricia branch child cannot be EmptyPatriciaTrie.", "children");
+                throw new ArgumentException("Patricia branch child cannot be EmptyPatriciaTrie.", nameof(children));
 
             Prefix = prefix;
             Mask = mask;

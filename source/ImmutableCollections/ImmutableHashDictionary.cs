@@ -52,7 +52,7 @@ namespace ImmutableCollections
         public ImmutableHashDictionary<TKey, TValue> Add(TKey key, TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             return Add(new KeyValuePair<TKey, TValue>(key, value));
         }
@@ -94,7 +94,7 @@ namespace ImmutableCollections
         public ImmutableHashDictionary<TKey, TValue> Remove(TKey key)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             var operation = new DictionaryRemoveOperation<TKey, TValue>(key);
             var newRoot = _root.Modify(key.GetHashCode(), operation);
@@ -124,7 +124,7 @@ namespace ImmutableCollections
         public ImmutableHashDictionary<TKey, TValue> SetValue(TKey key, TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             var operation = new DictionarySetValueOperation<TKey, TValue>(key, value);
             var newRoot = _root.Modify(key.GetHashCode(), operation);
@@ -147,7 +147,7 @@ namespace ImmutableCollections
             get
             {
                 if (key == null)
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
 
                 var found = _root.Find(key.GetHashCode()) ?? Enumerable.Empty<KeyValuePair<TKey, TValue>>();
 
@@ -163,7 +163,7 @@ namespace ImmutableCollections
         public bool TryGetValue(TKey key, out TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             var found = _root.Find(key.GetHashCode());
 
@@ -201,7 +201,7 @@ namespace ImmutableCollections
         public bool ContainsKey(TKey key)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             var found = _root.Find(key.GetHashCode());
             return found != null && found.Any(i => i.Key.Equals(key));

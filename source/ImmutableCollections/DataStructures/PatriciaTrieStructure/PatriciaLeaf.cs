@@ -34,7 +34,7 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         public IPatriciaNode<T> Modify(int key, IPatriciaOperation<T> operation)
         {
             if (operation == null)
-                throw new ArgumentNullException("operation");
+                throw new ArgumentNullException(nameof(operation));
 
             if (key != Key)
             {

@@ -28,7 +28,7 @@ namespace ImmutableCollections
         private ImmutableHashSet(IPatriciaNode<T> root)
         {
             if (root == null)
-                throw new ArgumentNullException("root");
+                throw new ArgumentNullException(nameof(root));
 
             _root = root;
         }
@@ -53,7 +53,7 @@ namespace ImmutableCollections
         public ImmutableHashSet<T> Add(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             var operation = new SetAddOperation<T>(item);
             var newRoot = _root.Modify(item.GetHashCode(), operation) ?? EmptyPatriciaTrie<T>.Instance;
@@ -77,7 +77,7 @@ namespace ImmutableCollections
         public ImmutableHashSet<T> Remove(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             var operation = new SetRemoveOperation<T>(item);
             var newRoot = _root.Modify(item.GetHashCode(), operation);

@@ -27,7 +27,7 @@ namespace ImmutableCollections
         public ImmutableRedBlackDictionary(IComparer<TKey> keyComparer)
         {
             if (keyComparer == null)
-                throw new ArgumentNullException("keyComparer");
+                throw new ArgumentNullException(nameof(keyComparer));
 
             _root = RedBlackLeaf<KeyValuePair<TKey, TValue>>.Instance;
             _comparer = new KeyComparer<TKey, TValue>(keyComparer);
@@ -71,7 +71,7 @@ namespace ImmutableCollections
         public ImmutableRedBlackDictionary<TKey, TValue> Add(KeyValuePair<TKey, TValue> item)
         {
             if (item.Key == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             var newRoot = RedBlackHelper.Insert(_root, item, _comparer);
 
@@ -109,7 +109,7 @@ namespace ImmutableCollections
         public ImmutableRedBlackDictionary<TKey, TValue> SetValue(TKey key, TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             var newRoot = RedBlackHelper.Update(_root, new KeyValuePair<TKey, TValue>(key, value), _comparer);
 
@@ -131,7 +131,7 @@ namespace ImmutableCollections
             get
             {
                 if (key == null)
-                    throw new ArgumentNullException("key");
+                    throw new ArgumentNullException(nameof(key));
 
                 KeyValuePair<TKey, TValue> foundValue;
                 var found = _root.TryFind(KeyPair(key), _comparer, out foundValue);
@@ -147,7 +147,7 @@ namespace ImmutableCollections
         public bool TryGetValue(TKey key, out TValue value)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             KeyValuePair<TKey, TValue> foundValue;
             var found = _root.TryFind(KeyPair(key), _comparer, out foundValue);
@@ -172,7 +172,7 @@ namespace ImmutableCollections
         public bool ContainsKey(TKey key)
         {
             if (key == null)
-                throw new ArgumentNullException("key");
+                throw new ArgumentNullException(nameof(key));
 
             KeyValuePair<TKey, TValue> foundValue;
             return _root.TryFind(KeyPair(key), _comparer, out foundValue);

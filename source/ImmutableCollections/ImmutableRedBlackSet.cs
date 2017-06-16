@@ -58,7 +58,7 @@ namespace ImmutableCollections
         public ImmutableRedBlackSet<T> Add(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             var newRoot = RedBlackHelper.Insert(_root, item, _comparer);
 
@@ -102,7 +102,7 @@ namespace ImmutableCollections
         public bool Contains(T item)
         {
             if (item == null)
-                throw new ArgumentNullException("item");
+                throw new ArgumentNullException(nameof(item));
 
             T foundItem;
             return _root.TryFind(item, _comparer, out foundItem);
