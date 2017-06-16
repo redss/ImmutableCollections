@@ -7,7 +7,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 {
     class PatriciaHelperTests
     {
-        private readonly int[][] _branchingBitSource = new[]
+        private static readonly int[][] _branchingBitSource = new[]
         {
             new[] {32, 3123}, 
             new[] {12, 31},
@@ -17,7 +17,7 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             new[] {-100, 100}
         };
 
-        private readonly int[] _lowestBitSource = new[] { 1, 2, 3, 123, 31412, 41241412, 1 << 30, -10, -20 };
+        private static readonly int[] _lowestBitSource = new[] { 1, 2, 3, 123, 31412, 41241412, 1 << 30, -10, -20 };
 
         // Tests
 
