@@ -26,7 +26,7 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
 
         // IVectorNode
 
-        public int Level { get { return _level; } }
+        public int Level => _level;
 
         public IEnumerable<T> GetValues()
         {

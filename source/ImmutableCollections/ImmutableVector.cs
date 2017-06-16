@@ -162,10 +162,7 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public int Length
-        {
-            get { return _count; }
-        }
+        public int Length => _count;
 
         [Pure]
         public bool Contains(T item)

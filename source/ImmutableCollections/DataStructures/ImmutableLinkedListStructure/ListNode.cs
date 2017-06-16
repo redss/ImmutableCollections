@@ -20,15 +20,9 @@
 
         // IListNode
 
-        public T Value
-        {
-            get { return _value; }
-        }
+        public T Value => _value;
 
-        public IListNode<T> Tail
-        {
-            get { return _tail; }
-        }
+        public IListNode<T> Tail => _tail;
 
         public IListNode<T> Prepend(T value)
         {

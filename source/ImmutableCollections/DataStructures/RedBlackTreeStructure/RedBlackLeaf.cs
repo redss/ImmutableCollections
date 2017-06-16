@@ -16,25 +16,13 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
 
         // IRedBlack
 
-        public bool IsBlack
-        {
-            get { return true; }
-        }
+        public bool IsBlack => true;
 
-        public T Value
-        {
-            get { return default(T); }
-        }
+        public T Value => default(T);
 
-        public IRedBlack<T> Left
-        {
-            get { return null; }
-        }
+        public IRedBlack<T> Left => null;
 
-        public IRedBlack<T> Right
-        {
-            get { return null; }
-        }
+        public IRedBlack<T> Right => null;
 
         public bool TryFind(T searched, IComparer<T> comparer, out T value)
         {

@@ -98,10 +98,7 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public int Length
-        {
-            get { return _root.GetValues().Count(); }
-        }
+        public int Length => _root.GetValues().Count();
 
         [Pure]
         public bool Contains(T item)
