@@ -49,7 +49,7 @@
 
         public override string ToString()
         {
-            return string.Format("Node({0})", _value);
+            return $"Node({_value})";
         }
     }
 }

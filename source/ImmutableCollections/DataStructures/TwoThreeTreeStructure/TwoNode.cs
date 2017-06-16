@@ -180,7 +180,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public override string ToString()
         {
-            return string.Format("2-node({0})", Value);
+            return $"2-node({Value})";
         }
 
         // Private members

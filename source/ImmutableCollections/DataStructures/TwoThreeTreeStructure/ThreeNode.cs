@@ -166,7 +166,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public override string ToString()
         {
-            return string.Format("3-node({0}, {1})", First, Second);
+            return $"3-node({First}, {Second})";
         }
 
         // Private methods

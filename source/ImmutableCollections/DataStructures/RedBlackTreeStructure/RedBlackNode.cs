@@ -115,7 +115,7 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
 
         public override string ToString()
         {
-            return string.Format("{0}({1})", IsBlack ? "Black" : "Red", Value);
+            return $"{(IsBlack ? "Black" : "Red")}({Value})";
         }
 
         // Private methods

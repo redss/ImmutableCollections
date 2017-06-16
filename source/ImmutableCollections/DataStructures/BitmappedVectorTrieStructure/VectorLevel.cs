@@ -100,7 +100,7 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
 
         public override string ToString()
         {
-            return string.Format("Level {0}[{1}]", _level, _children.Length);
+            return $"Level {_level}[{_children.Length}]";
         }
 
         // Private methods

@@ -75,7 +75,7 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
 
         public override string ToString()
         {
-            return string.Format("Leaf[{0}]", _elements.Length);
+            return $"Leaf[{_elements.Length}]";
         }
 
         // Private methods

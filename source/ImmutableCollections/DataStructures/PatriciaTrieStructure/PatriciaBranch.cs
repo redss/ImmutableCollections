@@ -88,7 +88,7 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
 
         public override string ToString()
         {
-            return string.Format("Br({0}, {1})", Prefix, Mask);
+            return $"Br({Prefix}, {Mask})";
         }
 
         // Private methods

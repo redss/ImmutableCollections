@@ -12,42 +12,42 @@ namespace ImmutableCollections.Helpers
         [Pure]
         public static KeyNotFoundException GetKeyNotFoundException<TKey>(TKey key)
         {
-            var message = string.Format("Key {0} was not found.", key);
+            var message = $"Key {key} was not found.";
             return new KeyNotFoundException(message);
         }
 
         [Pure]
         public static ArgumentException GetKeyAlreadyExistsException<TKey>(TKey key, string parameterName)
         {
-            var message = string.Format("An element with '{0}' key already exists in the dictionary.", key);
+            var message = $"An element with '{key}' key already exists in the dictionary.";
             return new ArgumentException(message, parameterName);
         }
 
         [Pure]
         public static ArgumentException GetItemAlreadyExistsException<T>(T item, string parameterName)
         {
-            var message = string.Format("Item '{0}' already exists in the collection.", item);
+            var message = $"Item '{item}' already exists in the collection.";
             return new ArgumentException(message, parameterName);
         }
 
         [Pure]
         public static ArgumentException GetKeyCannotBeNullException(string parameterName)
         {
-            const string message = "Key cannot be null.";
+            var message = "Key cannot be null.";
             return new ArgumentException(message, parameterName);
         }
 
         [Pure]
         public static ArgumentOutOfRangeException GetIndexNegativeException(int index, string parameterName)
         {
-            var message = string.Format("Index cannot be negative, but was: {0}.", index);
+            var message = $"Index cannot be negative, but was: {index}.";
             return new ArgumentOutOfRangeException(parameterName, index, message);
         }
 
         [Pure]
         public static ArgumentOutOfRangeException GetIndexTooBigException(int index, int count, string parameterName)
         {
-            var message = string.Format("Index {0} cannot be greater than {1}.", index, count);
+            var message = $"Index {index} cannot be greater than {count}.";
             return new ArgumentOutOfRangeException(parameterName, message);
         }
     }
