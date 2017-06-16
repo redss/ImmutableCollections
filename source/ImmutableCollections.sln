@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableCollections", "ImmutableCollections\ImmutableCollections.csproj", "{76F201C8-7280-4748-9BE1-65C9C359F986}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImmutableCollections.Tests", "ImmutableCollections.Tests\ImmutableCollections.Tests.csproj", "{C51A8E65-2920-42A1-A7B5-5C690E5C78C7}"
