@@ -19,8 +19,6 @@ namespace ImmutableCollections.Tests
 
         private readonly KeyValuePair<string, int>[] _items = GetSampleData();
 
-        // Tests
-
         [Test]
         public void Add_Test()
         {
@@ -229,8 +227,6 @@ namespace ImmutableCollections.Tests
             var length = GetDictionaryWithSampleData().Length;
             Assert.AreEqual(_items.Length, length);
         }
-
-        // Private methods
 
         private static KeyValuePair<string, int>[] GetSampleData()
         {

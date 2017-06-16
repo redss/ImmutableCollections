@@ -45,6 +45,7 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
             }
 
             var node = result < 0 ? Left : Right;
+
             return node.TryFind(searched, comparer, out value);
         }
 

@@ -10,12 +10,14 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
         public static IRedBlack<T> Insert<T>(IRedBlack<T> root, T item, IComparer<T> comparer = null)
         {
             comparer = comparer ?? Comparer<T>.Default;
+
             return root.Insert(item, comparer).MakeRoot();
         }
 
         public static IRedBlack<T> Update<T>(IRedBlack<T> root, T item, IComparer<T> comparer = null)
         {
             comparer = comparer ?? Comparer<T>.Default;
+
             return root.Update(item, comparer).MakeRoot();
         }
 

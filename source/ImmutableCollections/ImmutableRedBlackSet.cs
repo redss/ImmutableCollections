@@ -102,6 +102,7 @@ namespace ImmutableCollections
                 throw new ArgumentNullException(nameof(item));
 
             T foundItem;
+
             return _root.TryFind(item, _comparer, out foundItem);
         }
 

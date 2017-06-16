@@ -14,8 +14,6 @@ namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
 
         private readonly IComparer<int> _comparer = Comparer<int>.Default;
 
-        // Tests
-
         [Test]
         public void Insert_Test()
         {
@@ -93,8 +91,6 @@ namespace ImmutableCollections.Tests.DataStructures.RedBlackTreeStructure
             var items = RandomHelper.Shuffle(_random, Enumerable.Range(0, 10));
             var tree = CreateTree(items);
         }
-
-        // Private methods
 
         private IRedBlack<T> CreateTree<T>(IEnumerable<T> items, IComparer<T> comparer = null)
         {

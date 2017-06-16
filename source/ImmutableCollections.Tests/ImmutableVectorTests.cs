@@ -3,7 +3,6 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests
 {
-    [TestFixture]
     class ImmutableVectorTests : TestInfrastructure.BaseTests<ImmutableVector<int>, int>
     {
         private const int Count = 1000;

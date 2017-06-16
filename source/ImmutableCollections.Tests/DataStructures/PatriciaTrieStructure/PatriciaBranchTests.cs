@@ -12,8 +12,6 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 
         private readonly string[] _secondItems = "do eiusmod tempor incididunt ut labore et dolore".Split(' ');
 
-        // Tests
-
         [Test]
         public void Find_Test()
         {
@@ -76,8 +74,6 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             
             CollectionAssert.AreEquivalent(_items, result);
         }
-
-        // Private methods
 
         private IPatriciaNode<T> CreateNode<T>(IEnumerable<T> items)
             where T : class

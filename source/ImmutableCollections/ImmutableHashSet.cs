@@ -104,6 +104,7 @@ namespace ImmutableCollections
         public bool Contains(T item)
         {
             var items = _root.Find(item.GetHashCode());
+
             return items != null && items.Contains(item);
         }
     }

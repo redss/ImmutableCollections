@@ -75,6 +75,7 @@ namespace ImmutableCollections.DataStructures.PatriciaTrieStructure
         public override string ToString()
         {
             var items = string.Join(", ", Items);
+
             return $"Lf({Key} -> {items})";
         }
     }

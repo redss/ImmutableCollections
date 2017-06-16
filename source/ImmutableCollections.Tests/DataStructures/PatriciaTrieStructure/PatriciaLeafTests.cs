@@ -10,8 +10,6 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
         
         const string Item = "foo", SecondItem = "bar";
 
-        // Tests
-
         [Test]
         public void Find_Test()
         {
@@ -45,8 +43,8 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             Assert.AreEqual(SecondItem, result.GetItems().First());
         }
 
-        //[Test]
-        // TODO: Operations should take care of it
+        [Test]
+        [Ignore("todo: operations should take care of it")]
         public void Modify_OnExistingKey_WithOperationReturningSameValue_ReturnsSameLeaf()
         {
             var node = CreateLeaf(Key, Item);
@@ -78,12 +76,11 @@ namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
             Assert.AreEqual(Item, result.First());
         }
 
-        // Private methods
-
         private IPatriciaNode<T> CreateLeaf<T>(int key, T item)
             where T : class
         {
             var operation = new OperationStub<T>(i => null, () => new[] { item });
+
             return EmptyPatriciaTrie<T>.Instance.Modify(key, operation);
         }
     }

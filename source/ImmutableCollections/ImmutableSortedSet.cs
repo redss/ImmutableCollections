@@ -59,7 +59,8 @@ namespace ImmutableCollections
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            var newRoot = TwoThreeHelper.Insert(_root, item, _comparer);
+            var newRoot = _root.Insert(item, _comparer);
+
             return new ImmutableSortedSet<T>(newRoot, _comparer);
         }
 
@@ -81,7 +82,8 @@ namespace ImmutableCollections
             if (item == null)
                 throw new ArgumentNullException(nameof(item));
 
-            var newRoot = TwoThreeHelper.Remove(_root, item, _comparer);
+            var newRoot = _root.Remove(item, _comparer);
+
             return new ImmutableSortedSet<T>(newRoot, _comparer);
         }
 
@@ -103,8 +105,7 @@ namespace ImmutableCollections
         [Pure]
         public bool Contains(T item)
         {
-            var found = _root.TryFind(item, _comparer, out item);
-            return found;
+            return _root.TryFind(item, _comparer, out item);
         }
     }
 }

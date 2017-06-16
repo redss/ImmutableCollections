@@ -21,6 +21,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         public bool TryFind(T item, IComparer<T> comparer, out T value)
         {
             value = default(T);
+
             return false;
         }
 
@@ -46,12 +47,14 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
         {
             // Item wasn't found.
             removed = false;
+
             return Instance;
         }
 
         public bool IsBalanced(out int depth)
         {
             depth = 0;
+
             return true;
         }
 
@@ -59,7 +62,7 @@ namespace ImmutableCollections.DataStructures.TwoThreeTreeStructure
 
         public override string ToString()
         {
-            return string.Format("Empty");
+            return "Empty";
         }
     }
 }

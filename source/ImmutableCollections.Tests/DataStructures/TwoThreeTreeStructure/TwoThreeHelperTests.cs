@@ -9,7 +9,7 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
         public void Insert_OnEmptyNode_ReturnsTwoThreeNode()
         {
             const int item = 10;
-            var result = TwoThreeHelper.Insert(EmptyTwoThree<int>.Instance, item);
+            var result = EmptyTwoThree<int>.Instance.Insert(item);
 
             Assert.IsInstanceOf<TwoNode<int>>(result);
         }

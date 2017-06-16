@@ -172,20 +172,15 @@ namespace ImmutableCollections
             var found = _root.TryFind(KeyPair(key), _comparer, out item);
 
             value = item.Value;
+
             return found;
         }
 
         [Pure]
-        public IEnumerable<TKey> Keys
-        {
-            get { return _root.GetValues().Select(i => i.Key); }
-        }
+        public IEnumerable<TKey> Keys => _root.GetValues().Select(i => i.Key);
 
         [Pure]
-        public IEnumerable<TValue> Values
-        {
-            get { return _root.GetValues().Select(i => i.Value); }
-        }
+        public IEnumerable<TValue> Values => _root.GetValues().Select(i => i.Value);
 
         [Pure]
         public bool ContainsKey(TKey key)

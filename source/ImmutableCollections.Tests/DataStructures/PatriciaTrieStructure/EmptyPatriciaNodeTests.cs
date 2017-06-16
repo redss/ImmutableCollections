@@ -4,7 +4,6 @@ using NUnit.Framework;
 
 namespace ImmutableCollections.Tests.DataStructures.PatriciaTrieStructure
 {
-    [TestFixture]
     public class EmptyPatriciaNodeTests
     {
         [Test]

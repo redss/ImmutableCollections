@@ -12,8 +12,6 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
     {
         private readonly Random _random = new Random(0);
 
-        // Tests
-
         [Test]
         public void TryFind_Test()
         {
@@ -192,8 +190,6 @@ namespace ImmutableCollections.Tests.DataStructures.TwoThreeTreeStructure
                 CollectionAssert.AreEqual(itemSet, node.GetValues());
             }
         }
-
-        // Private methods
 
         private ITwoThree<T> CreateTree<T>(IEnumerable<T> items, IComparer<T> comparer = null)
         {

@@ -81,6 +81,7 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
                 return node;
 
             var newChildren = _children.TakeAndChange(node, nodeIndex, nodeIndex + 1);
+
             return new VectorLevel<T>(newChildren, Level);
         }
 
@@ -93,6 +94,7 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
                 return node;
             
             var newChildren = _children.TakeAndChange(node, nodeIndex, nodeIndex + 1);
+
             return new VectorLevel<T>(newChildren, Level);
         }
 
@@ -108,12 +110,14 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
         private VectorLevel<T> ChangedNode(IVectorNode<T> item, int index)
         {
             var children = _children.Change(item, index);
+
             return new VectorLevel<T>(children, Level);
         }
 
         private VectorLevel<T> AppendedNode(IVectorNode<T> item)
         {
             var children = _children.Append(item);
+
             return new VectorLevel<T>(children, Level);
         }
 

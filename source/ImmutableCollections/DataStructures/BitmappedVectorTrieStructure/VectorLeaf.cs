@@ -34,10 +34,12 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
             if (_elements.Length == ImmutableVectorHelper.Fragmentation)
             {
                 var children = new IVectorNode<T>[] { this, new VectorLeaf<T>(elem) };
+
                 return new VectorLevel<T>(children, Level + 1);
             }
 
             var elements = _elements.Append(elem);
+
             return new VectorLeaf<T>(elements);
         }
 
@@ -52,6 +54,7 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
         public T Nth(int index)
         {
             var nodeIndex = CountIndex(index);
+
             return _elements[nodeIndex];
         }
 
