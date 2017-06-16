@@ -11,20 +11,20 @@ namespace ImmutableCollections
     {
         private readonly IListNode<T> _first;
 
-        private readonly int _count;
-
         // Constructors
 
         public ImmutableLinkedList()
         {
             _first = EmptyList<T>.Instance;
-            _count = 0;
+
+            Length = 0;
         }
 
         private ImmutableLinkedList(IListNode<T> first, int count)
         {
             _first = first;
-            _count = count;
+
+            Length = count;
         }
 
         // IEnumerable
@@ -47,7 +47,7 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableLinkedList<T> Add(T item)
         {
-            return Insert(_count, item);
+            return Insert(Length, item);
         }
 
         [Pure]
@@ -68,8 +68,8 @@ namespace ImmutableCollections
             if (index < 0)
                 throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
-            if (index > _count)
-                throw ExceptionHelper.GetIndexTooBigException(index, _count, "item");
+            if (index > Length)
+                throw ExceptionHelper.GetIndexTooBigException(index, Length, "item");
 
             var nodes = new IListNode<T>[index];
             var current = _first;
@@ -85,7 +85,7 @@ namespace ImmutableCollections
             for (var i = index - 1; i >= 0; i--)
                 current = nodes[i].ChangeTail(current);
 
-            return new ImmutableLinkedList<T>(current, _count + 1);
+            return new ImmutableLinkedList<T>(current, Length + 1);
         }
 
         [Pure]
@@ -100,8 +100,8 @@ namespace ImmutableCollections
             if (index < 0)
                 throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
-            if (index >= _count)
-                throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, "item");
+            if (index >= Length)
+                throw ExceptionHelper.GetIndexTooBigException(index, Length - 1, "item");
 
             var nodes = new IListNode<T>[index + 1];
             var current = _first;
@@ -117,7 +117,7 @@ namespace ImmutableCollections
             for (var i = index - 1; i >= 0; i--)
                 current = nodes[i].ChangeTail(current);
 
-            return new ImmutableLinkedList<T>(current, _count);
+            return new ImmutableLinkedList<T>(current, Length);
         }
 
         [Pure]
@@ -136,7 +136,7 @@ namespace ImmutableCollections
                 if (node.Value.Equals(item))
                 {
                     var newNode = stack.Aggregate(node.Tail, (current, n) => n.ChangeTail(current));
-                    return new ImmutableLinkedList<T>(newNode, _count - 1);
+                    return new ImmutableLinkedList<T>(newNode, Length - 1);
                 }
 
                 stack.Push(node);
@@ -163,8 +163,8 @@ namespace ImmutableCollections
             if (index < 0)
                 throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
-            if (index >= _count)
-                throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, "item");
+            if (index >= Length)
+                throw ExceptionHelper.GetIndexTooBigException(index, Length - 1, "item");
 
             var nodes = new IListNode<T>[index];
             var current = _first;
@@ -180,7 +180,7 @@ namespace ImmutableCollections
             for (var i = index - 1; i >= 0; i--)
                 current = nodes[i].ChangeTail(current);
 
-            return new ImmutableLinkedList<T>(current, _count - 1);
+            return new ImmutableLinkedList<T>(current, Length - 1);
         }
 
         [Pure]
@@ -190,7 +190,7 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public int Length => _count;
+        public int Length { get; }
 
         [Pure]
         public bool Contains(T item)
@@ -210,8 +210,8 @@ namespace ImmutableCollections
                 if (index < 0)
                     throw ExceptionHelper.GetIndexNegativeException(index, "item");
 
-                if (index >= _count)
-                    throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, "item");
+                if (index >= Length)
+                    throw ExceptionHelper.GetIndexTooBigException(index, Length - 1, "item");
 
                 var current = _first;
 

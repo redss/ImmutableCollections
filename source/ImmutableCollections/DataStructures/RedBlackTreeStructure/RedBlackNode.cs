@@ -9,44 +9,38 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
     /// <typeparam name="T">Type of values stored in the tree.</typeparam>
     class RedBlackNode<T> : IRedBlack<T>
     {
-        private readonly bool _isBlack;
-
-        private readonly T _value;
-
-        private readonly IRedBlack<T> _left, _right;
-
         // Constructor
 
         public RedBlackNode(bool isBlack, T value, IRedBlack<T> left, IRedBlack<T> right)
         {
             Debug.Assert(left != null && right != null, "Children cannot be null.");
 
-            _isBlack = isBlack;
-            _value = value;
-            _left = left;
-            _right = right;
+            IsBlack = isBlack;
+            Value = value;
+            Left = left;
+            Right = right;
         }
 
         // IRedBlack
 
-        public bool IsBlack => _isBlack;
+        public bool IsBlack { get; }
 
-        public T Value => _value;
+        public T Value { get; }
 
-        public IRedBlack<T> Left => _left;
+        public IRedBlack<T> Left { get; }
 
-        public IRedBlack<T> Right => _right;
+        public IRedBlack<T> Right { get; }
 
         public bool TryFind(T searched, IComparer<T> comparer, out T value)
         {
             Debug.Assert(comparer != null);
 
-            var result = comparer.Compare(searched, _value);
+            var result = comparer.Compare(searched, Value);
 
             // Values are equal.
             if (result == 0)
             {
-                value = _value;
+                value = Value;
                 return true;
             }
 
@@ -61,10 +55,10 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
             var result = comparer.Compare(value, Value);
 
             if (result < 0)
-                return Balance(IsBlack, _value, Left.Insert(value, comparer), Right);
+                return Balance(IsBlack, Value, Left.Insert(value, comparer), Right);
 
             if (result > 0)
-                return Balance(IsBlack, _value, Left, Right.Insert(value, comparer));
+                return Balance(IsBlack, Value, Left, Right.Insert(value, comparer));
 
             return this;
         }
@@ -76,10 +70,10 @@ namespace ImmutableCollections.DataStructures.RedBlackTreeStructure
             var result = comparer.Compare(value, Value);
 
             if (result < 0)
-                return Balance(IsBlack, _value, Left.Update(value, comparer), Right);
+                return Balance(IsBlack, Value, Left.Update(value, comparer), Right);
 
             if (result > 0)
-                return Balance(IsBlack, _value, Left, Right.Update(value, comparer));
+                return Balance(IsBlack, Value, Left, Right.Update(value, comparer));
 
             return new RedBlackNode<T>(IsBlack, value, Left, Right);
         }

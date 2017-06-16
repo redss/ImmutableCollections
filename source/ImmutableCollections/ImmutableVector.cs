@@ -18,19 +18,19 @@ namespace ImmutableCollections
 
         private readonly IVectorNode<T> _root;
 
-        private readonly int _count;
-
         // Constructors
 
         public ImmutableVector()
         {
-            _count = 0;
+            Length = 0;
+
             _root = EmptyVector;
         }
 
         private ImmutableVector(IVectorNode<T> root, int count)
         {
-            _count = count;
+            Length = count;
+
             _root = root;
         }
 
@@ -53,8 +53,8 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> Add(T item)
         {
-            var newRoot = _root.Append(item, _count);
-            return new ImmutableVector<T>(newRoot, _count + 1);
+            var newRoot = _root.Append(item, Length);
+            return new ImmutableVector<T>(newRoot, Length + 1);
         }
 
         [Pure]
@@ -72,7 +72,7 @@ namespace ImmutableCollections
         [Pure]
         public ImmutableVector<T> Insert(int index, T item)
         {
-            if (index == _count)
+            if (index == Length)
                 return Add(item);
 
             AssertIndexRange(index);
@@ -101,7 +101,7 @@ namespace ImmutableCollections
             AssertIndexRange(index);
 
             var newRoot = _root.UpdateAt(item, index);
-            return new ImmutableVector<T>(newRoot, _count);
+            return new ImmutableVector<T>(newRoot, Length);
         }
 
         [Pure]
@@ -142,8 +142,8 @@ namespace ImmutableCollections
 
             var newRoot = index > 0 ? _root.Remove(index - 1) : EmptyVector;
 
-            if (index == _count - 1)
-                return new ImmutableVector<T>(newRoot, _count - 1);
+            if (index == Length - 1)
+                return new ImmutableVector<T>(newRoot, Length - 1);
 
             var count = index;
             foreach (var i in EnumerateFrom(index + 1))
@@ -162,7 +162,7 @@ namespace ImmutableCollections
         }
 
         [Pure]
-        public int Length => _count;
+        public int Length { get; }
 
         [Pure]
         public bool Contains(T item)
@@ -175,7 +175,7 @@ namespace ImmutableCollections
         {
             get
             {
-                if (index >= _count || index < 0)
+                if (index >= Length || index < 0)
                     throw new ArgumentOutOfRangeException(nameof(index));
 
                 return _root.Nth(index);
@@ -205,7 +205,7 @@ namespace ImmutableCollections
             // TODO: Optimize.
             
             var newRoot = _root;
-            var count = _count;
+            var count = Length;
 
             foreach (var item in items)
             {
@@ -227,8 +227,8 @@ namespace ImmutableCollections
 
         private void AssertIndexRange(int index, string argumentName = "index")
         {
-            if (index >= _count)
-                throw ExceptionHelper.GetIndexTooBigException(index, _count - 1, argumentName);
+            if (index >= Length)
+                throw ExceptionHelper.GetIndexTooBigException(index, Length - 1, argumentName);
 
             if (index < 0)
                 throw ExceptionHelper.GetIndexNegativeException(index, argumentName);

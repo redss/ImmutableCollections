@@ -6,23 +6,19 @@
     /// <typeparam name="T">Type contained in the list.</typeparam>
     class ListNode<T> : IListNode<T>
     {
-        private readonly T _value;
-
-        private readonly IListNode<T> _tail;
-
         // Constructor
 
         public ListNode(T value, IListNode<T> tail)
         {
-            _value = value;
-            _tail = tail;
+            Value = value;
+            Tail = tail;
         }
 
         // IListNode
 
-        public T Value => _value;
+        public T Value { get; }
 
-        public IListNode<T> Tail => _tail;
+        public IListNode<T> Tail { get; }
 
         public IListNode<T> Prepend(T value)
         {
@@ -31,7 +27,7 @@
 
         public IListNode<T> ChangeValue(T value)
         {
-            return new ListNode<T>(value, _tail);
+            return new ListNode<T>(value, Tail);
         }
 
         public IListNode<T> ChangeTail(IListNode<T> tail)
@@ -43,7 +39,7 @@
 
         public override string ToString()
         {
-            return $"Node({_value})";
+            return $"Node({Value})";
         }
     }
 }

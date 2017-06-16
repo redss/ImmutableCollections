@@ -8,25 +8,25 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
     {
         private readonly IVectorNode<T>[] _children;
 
-        private readonly int _level;
-
         // Constructors
 
         public VectorLevel(T elem, int level)
         {
-            _level = level;
+            Level = level;
+
             _children = new[] { CreateChildNode(elem) };
         }
 
         public VectorLevel(IVectorNode<T>[] children, int level)
         {
-            _level = level;
+            Level = level;
+
             _children = children;
         }
 
         // IVectorNode
 
-        public int Level => _level;
+        public int Level { get; }
 
         public IEnumerable<T> GetValues()
         {
@@ -41,11 +41,11 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
             var index = CountIndex(count);
 
             // Maximum capacity reached, this can only occur on top-level (root) node.
-            if (count == 1 << ImmutableVectorHelper.Shift * (_level + 1))
+            if (count == 1 << ImmutableVectorHelper.Shift * (Level + 1))
             {
                 // Create new top-level node and propagate it.
-                var children = new IVectorNode<T>[] { this, new VectorLevel<T>(elem, _level) };
-                return new VectorLevel<T>(children, _level + 1);
+                var children = new IVectorNode<T>[] { this, new VectorLevel<T>(elem, Level) };
+                return new VectorLevel<T>(children, Level + 1);
             }
             
             // Extend current children array.
@@ -81,7 +81,7 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
                 return node;
 
             var newChildren = _children.TakeAndChange(node, nodeIndex, nodeIndex + 1);
-            return new VectorLevel<T>(newChildren, _level);
+            return new VectorLevel<T>(newChildren, Level);
         }
 
         public IVectorNode<T> Remove(int index)
@@ -93,14 +93,14 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
                 return node;
             
             var newChildren = _children.TakeAndChange(node, nodeIndex, nodeIndex + 1);
-            return new VectorLevel<T>(newChildren, _level);
+            return new VectorLevel<T>(newChildren, Level);
         }
 
         // Object
 
         public override string ToString()
         {
-            return $"Level {_level}[{_children.Length}]";
+            return $"Level {Level}[{_children.Length}]";
         }
 
         // Private methods
@@ -108,13 +108,13 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
         private VectorLevel<T> ChangedNode(IVectorNode<T> item, int index)
         {
             var children = _children.Change(item, index);
-            return new VectorLevel<T>(children, _level);
+            return new VectorLevel<T>(children, Level);
         }
 
         private VectorLevel<T> AppendedNode(IVectorNode<T> item)
         {
             var children = _children.Append(item);
-            return new VectorLevel<T>(children, _level);
+            return new VectorLevel<T>(children, Level);
         }
 
         private VectorLevel<T> AppendedNode(T elem)
@@ -124,15 +124,15 @@ namespace ImmutableCollections.DataStructures.BitmappedVectorTrieStructure
 
         private IVectorNode<T> CreateChildNode(T elem)
         {
-            if (_level == 1)
+            if (Level == 1)
                 return new VectorLeaf<T>(elem);
 
-            return new VectorLevel<T>(elem, _level - 1);
+            return new VectorLevel<T>(elem, Level - 1);
         }
 
         private int CountIndex(int index)
         {
-            return ImmutableVectorHelper.ComputeIndex(index, _level);
+            return ImmutableVectorHelper.ComputeIndex(index, Level);
         }
     }
 }
